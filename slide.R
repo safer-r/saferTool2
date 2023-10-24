@@ -1,29 +1,37 @@
 ######## slide() #### return a computation made on a vector using a sliding window
 
+# todo list check OK
+# Check r_debugging_tools-v1.4.R
+# Check fun_test() 20201107 (see cute_checks.docx)
+# example sheet 
+# check all and any OK
+# -> clear to go Apollo
+# -> transferred into the cute package
+
 #' @title slide
 #' @description
 #' Return a computation made on a vector using a sliding window.
 #' @param data Vector, matrix, table or array of numeric values (mode must be numeric). Inf not allowed. NA will be removed before computation.
 #' @param window.size Single numeric value indicating the width of the window sliding across data (in the same unit as data value).
 #' @param step Single numeric value indicating the step between each window (in the same unit as data value). Cannot be larger than window.size.
-#' @param from Value of the left boundary of the first sliding window. If NULL, min(data) is used. The first window will strictly have from or min(data) as left boundary.
-#' @param to Value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window.size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window.size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window.size / 2.
-#' @param fun Function or character string (without brackets) indicating the name of the function to apply in each window. Example: fun = "mean", or fun = mean.
-#' @param args Character string of additional arguments of fun (separated by a comma between the quotes). Example args = "na.rm = TRUE" for fun = mean. Ignored if NULL.
+#' @param from Single numeric value of the left boundary of the first sliding window. If NULL, min(data) is used. The first window will strictly have from or min(data) as left boundary.
+#' @param to Single numeric value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window.size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window.size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window.size / 2.
+#' @param fun Function or single character string (without brackets) indicating the name of the function to apply in each window. Example: fun = "mean", or fun = mean.
+#' @param args Single character string of additional arguments of fun (separated by a comma between the quotes). Example args = "na.rm = TRUE" for fun = mean. Ignored if NULL.
 #' @param boundary Either "left" or "right". Indicates if the sliding window includes values equal to left boundary and exclude values equal to right boundary ("left") or the opposite ("right").
-#' @param parall Logical. Force parallelization ?
-#' @param thread.nb Numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.
-#' @param print.count Interger value. Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
+#' @param parall Single logical value. Force parallelization ?
+#' @param thread.nb Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.
+#' @param print.count Single interger value. Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
 #' @param res.path Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.
 #' @param lib.path Character vector specifying the absolute pathways of the directories containing the required packages if not in the default directories. Ignored if NULL.
-#' @param verbose Logical. Display messages?
-#' @param cute.path Character string indicating the absolute path of the cute.R file. Will be remove when cute will be a package. Ignored if parall is FALSE.
+#' @param verbose Single logical value. Display messages?
+#' @param cute.path Single character string indicating the absolute path of the cute.R file. Will be remove when cute will be a package. Ignored if parall is FALSE.
 #' @returns
 #' A data frame containing :
-#' - $left : the left boundary of each window (in the unit of the data argument)
-#' - $right : the right boundary of each window (in the unit of data argument)
-#' - $center : the center of each window (in the unit of data argument)
-#' - $value : the computed value by the fun argument in each window)
+#' - $left : the left boundary of each window (in the unit of the data argument).
+#' - $right : the right boundary of each window (in the unit of data argument).
+#' - $center : the center of each window (in the unit of data argument).
+#' - $value : the computed value by the fun argument in each window).
 #' @details 
 #' REQUIRED PACKAGES
 #' 
@@ -106,9 +114,9 @@ fun_slide <- function(
         "step", 
         "fun"
     )
-    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "), missing("), "))")))
+    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "),missing("), "))")))
     if(any(tempo)){ # normally no NA for missing() output
-        tempo.cat <- paste0("ERROR IN ", function.name, "\nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args[tempo], collapse = "\n"))
+        tempo.cat <- paste0("ERROR IN ", function.name, "\nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end arg with no default values
@@ -158,7 +166,7 @@ fun_slide <- function(
     tempo <- fun_check(data = verbose, class = "vector", mode = "logical", length = 1, fun.name = function.name) ; eval(ee)
     tempo <- fun_check(data = cute.path, class = "vector", typeof = "character", length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(arg.check)){
-        if(any(arg.check) == TRUE){
+        if(any(arg.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
@@ -176,10 +184,10 @@ fun_slide <- function(
     }
     # end new environment
     # management of NA arguments
-    if( ! (all(class(arg.user.setting) == "list") & length(arg.user.setting) == 0)){
+    if( ! (all(class(arg.user.setting) == "list", na.rm = TRUE) & length(arg.user.setting) == 0)){
         tempo.arg <- names(arg.user.setting) # values provided by the user
         tempo.log <- suppressWarnings(sapply(lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
-        if(any(tempo.log) == TRUE){
+        if(any(tempo.log) == TRUE){ # normally no NA because is.na() used here
             tempo.cat <- paste0("ERROR IN ", function.name, "\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }
@@ -190,16 +198,16 @@ fun_slide <- function(
         "data", 
         "window.size", 
         "step", 
-        # "from", # because can be NULL
-        # "to", # because can be NULL
+        # "from", # inactivated because can be null
+        # "to", # inactivated because can be null
         "fun", 
-        # "args", # because can be NULL
+        # "args", # inactivated because can be null
         "boundary", 
-        "parall", 
-        # "thread.nb", # because can be NULL
+        # "parall", 
+        # "thread.nb", # inactivated because can be null
         "print.count", 
-        # "res.path", # because can be NULL
-        # "lib.path", # because can be NULL
+        # "res.path", # inactivated because can be null
+        # "lib.path", # inactivated because can be null
         "verbose", 
         "cute.path"
     )
@@ -218,7 +226,7 @@ fun_slide <- function(
         tempo.cat <- paste0("ERROR IN ", function.name, ": data ARGUMENT CANNOT BE LENGTH 0")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
     }
-    if(any( ! is.finite(data))){
+    if(any( ! is.finite(data), na.rm = TRUE)){
         tempo.cat <- paste0("ERROR IN ", function.name, ": data ARGUMENT CANNOT CONTAIN Inf VALUES")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
     }
@@ -227,7 +235,7 @@ fun_slide <- function(
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
     }
     if( ! is.null(res.path)){
-        if( ! all(dir.exists(res.path))){ # separation to avoid the problem of tempo$problem == FALSE and res.path == NA
+        if( ! all(dir.exists(res.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and res.path == NA
             tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE res.path ARGUMENT DOES NOT EXISTS:\n", paste(res.path, collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
         }
@@ -235,7 +243,7 @@ fun_slide <- function(
         res.path <- getwd() # working directory
     }
     if( ! is.null(lib.path)){
-        if( ! all(dir.exists(lib.path))){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
+        if( ! all(dir.exists(lib.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
             tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
         }
@@ -318,6 +326,7 @@ fun_slide <- function(
             return(res)
         })
         log <- mapply(FUN = "&", left.log, right.log, SIMPLIFY = FALSE)
+        # output
         output <- eval(parse(text = paste0("sapply(lapply(log, FUN = function(X){(data[X])}), FUN = fun", if( ! is.null(args)){paste0(", ", args)}, ")"))) # take the values of the data vector according to log (list of logical, each compartment of length(data)) and apply fun with args of fun
         if(length(output) != nrow(wind)){
             tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, "\nCODE INCONSISTENCY 3")
@@ -447,4 +456,6 @@ fun_slide <- function(
         cat(paste0("\nfun_slide JOB END\n\nTIME: ", end.date, "\n\nTOTAL TIME LAPSE: ", total.lapse, "\n\n\n"))
     }
     return(output)
+    # end output
+    # end main code
 }

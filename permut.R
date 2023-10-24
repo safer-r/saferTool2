@@ -1,5 +1,13 @@
 ######## permut() #### progressively breaks a vector order
 
+# todo list check OK
+# Check r_debugging_tools-v1.4.R
+# Check fun_test() 20201107 (see cute_checks.docx)
+# example sheet 
+# check all and any OK
+# -> clear to go Apollo
+# -> transferred into the cute package
+
 #' @title permut
 #' @description
 #' Reorder the elements of the data1 vector by flipping 2 randomly selected  consecutive positions either:
@@ -12,20 +20,20 @@
 #' Designed for discrete values, but worls also for continuous values.
 #' @param data1 A vector of at least 2 elements. Must be numeric if data2 is specified.
 #' @param data2 A numeric vector of same length as data1.
-#' @param n Number of times "flipping 2 randomly selected consecutive positions". Ignored if data2 is specified.
-#' @param seed Integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL, fun_permut() will systematically return the same result when the other parameters keep the same settings.
-#' @param print.count Interger value. Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
-#' @param text.print Optional message to add to the working progress message every print.count loop.
+#' @param n Single numeric value of times "flipping 2 randomly selected consecutive positions". Ignored if data2 is specified.
+#' @param seed Single integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL, fun_permut() will systematically return the same result when the other parameters keep the same settings.
+#' @param print.count Single integer value. Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
+#' @param text.print Single character string indicating the optional message to add to the working progress message every print.count loop.
 #' @param cor.method Correlation method. Either "pearson", "kendall" or "spearman". Ignored if data2 is not specified.
 #' @param cor.limit A correlation limit (between 0 and 1). Ignored if data2 is not specified. Compute the correlation between data1 and data2, permute the data1 values, and stop the permutation process when the correlation between data1 and data2 decreases down below the cor limit value (0.2 by default). If cor(data1, data2) is negative, then -cor.limit is used and the process stops until the correlation between data1 and data2 increases up over cor.limit (-0.2 by default). BEWARE: write a positive cor.limit even if cor(data1, data2) is known to be negative. The function will automatically uses -cor.limit. If the initial correlation is already below cor.limit (positive correlation) or over -cor.limit (negative correlation), then the data1 value positions are completely randomized (correlation between data1 and data2 is expected to be 0).
-#' @param warn.print Logical. Print warnings at the end of the execution? No print if no warning messages
+#' @param warn.print Single logical value. Print warnings at the end of the execution? No print if no warning messages
 #' @param lib.path Character vector specifying the absolute pathways of the directories containing the required packages if not in the default directories. Ignored if NULL.
 #' @returns
 #' A list containing:
-#' - $data: the modified vector
-#' - $warn: potential warning messages (in case of negative correlation when data2 is specified). NULL if non warning message
-#' - $cor: a spearman correlation between the initial positions (1:length(data1) and the final positions if data2 is not specified and the final correlation between data1 and data2 otherwise, according to cor.method
-#' - $count: the number of loops used
+#' - $data: the modified vector.
+#' - $warn: potential warning messages (in case of negative correlation when data2 is specified). NULL if non warning message.
+#' - $cor: a spearman correlation between the initial positions (1:length(data1) and the final positions if data2 is not specified and the final correlation between data1 and data2 otherwise, according to cor.method.
+#' - $count: the number of loops used.
 #' @details 
 #' REQUIRED PACKAGES
 #' 
@@ -101,22 +109,41 @@ fun_permut <- function(
     # data1 = 1:1e3 ; data2 = 1e3:1 ; n = 20 ; seed = 22 ; print.count = 1e6 ; text.print = "" ; cor.method = "spearman" ; cor.limit = 0.5 ; warn.print = TRUE ; lib.path = NULL
     # function name
     function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()")
+    arg.names <- names(formals(fun = sys.function(sys.parent(n = 2)))) # names of all the arguments
+    arg.user.setting <- as.list(match.call(expand.dots = FALSE))[-1] # list of the argument settings (excluding default values not provided by the user)
     # end function name
     # required function checking
-    if(length(utils::find("fun_check", mode = "function")) == 0L){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": REQUIRED fun_check() FUNCTION IS MISSING IN THE R ENVIRONMENT")
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    req.function <- c(
+        "fun_pack", 
+        "fun_check", 
+        "fun_round"
+    )
+    tempo <- NULL
+    for(i1 in req.function){
+        if(length(find(i1, mode = "function")) == 0L){
+            tempo <- c(tempo, i1)
+        }
     }
-    if(length(utils::find("fun_pack", mode = "function")) == 0L){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": REQUIRED fun_pack() FUNCTION IS MISSING IN THE R ENVIRONMENT")
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
-    }
-    if(length(utils::find("fun_round", mode = "function")) == 0L){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": REQUIRED fun_pack() FUNCTION IS MISSING IN THE R ENVIRONMENT")
+    if( ! is.null(tempo)){
+        tempo.cat <- paste0("ERROR IN ", function.name, "\nREQUIRED cute FUNCTION", ifelse(length(tempo) > 1, "S ARE", " IS"), " MISSING IN THE R ENVIRONMENT:\n", paste0(tempo, collapse = "()\n"))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end required function checking
-    # argument checking
+    # reserved words (to avoid bugs)
+    # end reserved words (to avoid bugs)
+    
+    # arg with no default values
+    mandat.args <- c(
+        "data1"
+    )
+    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "),missing("), "))")))
+    if(any(tempo)){ # normally no NA for missing() output
+        tempo.cat <- paste0("ERROR IN ", function.name, "\nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
+        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    }
+    # end arg with no default values
+    
+    # argument primary checking
     arg.check <- NULL #
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
@@ -159,7 +186,7 @@ fun_permut <- function(
     if( ! is.null(lib.path)){
         tempo <- fun_check(data = lib.path, class = "vector", mode = "character", fun.name = function.name) ; eval(ee)
         if(tempo$problem == FALSE){
-            if( ! all(dir.exists(lib.path))){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
+            if( ! all(dir.exists(lib.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
                 tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
                 text.check <- c(text.check, tempo.cat)
                 arg.check <- c(arg.check, TRUE)
@@ -167,12 +194,58 @@ fun_permut <- function(
         }
     }
     if( ! is.null(arg.check)){
-        if(any(arg.check) == TRUE){
+        if(any(arg.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
     # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using fun_check()
-    # end argument checking
+    # end argument primary checking
+    
+    # second round of checking and data preparation
+    # management of NA arguments
+    if( ! (all(class(arg.user.setting) == "list", na.rm = TRUE) & length(arg.user.setting) == 0)){
+        tempo.arg <- names(arg.user.setting) # values provided by the user
+        tempo.log <- suppressWarnings(sapply(lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
+        if(any(tempo.log) == TRUE){ # normally no NA because is.na() used here
+            tempo.cat <- paste0("ERROR IN ", function.name, "\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
+            stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+        }
+    }
+    # end management of NA arguments
+    
+    # management of NULL arguments
+    tempo.arg <-c(
+        "data1", 
+        # "data2", # inactivated because can be null 
+        # "n", # inactivated because can be null 
+        # "seed", # inactivated because can be null 
+        "print.count", 
+        "text.print", 
+        "cor.method", 
+        "cor.limit", 
+        "warn.print"
+        # lib.path # inactivated because can be null
+    )
+    tempo.log <- sapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.null)
+    if(any(tempo.log) == TRUE){# normally no NA with is.null()
+        tempo.cat <- paste0("ERROR IN ", function.name, ":\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS\n", "THIS ARGUMENT\n"), paste0(tempo.arg[tempo.log], collapse = "\n"),"\nCANNOT BE NULL")
+        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    }
+    # end management of NULL arguments
+    
+    # code that protects set.seed() in the global environment
+    # end code that protects set.seed() in the global environment
+    
+    # warning initiation
+    # end warning initiation
+    
+    # other checkings
+    # end other checkings
+    
+    # reserved word checking
+    # end reserved word checking
+    # end second round of checking and data preparation
+    
     # package checking
     fun_pack(req.package = "lubridate", lib.path = lib.path)
     # end package checking
@@ -426,6 +499,9 @@ fun_permut <- function(
         on.exit(warning(paste0("FROM ", function.name, ":\n\n", warn), call. = FALSE), add = TRUE)
     }
     on.exit(exp = options(warning.length = ini.warning.length), add = TRUE)
+    # output
     output <- list(data = data1[tempo.pos], warn = warn, cor = if(is.null(data2)){cor(ini.pos, tempo.pos, method = "spearman")}else{tempo.cor}, count = count)
     return(output)
+    # end output
+    # end main code
 }

@@ -1,5 +1,13 @@
 ######## codon_finder() #### gives the codon number and position in the codon of nucleotid positions
 
+# todo list check OK
+# Check r_debugging_tools-v1.4.R
+# Check fun_test() 20201107 (see cute_checks.docx)
+# example sheet 
+# check all and any OK
+# -> clear to go Apollo
+# -> transferred into the cute package
+
 #' @title codon_finder
 #' @description
 #' Gives the codon number and position in the codon of nucleotid positions.
@@ -8,19 +16,21 @@
 #' @param end Single indicating the position of the last base of the coding sequence.
 #' @returns
 #' A data frame with column names:
-#' - pos: values of the pos argument
-#' - codon_nb: the codon number in the CDS encompassing the pos value
-#' - codon_pos: the position of pos in the codon (either 1, 2 or 3)
-#' - codon_begin: the first base position of the codon
-#' - codon_end: the last base position of the codon
+#' - pos: values of the pos argument.
+#' - codon_nb: the codon number in the CDS encompassing the pos value.
+#' - codon_pos: the position of pos in the codon (either 1, 2 or 3).
+#' - codon_begin: the first base position of the codon.
+#' - codon_end: the last base position of the codon.
 #' @details 
 #' REQUIRED PACKAGES
 #' 
 #' none
 #' 
+#' 
 #' REQUIRED FUNCTIONS FROM CUTE_LITTLE_R_FUNCTION
 #' 
 #' fun_check()
+#'
 #'
 #' WARNINGS
 #' 
@@ -68,7 +78,7 @@ fun_codon_finder <- function(
         "begin", 
         "end"
     )
-    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "), missing("), "))")))
+    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "),missing("), "))")))
     if(any(tempo)){ # normally no NA for missing() output
         tempo.cat <- paste0("ERROR IN ", function.name, "\nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
@@ -83,7 +93,7 @@ fun_codon_finder <- function(
     tempo <- fun_check(data = begin, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name) ; eval(ee)
     tempo <- fun_check(data = end, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(arg.check)){
-        if(any(arg.check) == TRUE){
+        if(any(arg.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
@@ -91,10 +101,10 @@ fun_codon_finder <- function(
     # end argument primary checking
     # second round of checking and data preparation
     # management of NA arguments
-    if( ! (all(class(arg.user.setting) == "list") & length(arg.user.setting) == 0)){
+    if( ! (all(class(arg.user.setting) == "list", na.rm = TRUE) & length(arg.user.setting) == 0)){
         tempo.arg <- names(arg.user.setting) # values provided by the user
         tempo.log <- suppressWarnings(sapply(lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
-        if(any(tempo.log) == TRUE){
+        if(any(tempo.log) == TRUE){ # normally no NA because is.na() used here
             tempo.cat <- paste0("ERROR IN ", function.name, "\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }
@@ -125,7 +135,7 @@ fun_codon_finder <- function(
         tempo.cat <- paste0("ERROR IN ", function.name, ": ((end - begin) + 1) / 3 MUST BE AN INTEGER (I.E., MODULO ZERO)")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
-    if(any(pos < begin | pos > end)){
+    if(any(pos < begin | pos > end, na.rm = TRUE)){
         tempo.cat <- paste0("ERROR IN ", function.name, ": pos ARGUMENT VALUES MUST BE BETWEEN begin AND end ARGUMENT VALUES")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
@@ -152,6 +162,9 @@ fun_codon_finder <- function(
         return(data.frame(codon_nb = codon_nb, codon_pos = codon_pos, codon_begin = codon_begin, codon_end = codon_end))
     })
     tempo <- do.call("rbind", tempo)
+    # output
     output <- data.frame(pos = as.integer(pos), tempo)
     return(output)
+    # end output
+    # end main code
 }

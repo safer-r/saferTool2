@@ -1,19 +1,29 @@
 ######## codon2aa() #### convert codon to amino acid using standard genetic code
 
+# todo list check OK
+# Check r_debugging_tools-v1.4.R
+# Check fun_test() 20201107 (see cute_checks.docx)
+# example sheet 
+# check all and any OK
+# -> clear to go Apollo
+# -> transferred into the cute package
+
 #' @title codon2aa
 #' @description
 #' Convert codon to amino acid using standard genetic code indicated in https://en.wikipedia.org/wiki/DNA_and_RNA_codon_tables.
-#' @param data Single caracter string of three characters, or vector of three caracters, indicating the DNA codon (only "A", "T", "G" and "C" allowed). Case insensitive. Omitted if display argument is TRUE.
-#' @param display Logical. Display the whole genetic table? if TRUE, override data.
+#' @param data Single caracter string of three characters, or vector of three characters, indicating the DNA codon (only "A", "T", "G" and "C" allowed). Case insensitive. Omitted if display argument is TRUE.
+#' @param display Single logical value. Display the whole genetic table? if TRUE, override data.
 #' @returns The 1 letter uppercase amino acid of the submitted codon or the whole table if display argument is TRUE.
 #' @details 
 #' REQUIRED PACKAGES
 #' 
 #' none
 #' 
+#' 
 #' REQUIRED FUNCTIONS FROM CUTE_LITTLE_R_FUNCTION
 #' 
 #' fun_check()
+#'
 #'
 #' WARNINGS
 #' 
@@ -54,7 +64,7 @@ fun_codon2aa <- function(
     mandat.args <- c(
         "data"
     )
-    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "), missing("), "))")))
+    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "),missing("), "))")))
     if(any(tempo)){ # normally no NA for missing() output
         tempo.cat <- paste0("ERROR IN ", function.name, "\nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
@@ -68,7 +78,7 @@ fun_codon2aa <- function(
     tempo <- fun_check(data = data, class = "vector", typeof = "character", fun.name = function.name) ; eval(ee)
     tempo <- fun_check(data = display, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(arg.check)){
-        if(any(arg.check) == TRUE){
+        if(any(arg.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
@@ -76,10 +86,10 @@ fun_codon2aa <- function(
     # end argument primary checking
     # second round of checking and data preparation
     # management of NA arguments
-    if( ! (all(class(arg.user.setting) == "list") & length(arg.user.setting) == 0)){
+    if( ! (all(class(arg.user.setting) == "list", na.rm = TRUE) & length(arg.user.setting) == 0)){
         tempo.arg <- names(arg.user.setting) # values provided by the user
         tempo.log <- suppressWarnings(sapply(lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
-        if(any(tempo.log) == TRUE){
+        if(any(tempo.log) == TRUE){ # normally no NA because is.na() used here
             tempo.cat <- paste0("ERROR IN ", function.name, "\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }
@@ -149,6 +159,7 @@ fun_codon2aa <- function(
         )
     )
     # end standard genetic code
+    # output
     if(display == TRUE){
         output <- sgc
     }else{
@@ -156,4 +167,6 @@ fun_codon2aa <- function(
         output <- eval(parse(text = paste0("sgc['", paste0(data, collapse = "','"), "']")))
     }
     return(output)
+    # end output
+    # end main code
 }
