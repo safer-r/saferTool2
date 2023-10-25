@@ -3,6 +3,14 @@
 # Add name of the variable in the graph
 # not max and min for boxplot but 1.5IQR
 
+# todo list check OK
+# Check r_debugging_tools-v1.4.R
+# Check fun_test() 20201107 (see cute_checks.docx)
+# example sheet 
+# check all and any OK
+# -> clear to go Apollo
+# -> transferred into the cute package
+
 #' @title trim
 #' @description
 #' Trim and display values from a numeric vector or matrix.
@@ -20,17 +28,17 @@
 #' @param trim.method Write "" if not required. write "mean.sd" if mean +/- sd has to be displayed as a trimming interval (only recommanded for normal distribution). Write "quantile" to display a trimming interval based on quantile cut-offs. No other possibility allowed. See trim.cutoffs below.
 #' @param trim.cutoffs 2 values cutoff for the trimming interval displayed, each value between 0 and 1. Not used if trim.method == "".The couple of values c(lower, upper) represents the lower and upper boundaries of the trimming interval (in proportion), which represent the interval of distribution kept (between 0 and 1). Example: trim.cutoffs = c(0.05, 0.975). What is strictly kept for the display is ]lower , upper[, boundaries excluded. Using the "mean.sd" method, 0.025 and 0.975 represent 95% CI which is mean +/- 1.96 * sd.
 #' @param interval.scale.disp Display sd and quantiles intervals on top of graphs ?
-#' @param down.space Lower vertical margin (in inches, mai argument of par()).
-#' @param left.space Left horizontal margin (in inches, mai argument of par()).
-#' @param up.space Upper vertical margin between plot region and grapical window (in inches, mai argument of par()).
-#' @param right.space Right horizontal margin (in inches, mai argument of par()).
+#' @param down.space Single positive numeric value indicating the lower vertical margin (in inches, mai argument of par()).
+#' @param left.space Single positive numeric value indicating the left horizontal margin (in inches, mai argument of par()).
+#' @param up.space Single positive numeric value indicating the upper vertical margin between plot region and grapical window (in inches, mai argument of par()).
+#' @param right.space Single positive numeric value indicating the right horizontal margin (in inches, mai argument of par()).
 #' @param orient Scale number orientation (las argument of par()). 0, always parallel to the axis; 1, always horizontal; 2, always perpendicular to the axis; 3, always vertical.
-#' @param dist.legend Numeric value that moves axis legends away in inches (first number of mgp argument of par() but in inches thus / 0.2).
-#' @param box.type Bty argument of par(). Either "o", "l", "7", "c", "u", "]", the resulting box resembles the corresponding upper case letter. A value of "n" suppresses the box.
-#' @param amplif.label Increase or decrease the size of the text in legends.
-#' @param amplif.axis Increase or decrease the size of the scale numbers in axis.
-#' @param std.x.range Standard range on the x-axis? TRUE (no range extend) or FALSE (4% range extend). Controls xaxs argument of par() (TRUE is xaxs = "i", FALSE is xaxs = "r").
-#' @param std.y.range Standard range on the y-axis? TRUE (no range extend) or FALSE (4% range extend). Controls yaxs argument of par() (TRUE is yaxs = "i", FALSE is yaxs = "r").
+#' @param dist.legend Single positive numeric value that moves axis legends away in inches (first number of mgp argument of par() but in inches thus / 0.2).
+#' @param box.type The bty argument of par(). Either "o", "l", "7", "c", "u", "]", the resulting box resembles the corresponding upper case letter. A value of "n" suppresses the box.
+#' @param amplif.label Single positive numeric value to increase or decrease the size of the text in legends.
+#' @param amplif.axis Single positive numeric value to increase or decrease the size of the scale numbers in axis.
+#' @param std.x.range Single logical value. Standard range on the x-axis? TRUE (no range extend) or FALSE (4% range extend). Controls xaxs argument of par() (TRUE is xaxs = "i", FALSE is xaxs = "r").
+#' @param std.y.range Single logical value. Standard range on the y-axis? TRUE (no range extend) or FALSE (4% range extend). Controls yaxs argument of par() (TRUE is yaxs = "i", FALSE is yaxs = "r").
 #' @param cex.pt Size of points in stripcharts (in inches, thus cex.pt will be thereafter / 0.2).
 #' @param col.box Color of boxplot.
 #' @param x.nb.inter.tick Number of secondary ticks between main ticks on x-axis (only if not log scale). Zero means non secondary ticks.
@@ -43,20 +51,20 @@
 #' @param trim.return Return the trimmed and non trimmed values? NULL returned for trimmed and non trimmed values if trim.method == "".
 #' @returns
 #' A list containing:
-#' - $trim.method: correspond to trim.method above
-#' - $trim.cutoffs: correspond to trim.cutoffs above
-#' - $real.trim.cutoffs: the two boundary values (in the unit of the numeric vector or numeric matrix analyzed). NULL 
-#' - $trimmed.values: the values outside of the trimming interval as defined in trim.cutoffs above
-#' - $kept.values: the values inside the trimming interval as defined in trim.cutoffs above
+#' - $trim.method: correspond to the trim.method argument.
+#' - $trim.cutoffs: correspond to the trim.cutoffs argument.
+#' - $real.trim.cutoffs: the two boundary values in the unit of the numeric vector or numeric matrix analyzed.
+#' - $trimmed.values: the values outside of the trimming interval as defined in the trim.cutoffs argument.
+#' - $kept.values: the values inside the trimming interval as defined in the trim.cutoffs argument.
 #' @details 
 #' REQUIRED PACKAGES
 #' 
 #' none
 #' 
+#' 
 #' REQUIRED FUNCTIONS FROM CUTE_LITTLE_R_FUNCTION
 #' 
 #' fun_check()
-#'
 #' @examples
 #' fun_trim(data = c(1:100, 1:10), displayed.nb = NULL, single.value.display = FALSE, trim.method = "mean.sd", trim.cutoffs = c(0.05, 0.975), interval.scale.disp = TRUE, down.space = 0.75, left.space = 0.75, up.space = 0.3, right.space = 0.25, orient = 1, dist.legend = 0.37, box.type = "l", amplif.label = 1.25, amplif.axis = 1.25, std.x.range = TRUE, std.y.range = TRUE, cex.pt = 0.2, col.box = hsv(0.55, 0.8, 0.8), x.nb.inter.tick = 4, y.nb.inter.tick = 0, tick.length = 0.5, sec.tick.length = 0.3, corner.text = "", amplif.legend = 1, corner.text.size = 0.75, trim.return = TRUE)
 #' @export
@@ -96,14 +104,40 @@ fun_trim <- function(
     # data = c(1:100, 1:10) ; displayed.nb = NULL ; single.value.display = FALSE ; trim.method = "quantile" ; trim.cutoffs = c(0.05, 0.975) ; interval.scale.disp = TRUE ; down.space = 1 ; left.space = 1 ; up.space = 0.5 ; right.space = 0.25 ; orient = 1 ; dist.legend = 0.5 ; box.type = "l" ; amplif.label = 1 ; amplif.axis = 1 ; std.x.range = TRUE ; std.y.range = TRUE ; cex.pt = 0.1 ; col.box = hsv(0.55, 0.8, 0.8) ; x.nb.inter.tick = 4 ; y.nb.inter.tick = 0 ; tick.length = 0.5 ; sec.tick.length = 0.3 ; corner.text = "" ; amplif.legend = 1 ; corner.text.size = 0.75 ; trim.return = TRUE # for function debugging
     # function name
     function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()")
+    arg.names <- names(formals(fun = sys.function(sys.parent(n = 2)))) # names of all the arguments
+    arg.user.setting <- as.list(match.call(expand.dots = FALSE))[-1] # list of the argument settings (excluding default values not provided by the user)
     # end function name
     # required function checking
-    if(length(utils::find("fun_check", mode = "function")) == 0L){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": REQUIRED fun_check() FUNCTION IS MISSING IN THE R ENVIRONMENT")
+    req.function <- c(
+        "fun_check"
+    )
+    tempo <- NULL
+    for(i1 in req.function){
+        if(length(find(i1, mode = "function")) == 0L){
+            tempo <- c(tempo, i1)
+        }
+    }
+    if( ! is.null(tempo)){
+        tempo.cat <- paste0("ERROR IN ", function.name, "\nREQUIRED cute FUNCTION", ifelse(length(tempo) > 1, "S ARE", " IS"), " MISSING IN THE R ENVIRONMENT:\n", paste0(tempo, collapse = "()\n"))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end required function checking
-    # argument checking
+    
+    # reserved words (to avoid bugs)
+    # end reserved words (to avoid bugs)
+    
+    # arg with no default values
+    mandat.args <- c(
+        "data"
+    )
+    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "),missing("), "))")))
+    if(any(tempo)){ # normally no NA for missing() output
+        tempo.cat <- paste0("ERROR IN ", function.name, "\nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
+        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    }
+    # end arg with no default values
+    
+    # argument primary checking
     # argument checking without fun_check()
     if( ! (all(class(data) == "numeric") | all(class(data) == "integer") | (all(class(data) %in% c("matrix", "array")) & base::mode(data) == "numeric"))){
         tempo.cat <- paste0("ERROR IN ", function.name, ": data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX")
@@ -149,7 +183,7 @@ fun_trim <- function(
     tempo <- fun_check(data = corner.text.size, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
     tempo <- fun_check(data = trim.return, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(arg.check)){
-        if(any(arg.check) == TRUE){
+        if(any(arg.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
@@ -159,7 +193,73 @@ fun_trim <- function(
         tempo.cat <- paste0("ERROR IN fun_trim FUNCTION\ndata ARGUMENT CONTAINS ONLY NA OR Inf")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
-    # end argument checking
+    # end argument primary checking
+    
+    # second round of checking and data preparation
+    # management of NA arguments
+    if( ! (all(class(arg.user.setting) == "list", na.rm = TRUE) & length(arg.user.setting) == 0)){
+        tempo.arg <- names(arg.user.setting) # values provided by the user
+        tempo.log <- suppressWarnings(sapply(lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
+        if(any(tempo.log) == TRUE){ # normally no NA because is.na() used here
+            tempo.cat <- paste0("ERROR IN ", function.name, "\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
+            stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+        }
+    }
+    # end management of NA arguments
+    
+    # management of NULL arguments
+    tempo.arg <-c(
+        "data", 
+        # "displayed.nb", # inactivated because can be null
+        "single.value.display", 
+        "trim.method", 
+        "trim.cutoffs", 
+        "interval.scale.disp", 
+        "down.space", 
+        "left.space", 
+        "up.space", 
+        "right.space", 
+        "orient", 
+        "dist.legend", 
+        "box.type", 
+        "amplif.label", 
+        "amplif.axis", 
+        "std.x.range",
+        "std.y.range", 
+        "cex.pt", 
+        "col.box", 
+        "x.nb.inter.tick", 
+        "y.nb.inter.tick", 
+        "tick.length", 
+        "sec.tick.length", 
+        "corner.text", 
+        "amplif.legend", 
+        "corner.text.size", 
+        "trim.return"
+    )
+    tempo.log <- sapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.null)
+    if(any(tempo.log) == TRUE){# normally no NA with is.null()
+        tempo.cat <- paste0("ERROR IN ", function.name, ":\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS\n", "THIS ARGUMENT\n"), paste0(tempo.arg[tempo.log], collapse = "\n"),"\nCANNOT BE NULL")
+        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    }
+    # end management of NULL arguments
+    
+    # code that protects set.seed() in the global environment
+    # end code that protects set.seed() in the global environment
+    
+    # warning initiation
+    # end warning initiation
+    
+    # other checkings
+    # end other checkings
+    
+    # reserved word checking
+    # end reserved word checking
+    # end second round of checking and data preparation
+    
+    # package checking
+    # end package checking
+    
     # main code
     if(all(class(data)%in% c("matrix", "array"))){
         data <- as.vector(data)
@@ -228,6 +328,7 @@ fun_trim <- function(
                 trimmed.values.f <- NULL
                 kept.values.f <- NULL
             }
+            # output
             if(return.f == TRUE){
                 output <- list(trim.method = trim.method.f, trim.cutoffs = trim.cutoffs.f, real.trim.cutoffs = real.trim.cutoffs.f, trimmed.values = trimmed.values.f, kept.values = kept.values.f)
                 return(output)
@@ -349,4 +450,6 @@ fun_trim <- function(
     if(trim.return == TRUE){
         return(output)
     }
+    # end output
+    # end main code
 }
