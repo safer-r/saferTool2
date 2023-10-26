@@ -23,32 +23,32 @@
 #' 
 #' Both trimmed and not trimmed values are returned in a list.
 #' @param data Values to plot (either a numeric vector or a numeric matrix).
-#' @param displayed.nb Number of values displayed. If NULL, all the values are displayed. Otherwise, if the number of values is over displayed.nb, then displayed.nb values are displayed after random selection.
-#' @param single.value.display Provide the 4 graphs if data is made of a single (potentially repeated value)? If FALSE, an empty graph is displayed if data is made of a single (potentially repeated value). And the return list is made of NULL compartments.
+#' @param displayed.nb Single numeric value indicating the number of values displayed. If NULL, all the values are displayed. Otherwise, if the number of values is over displayed.nb, then displayed.nb values are displayed after random selection.
+#' @param single.value.display Single logical value. Provide the 4 graphs if data is made of a single (potentially repeated value)? If FALSE, an empty graph is displayed if data is made of a single (potentially repeated value). And the return list is made of NULL compartments.
 #' @param trim.method Write "" if not required. write "mean.sd" if mean +/- sd has to be displayed as a trimming interval (only recommanded for normal distribution). Write "quantile" to display a trimming interval based on quantile cut-offs. No other possibility allowed. See trim.cutoffs below.
 #' @param trim.cutoffs 2 values cutoff for the trimming interval displayed, each value between 0 and 1. Not used if trim.method == "".The couple of values c(lower, upper) represents the lower and upper boundaries of the trimming interval (in proportion), which represent the interval of distribution kept (between 0 and 1). Example: trim.cutoffs = c(0.05, 0.975). What is strictly kept for the display is ]lower , upper[, boundaries excluded. Using the "mean.sd" method, 0.025 and 0.975 represent 95% CI which is mean +/- 1.96 * sd.
-#' @param interval.scale.disp Display sd and quantiles intervals on top of graphs ?
+#' @param interval.scale.disp Single logical value. Display sd and quantiles intervals on top of graphs ?
 #' @param down.space Single positive numeric value indicating the lower vertical margin (in inches, mai argument of par()).
 #' @param left.space Single positive numeric value indicating the left horizontal margin (in inches, mai argument of par()).
 #' @param up.space Single positive numeric value indicating the upper vertical margin between plot region and grapical window (in inches, mai argument of par()).
 #' @param right.space Single positive numeric value indicating the right horizontal margin (in inches, mai argument of par()).
-#' @param orient Scale number orientation (las argument of par()). 0, always parallel to the axis; 1, always horizontal; 2, always perpendicular to the axis; 3, always vertical.
+#' @param orient Single positive numeric value indicating the scale number orientation (las argument of par()). 0, always parallel to the axis; 1, always horizontal; 2, always perpendicular to the axis; 3, always vertical.
 #' @param dist.legend Single positive numeric value that moves axis legends away in inches (first number of mgp argument of par() but in inches thus / 0.2).
 #' @param box.type The bty argument of par(). Either "o", "l", "7", "c", "u", "]", the resulting box resembles the corresponding upper case letter. A value of "n" suppresses the box.
 #' @param amplif.label Single positive numeric value to increase or decrease the size of the text in legends.
 #' @param amplif.axis Single positive numeric value to increase or decrease the size of the scale numbers in axis.
 #' @param std.x.range Single logical value. Standard range on the x-axis? TRUE (no range extend) or FALSE (4% range extend). Controls xaxs argument of par() (TRUE is xaxs = "i", FALSE is xaxs = "r").
 #' @param std.y.range Single logical value. Standard range on the y-axis? TRUE (no range extend) or FALSE (4% range extend). Controls yaxs argument of par() (TRUE is yaxs = "i", FALSE is yaxs = "r").
-#' @param cex.pt Size of points in stripcharts (in inches, thus cex.pt will be thereafter / 0.2).
-#' @param col.box Color of boxplot.
-#' @param x.nb.inter.tick Number of secondary ticks between main ticks on x-axis (only if not log scale). Zero means non secondary ticks.
-#' @param y.nb.inter.tick Number of secondary ticks between main ticks on y-axis (only if not log scale). Zero means non secondary ticks.
-#' @param tick.length Length of the ticks (1 means complete the distance between the plot region and the axis numbers, 0.5 means half the length, etc. 0 means no tick.
-#' @param sec.tick.length Length of the secondary ticks (1 means complete the distance between the plot region and the axis numbers, 0.5 means half the length, etc., 0 for no ticks).
-#' @param corner.text Text to add at the top right corner of the window.
-#' @param amplif.legend Increase or decrease the size of the text of legend.
-#' @param corner.text.size Positive numeric. Increase or decrease the size of the text. Value 1 does not change it, 0.5 decreases by half, 2 increases by 2.
-#' @param trim.return Return the trimmed and non trimmed values? NULL returned for trimmed and non trimmed values if trim.method == "".
+#' @param cex.pt Single positive numeric value indicating the size of points in stripcharts (in inches, thus cex.pt will be thereafter / 0.2).
+#' @param col.box Single character string indicating the color of boxplot.
+#' @param x.nb.inter.tick Single positive integer value indicating the number of secondary ticks between main ticks on x-axis (only if not log scale). Zero means non secondary ticks.
+#' @param y.nb.inter.tick Single positive integer value indicating the number of secondary ticks between main ticks on y-axis (only if not log scale). Zero means non secondary ticks.
+#' @param tick.length Single proportion value indicating the length of the ticks (1 means complete the distance between the plot region and the axis numbers, 0.5 means half the length, etc. 0 means no tick.
+#' @param sec.tick.length Single proportion value indicating the length of the secondary ticks (1 means complete the distance between the plot region and the axis numbers, 0.5 means half the length, etc., 0 for no ticks).
+#' @param corner.text Single character string. Text to add at the top right corner of the window.
+#' @param amplif.legend Single positive numeric value to increase or decrease the size of the text of legend.
+#' @param corner.text.size Single positive numeric value to increase or decrease the size of the text. Value 1 does not change it, 0.5 decreases by half, 2 increases by 2.
+#' @param trim.return Single logical value. Return the trimmed and non trimmed values? NULL returned for trimmed and non trimmed values if trim.method == "".
 #' @returns
 #' A list containing:
 #' - $trim.method: correspond to the trim.method argument.

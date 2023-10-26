@@ -1,47 +1,55 @@
 ######## segmentation() #### segment a dot cloud on a scatterplot and define the dots from another cloud outside the segmentation
 
+# todo list check OK
+# Check r_debugging_tools-v1.4.R
+# Check fun_test() 20201107 (see cute_checks.docx)
+# example sheet 
+# check all and any OK
+# -> clear to go Apollo
+# -> transferred into the cute package
+
 #' @title segmentation
 #' @description
 #' If data1 is a data frame corresponding to the data set of a scatterplot (with a x column for x-axis values and a y column for the y-axis column), then fun_segmentation() delimits a frame around the dots cloud using a sliding window set by x.range.split and x.step.factor to frame the top and bottom part of the cloud, and set by y.range.split and y.step.factor to frame the left and right part of the cloud.
 #' 
 #' If a second data frame is provided, corresponding to the data set of a scatterplot (with a x column for x-axis values and a y column for the y-axis column), then fun_segmentation() defines the dots of this data frame, outside of the frame of the first data frame.
 #' @param data1 A data frame containing a column of x-axis values and a column of y-axis values.
-#' @param x1 Character string of the data1 column name for x-axis (first column of data1 by default).
-#' @param y1 Character string of the data1 column name for y-axis (second column of data1 by default).
-#' @param x.range.split Positive non null numeric value giving the number of interval on the x value range. if x.range is the range of the dots on the x-axis, then abs(diff(x.range) / x.range.split) gives the window size. Window size decreases when range.split increases. In unit of x-axis. Write NULL if not required. At least one of the x.range.split and y.range.split must be non NULL.
-#' @param x.step.factor Positive non null numeric value giving the shift step of the window. If x.step.factor = 1, no overlap during the sliding (when the window slides from position n to position n+1, no overlap between the two positions). If x.step.factor = 2, 50% of overlap (when the window slides from position n to position n+1, the window on position n+1 overlap 50% of the window when it was on position n).
+#' @param x1 Single character string of the data1 column name for x-axis (first column of data1 by default).
+#' @param y1 Single character string of the data1 column name for y-axis (second column of data1 by default).
+#' @param x.range.split Single positive non null numeric value giving the number of interval on the x value range. if x.range is the range of the dots on the x-axis, then abs(diff(x.range) / x.range.split) gives the window size. Window size decreases when range.split increases. In unit of x-axis. Write NULL if not required. At least one of the x.range.split and y.range.split must be non NULL.
+#' @param x.step.factor Single positive non null numeric value giving the shift step of the window. If x.step.factor = 1, no overlap during the sliding (when the window slides from position n to position n+1, no overlap between the two positions). If x.step.factor = 2, 50% of overlap (when the window slides from position n to position n+1, the window on position n+1 overlap 50% of the window when it was on position n).
 #' @param y.range.split Same as x.range.split for the y-axis. At least one of the x.range.split and y.range.split must be non NULL.
 #' @param y.step.factor Same as x.step.factor for the y-axis.
-#' @param error Proportion (from 0 to 1) of false positives (i.e., proportion of dots from data1 outside of the frame). 0.05 means 5% of the dots from data1 outside of the frame.
+#' @param error Single proportion value (from 0 to 1) of false positives (i.e., proportion of dots from data1 outside of the frame). 0.05 means 5% of the dots from data1 outside of the frame.
 #' @param data2 A data frame containing a column of x-axis values and a column of y-axis values, for which outside dots of the data1 cloud has to be determined. Write NULL if not required.
-#' @param x2 Character string of the data1 column name for x-axis (first column of data1 by default).
-#' @param y2 Character string of the data1 column name for y-axis (second column of data1 by default).
+#' @param x2 Single character string of the data1 column name for x-axis (first column of data1 by default).
+#' @param y2 Single character string of the data1 column name for y-axis (second column of data1 by default).
 #' @param data2.pb.dot Unknown dots are explain in the warning section above. If "signif", then the unknown dots are finally considered as significant (outside the frame). If "not.signif", then the unknown dots are finally considered as non significant (inside the frame). If "unknown", no conclusion are drawn from these dots. See the examples below.
 #' @param xy.cross.kind If data2 is non null and if both x.range.split and y.range.split are non null, which dots are finally significants? Write "&" for intersection of outside dots on x and on y. Write "|" for union of outside dots on x and on y. See the examples below.
 #' @param plot Logical. Print graphs that check the frame?
-#' @param graph.in.file Logical. Graphs sent into a graphic device already opened? If FALSE, GUI are opened for each graph. If TRUE, no GUI are opended. The graphs are displayed on the current active graphic device. Ignored if plot is FALSE.
-#' @param raster Logical. Dots in raster mode? If FALSE, dots from each geom_point from geom argument are in vectorial mode (bigger pdf and long to display if millions of dots). If TRUE, dots from each geom_point from geom argument are in matricial mode (smaller pdf and easy display if millions of dots, but long to generate the layer). If TRUE, the region plot will be square to avoid a bug in fun_gg_point_rast(). If TRUE, solve the transparency problem with some GUI. Not considered if plot is FALSE.
-#' @param warn.print Logical. Print warnings at the end of the execution? No print if no warning messages.
+#' @param graph.in.file Single logical value. Graphs sent into a graphic device already opened? If FALSE, GUI are opened for each graph. If TRUE, no GUI are opended. The graphs are displayed on the current active graphic device. Ignored if plot is FALSE.
+#' @param raster Single logical value. Dots in raster mode? If FALSE, dots from each geom_point from geom argument are in vectorial mode (bigger pdf and long to display if millions of dots). If TRUE, dots from each geom_point from geom argument are in matricial mode (smaller pdf and easy display if millions of dots, but long to generate the layer). If TRUE, the region plot will be square to avoid a bug in fun_gg_point_rast(). If TRUE, solve the transparency problem with some GUI. Not considered if plot is FALSE.
+#' @param warn.print Single logical value. Print warnings at the end of the execution? No print if no warning messages.
 #' @param lib.path Character vector specifying the absolute pathways of the directories containing the required packages if not in the default directories. Ignored if NULL. Ignored if plot is FALSE.
 #' @returns
 #' Several graphs if plot is TRUE.
 #' 
 #' A list containing:
-#' - $data1.removed.row.nb: which rows have been removed due to NA; NaN, -Inf or Inf detection in x1 or y1 columns (NULL if no row removed)
-#' - $data1.removed.rows: removed rows (NULL if no row removed)
-#' - $data2.removed.row.nb: which rows have been removed due to NA; NaN, -Inf or Inf detection in x2 or y2 columns (NULL if no row removed)
-#' - $data2.removed.rows: removed rows (NULL if no row removed)
-#' - $hframe: x and y coordinates of the bottom and top frames for frame plotting (frame1 for the left step and frame2 for the right step)
-#' - $vframe: x and y coordinates of the left and right frames for frame plotting (frame1 for the down step and frame2 for the top step)
-#' - $data1.signif.dot: the significant dots of data1 (i.e., dots outside the frame). A good segmentation should not have any data1.signif.dot
-#' - $data1.non.signif.dot: the non significant dots of data1 (i.e., dots inside the frame)
-#' - $data1.inconsistent.dot: see the warning section above
-#' - $data2.signif.dot: the significant dots of data2 if non NULL (i.e., dots outside the frame)
-#' - $data2.non.signif.dot: the non significant dots of data2 (i.e., dots inside the frame)
-#' - $data2.unknown.dot: the problematic dots of data2 (i.e., data2 dots outside of the range of data1, or data2 dots in a sliding window without data1 dots). Is systematically NULL except if argument data2.pb.dot = "unknown" and some data2 dots are in such situation. Modifying the segmentation x.range.split, x.step.factor, y.range.split, y.step.factor arguments can solve this problem
-#' - $data2.inconsistent.dot: see the warning section above
-#' - $axes: the x-axis and y-axis info
-#' - $warn: the warning messages. Use cat() for proper display. NULL if no warning
+#' - $data1.removed.row.nb: which rows have been removed due to NA; NaN, -Inf or Inf detection in x1 or y1 columns (NULL if no row removed).
+#' - $data1.removed.rows: removed rows (NULL if no row removed).
+#' - $data2.removed.row.nb: which rows have been removed due to NA; NaN, -Inf or Inf detection in x2 or y2 columns (NULL if no row removed).
+#' - $data2.removed.rows: removed rows (NULL if no row removed).
+#' - $hframe: x and y coordinates of the bottom and top frames for frame plotting (frame1 for the left step and frame2 for the right step).
+#' - $vframe: x and y coordinates of the left and right frames for frame plotting (frame1 for the down step and frame2 for the top step).
+#' - $data1.signif.dot: the significant dots of data1 (i.e., dots outside the frame). A good segmentation should not have any data1.signif.dot.
+#' - $data1.non.signif.dot: the non significant dots of data1 (i.e., dots inside the frame).
+#' - $data1.inconsistent.dot: see the warning section above.
+#' - $data2.signif.dot: the significant dots of data2 if non NULL (i.e., dots outside the frame).
+#' - $data2.non.signif.dot: the non significant dots of data2 (i.e., dots inside the frame).
+#' - $data2.unknown.dot: the problematic dots of data2 (i.e., data2 dots outside of the range of data1, or data2 dots in a sliding window without data1 dots). Is systematically NULL except if argument data2.pb.dot = "unknown" and some data2 dots are in such situation. Modifying the segmentation x.range.split, x.step.factor, y.range.split, y.step.factor arguments can solve this problem.
+#' - $data2.inconsistent.dot: see the warning section above.
+#' - $axes: the x-axis and y-axis info.
+#' - $warn: the warning messages. Use cat() for proper display. NULL if no warning.
 #' @details 
 #' REQUIRED PACKAGES
 #' 
@@ -110,14 +118,43 @@ fun_segmentation <- function(
     # set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; set.seed(NULL) ; x1 = names(data1)[1] ; y1 = names(data1)[2] ; x.range.split = 20 ; x.step.factor = 10 ; y.range.split = NULL ; y.step.factor = 10 ; error = 0 ; x2 = names(data2)[1] ; y2 = names(data2)[2] ; data2.pb.dot = "unknown" ; xy.cross.kind = "&" ; plot = TRUE ; graph.in.file = FALSE ; raster = FALSE ; warn.print = TRUE ; lib.path = NULL
     # function name
     function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()")
+    arg.names <- names(formals(fun = sys.function(sys.parent(n = 2)))) # names of all the arguments
+    arg.user.setting <- as.list(match.call(expand.dots = FALSE))[-1] # list of the argument settings (excluding default values not provided by the user)
     # end function name
     # required function checking
-    if(length(utils::find("fun_check", mode = "function")) == 0L){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": REQUIRED fun_check() FUNCTION IS MISSING IN THE R ENVIRONMENT")
+    req.function <- c(
+        "fun_check"
+    )
+    tempo <- NULL
+    for(i1 in req.function){
+        if(length(find(i1, mode = "function")) == 0L){
+            tempo <- c(tempo, i1)
+        }
+    }
+    if( ! is.null(tempo)){
+        tempo.cat <- paste0("ERROR IN ", function.name, "\nREQUIRED cute FUNCTION", ifelse(length(tempo) > 1, "S ARE", " IS"), " MISSING IN THE R ENVIRONMENT:\n", paste0(tempo, collapse = "()\n"))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end required function checking
-    # argument checking
+    # reserved words (to avoid bugs)
+    # end reserved words (to avoid bugs)
+    
+    # arg with no default values
+    mandat.args <- c(
+        "data1", 
+        "x1", 
+        "y1",
+        "x2",
+        "y2"
+    )
+    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "),missing("), "))")))
+    if(any(tempo)){ # normally no NA for missing() output
+        tempo.cat <- paste0("ERROR IN ", function.name, "\nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
+        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    }
+    # end arg with no default values
+    
+    # argument primary checking
     ini.warning.length <- options()$warning.length
     warn <- NULL
     warn.count <- 0
@@ -237,7 +274,7 @@ fun_segmentation <- function(
         if( ! is.null(lib.path)){
             tempo <- fun_check(data = lib.path, class = "vector", mode = "character", fun.name = function.name) ; eval(ee)
             if(tempo$problem == FALSE){
-                if( ! all(dir.exists(lib.path))){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
+                if( ! all(dir.exists(lib.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
                     tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
                     text.check <- c(text.check, tempo.cat)
                     arg.check <- c(arg.check, TRUE)
@@ -246,12 +283,59 @@ fun_segmentation <- function(
         }
     }
     if( ! is.null(arg.check)){
-        if(any(arg.check) == TRUE){
+        if(any(arg.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n", ifelse(is.null(warn), "", paste0("IN ADDITION\nWARNING", ifelse(warn.count > 1, "S", ""), ":\n\n", warn))), call. = FALSE) #
         }
     }
     # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using fun_check()
-    # end argument checking
+    # end argument primary checking
+    
+    # second round of checking and data preparation
+    # management of NA arguments
+    if( ! (all(class(arg.user.setting) == "list", na.rm = TRUE) & length(arg.user.setting) == 0)){
+        tempo.arg <- names(arg.user.setting) # values provided by the user
+        tempo.log <- suppressWarnings(sapply(lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
+        if(any(tempo.log) == TRUE){ # normally no NA because is.na() used here
+            tempo.cat <- paste0("ERROR IN ", function.name, "\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
+            stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+        }
+    }
+    # end management of NA arguments
+    
+    # management of NULL arguments
+    tempo.arg <-c(
+        "data1", 
+        "x1", 
+        "y1", 
+        # x.range.split = NULL, # inactivated because can be null
+        "x.step.factor", 
+        # y.range.split = NULL, # inactivated because can be null
+        "y.step.factor", 
+        "error", 
+        # data2 = NULL, # inactivated because can be null
+        "x2", 
+        "y2", 
+        "data2.pb.dot", 
+        "xy.cross.kind", 
+        "plot", 
+        "graph.in.file", 
+        "raster", 
+        "warn.print", 
+        # lib.path = NULL # inactivated because can be null
+    )
+    tempo.log <- sapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.null)
+    if(any(tempo.log) == TRUE){# normally no NA with is.null()
+        tempo.cat <- paste0("ERROR IN ", function.name, ":\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS\n", "THIS ARGUMENT\n"), paste0(tempo.arg[tempo.log], collapse = "\n"),"\nCANNOT BE NULL")
+        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    }
+    # end management of NULL arguments
+    
+    # code that protects set.seed() in the global environment
+    # end code that protects set.seed() in the global environment
+    
+    # warning initiation
+    # end warning initiation
+    
     # other required function checking
     if(plot == TRUE){
         if(length(utils::find("fun_pack", mode = "function")) == 0L){
@@ -280,6 +364,11 @@ fun_segmentation <- function(
         }
     }
     # end other required function checking
+    
+    # reserved word checking
+    # end reserved word checking
+    # end second round of checking and data preparation
+    
     # package checking
     if(plot == TRUE){
         fun_pack(req.package = c("ggplot2"), lib.path = lib.path)
@@ -429,11 +518,11 @@ fun_segmentation <- function(
             y.inside.data2.dot.nb <- integer() # vector that will contain the 1D coordinates (i.e., dots) of data2 that are not upper or lower than the data1 frame
             y.unknown.data2.dot.nb <- integer() # vector that will contain the 1D coordinates (i.e., dots) of data2 that are problematic: data2 dots outside of the range of data1, or data2 dots in a sliding window without data1 dots
             # recover data2 dots outside the range of data1
-            if(any(data2[, x2] < x.range[1])){
+            if(any(data2[, x2] < x.range[1], na.rm = TRUE)){
                 y.unknown.data2.dot.nb <- c(y.unknown.data2.dot.nb, data2$DOT_NB[data2[, x2] < x.range[1]])
                 #tempo.warn & indicate the interval
             }
-            if(any(data2[, x2] > x.range[2])){
+            if(any(data2[, x2] > x.range[2], na.rm = TRUE)){
                 y.unknown.data2.dot.nb <- c(y.unknown.data2.dot.nb, data2$DOT_NB[data2[, x2] > x.range[2]])
                 #tempo.warn & indicate the interval
             }
@@ -450,7 +539,7 @@ fun_segmentation <- function(
                 x.data2.dot.here <- data2[, x2] >= min.pos & data2[, x2] < max.pos # is there data2 dot present in the sliding window, considering the x axis?
             }
             # recover the data1 dots outside the frame
-            if(any(x.data1.dot.here == TRUE)){
+            if(any(x.data1.dot.here == TRUE, na.rm = TRUE)){
                 tempo.y.data1.top.limit <- quantile(data1[x.data1.dot.here, y1], probs = 1 - error, na.rm = TRUE)
                 tempo.y.data1.down.limit <- quantile(data1[x.data1.dot.here, y1], probs = 0 + error, na.rm = TRUE)
                 y.data1.top.limit.l <- c(y.data1.top.limit.l, tempo.y.data1.top.limit, tempo.y.data1.top.limit)
@@ -472,14 +561,14 @@ fun_segmentation <- function(
             # end recover the data1 dots outside the frame
             # recover the data2 dots outside the frame
             if( ! is.null(data2)){
-                if(any(x.data1.dot.here == TRUE) & any(x.data2.dot.here == TRUE)){ 
+                if(any(x.data1.dot.here == TRUE, na.rm = TRUE) & any(x.data2.dot.here == TRUE, na.rm = TRUE)){ 
                     y.data2.dot.signif <- ( ! ((data2[, y2] <= tempo.y.data1.top.limit) & (data2[, y2] >= tempo.y.data1.down.limit))) & x.data2.dot.here # is there data2 dot present in the sliding window, above or below the data1 limits, considering the y axis?
                     y.data2.dot.not.signif <- x.data2.dot.here & ! y.data2.dot.signif
                     y.outside.data2.dot.nb <- c(y.outside.data2.dot.nb, data2$DOT_NB[y.data2.dot.signif])
                     y.outside.data2.dot.nb <- unique(y.outside.data2.dot.nb)
                     y.inside.data2.dot.nb <- c(y.inside.data2.dot.nb, data2$DOT_NB[y.data2.dot.not.signif])
                     y.inside.data2.dot.nb <- unique(y.inside.data2.dot.nb)
-                }else if(any(x.data1.dot.here == FALSE) & any(x.data2.dot.here == TRUE)){ # problem: data2 dots in the the window but no data1 dots to generates the quantiles
+                }else if(any(x.data1.dot.here == FALSE, na.rm = TRUE) & any(x.data2.dot.here == TRUE, na.rm = TRUE)){ # problem: data2 dots in the the window but no data1 dots to generates the quantiles
                     y.unknown.data2.dot.nb <- c(y.unknown.data2.dot.nb, data2$DOT_NB[x.data2.dot.here])
                     y.unknown.data2.dot.nb <- unique(y.unknown.data2.dot.nb)
                     #tempo.warn & indicate the interval
@@ -548,10 +637,10 @@ fun_segmentation <- function(
             x.inside.data2.dot.nb <- integer() # vector that will contain the 1D coordinates (i.e., dots) of data2 that are not upper or lower than the data1 frame
             x.unknown.data2.dot.nb <- integer() # vector that will contain the 1D coordinates (i.e., dots) of data2 that are problematic: data2 dots outside of the range of data1, or data2 dots in a sliding window without data1 dots
             # recover data2 dots outside the range of data1
-            if(any(data2[, y2] < y.range[1])){
+            if(any(data2[, y2] < y.range[1], na.rm = TRUE)){
                 x.unknown.data2.dot.nb <- c(x.unknown.data2.dot.nb, data2$DOT_NB[data2[, y2] < y.range[1]])
             }
-            if(any(data2[, y2] > y.range[2])){
+            if(any(data2[, y2] > y.range[2], na.rm = TRUE)){
                 x.unknown.data2.dot.nb <- c(x.unknown.data2.dot.nb, data2$DOT_NB[data2[, y2] > y.range[2]])
             }
             # end recover data2 dots outside the range of data1
@@ -567,7 +656,7 @@ fun_segmentation <- function(
                 y.data2.dot.here <- data2[, y2] >= min.pos & data2[, y2] < max.pos # is there data2 dot present in the sliding window, considering the y axis?
             }
             # recover the data1 dots outside the frame
-            if(any(y.data1.dot.here == TRUE)){
+            if(any(y.data1.dot.here == TRUE, na.rm = TRUE)){
                 tempo.x.data1.right.limit <- quantile(data1[y.data1.dot.here, x1], probs = 1 - error, na.rm = TRUE)
                 tempo.x.data1.left.limit <- quantile(data1[y.data1.dot.here, x1], probs = 0 + error, na.rm = TRUE)
                 x.data1.right.limit.d <- c(x.data1.right.limit.d, tempo.x.data1.right.limit, tempo.x.data1.right.limit)
@@ -589,14 +678,14 @@ fun_segmentation <- function(
             # end recover the data1 dots outside the frame
             # recover the data2 dots outside the frame
             if( ! is.null(data2)){
-                if(any(y.data1.dot.here == TRUE) & any(y.data2.dot.here == TRUE)){ 
+                if(any(y.data1.dot.here == TRUE, na.rm = TRUE) & any(y.data2.dot.here == TRUE, na.rm = TRUE)){ 
                     x.data2.dot.signif <- ( ! ((data2[, x2] <= tempo.x.data1.right.limit) & (data2[, x2] >= tempo.x.data1.left.limit))) & y.data2.dot.here # is there data2 dot present in the sliding window, above or below the data1 limits, considering the x axis?
                     x.data2.dot.not.signif <- y.data2.dot.here & ! x.data2.dot.signif
                     x.outside.data2.dot.nb <- c(x.outside.data2.dot.nb, data2$DOT_NB[x.data2.dot.signif])
                     x.outside.data2.dot.nb <- unique(x.outside.data2.dot.nb)
                     x.inside.data2.dot.nb <- c(x.inside.data2.dot.nb, data2$DOT_NB[x.data2.dot.not.signif])
                     x.inside.data2.dot.nb <- unique(x.inside.data2.dot.nb)
-                }else if(any(y.data1.dot.here == FALSE) & any(y.data2.dot.here == TRUE)){ # recover the data2 dots outside the range of the data1 cloud
+                }else if(any(y.data1.dot.here == FALSE, na.rm = TRUE) & any(y.data2.dot.here == TRUE, na.rm = TRUE)){ # recover the data2 dots outside the range of the data1 cloud
                     x.unknown.data2.dot.nb <- c(x.unknown.data2.dot.nb, data2$DOT_NB[y.data2.dot.here])
                     x.unknown.data2.dot.nb <- unique(x.unknown.data2.dot.nb)
                     
@@ -1305,5 +1394,8 @@ fun_segmentation <- function(
     }
     on.exit(exp = options(warning.length = ini.warning.length), add = TRUE)
     tempo.list <- list(data1.removed.row.nb = data1.removed.row.nb, data1.removed.rows = data1.removed.rows, data2.removed.row.nb = data2.removed.row.nb, data2.removed.rows = data2.removed.rows, hframe = hframe, vframe = vframe, data1.signif.dot = data1.signif.dot, data1.non.signif.dot = data1.non.signif.dot, data1.inconsistent.dot = data1.incon.dot, data2.signif.dot = data2.signif.dot, data2.non.signif.dot = data2.non.signif.dot, data2.unknown.dot = data2.unknown.dot, data2.inconsistent.dot = data2.incon.dot, axes = axes, warn = warn)
+    # output
     return(tempo.list)
+    # end output
+    # end main code
 }
