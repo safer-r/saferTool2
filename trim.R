@@ -189,10 +189,7 @@ fun_trim <- function(
     }
     # end argument checking with fun_check()
     # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using fun_check()
-    if(all(is.na(data) | ! is.finite(data))){
-        tempo.cat <- paste0("ERROR IN fun_trim FUNCTION\ndata ARGUMENT CONTAINS ONLY NA OR Inf")
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
-    }
+
     # end argument primary checking
     
     # second round of checking and data preparation
@@ -251,6 +248,10 @@ fun_trim <- function(
     # end warning initiation
     
     # other checkings
+        if(all( ! is.finite(data))){ # is.finite() tests if it is not one of the values NA, NaN, Inf or -Inf
+        tempo.cat <- paste0("ERROR IN ", function.name, " FUNCTION\ndata ARGUMENT CANNOT CONTAIN NA AND Inf ONLY")
+        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    }
     # end other checkings
     
     # reserved word checking

@@ -121,6 +121,11 @@ fun_segmentation <- function(
     arg.names <- names(formals(fun = sys.function(sys.parent(n = 2)))) # names of all the arguments
     arg.user.setting <- as.list(match.call(expand.dots = FALSE))[-1] # list of the argument settings (excluding default values not provided by the user)
     # end function name
+    # package checking
+    if(plot == TRUE){
+        fun_pack(req.package = c("ggplot2"), lib.path = lib.path)
+    }
+    # end package checking
     # required function checking
     req.function <- c(
         "fun_check"
@@ -136,9 +141,8 @@ fun_segmentation <- function(
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end required function checking
-    # reserved words (to avoid bugs)
-    # end reserved words (to avoid bugs)
     
+    # argument primary checking
     # arg with no default values
     mandat.args <- c(
         "data1", 
@@ -153,100 +157,34 @@ fun_segmentation <- function(
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end arg with no default values
-    
-    # argument primary checking
-    ini.warning.length <- options()$warning.length
-    warn <- NULL
-    warn.count <- 0
+    # argument checking with fun_check()
     arg.check <- NULL #
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
     ee <- expression(arg.check <- c(arg.check, tempo$problem) , text.check <- c(text.check, tempo$text) , checked.arg.names <- c(checked.arg.names, tempo$object.name))
     tempo <- fun_check(data = data1, class = "data.frame", na.contain = TRUE, fun.name = function.name) ; eval(ee)
-    if(tempo$problem == FALSE & length(data1) < 2){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": data1 ARGUMENT MUST BE A DATA FRAME OF AT LEAST 2 COLUMNS")
-        text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
-    }
     tempo <- fun_check(data = x1, class = "vector", mode = "character", length = 1, fun.name = function.name) ; eval(ee)
-    if(tempo$problem == FALSE & ! (x1 %in% names(data1))){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": x1 ARGUMENT MUST BE A COLUMN NAME OF data1")
-        text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
-    }else if(tempo$problem == FALSE & x1 %in% names(data1)){
-        tempo <- fun_check(data = data1[, x1], data.name = "x1 COLUMN OF data1", class = "vector", mode = "numeric", na.contain = TRUE, fun.name = function.name) ; eval(ee)
-    }
     tempo <- fun_check(data = y1, class = "vector", mode = "character", length = 1, fun.name = function.name) ; eval(ee)
-    if(tempo$problem == FALSE & ! (y1 %in% names(data1))){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": y1 ARGUMENT MUST BE A COLUMN NAME OF data1")
-        text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
-    }else if(tempo$problem == FALSE & y1 %in% names(data1)){
-        tempo <- fun_check(data = data1[, y1], data.name = "y1 COLUMN OF data1", class = "vector", mode = "numeric", na.contain = TRUE, fun.name = function.name) ; eval(ee)
-    }
-    if(is.null(x.range.split) & is.null(y.range.split)){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": AT LEAST ONE OF THE x.range.split AND y.range.split ARGUMENTS MUST BE NON NULL")
-        text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
-    }
     if( ! is.null(x.range.split)){
         tempo <- fun_check(data = x.range.split, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; eval(ee)
-        if(tempo$problem == FALSE & x.range.split < 1){
-            tempo.cat <- paste0("ERROR IN ", function.name, ": x.range.split ARGUMENT CANNOT BE LOWER THAN 1")
-            text.check <- c(text.check, tempo.cat)
-            arg.check <- c(arg.check, TRUE)
-        }
     }
     if( ! is.null(y.range.split)){
         tempo <- fun_check(data = y.range.split, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; eval(ee)
-        if(tempo$problem == FALSE & y.range.split < 1){
-            tempo.cat <- paste0("ERROR IN ", function.name, ": y.range.split ARGUMENT CANNOT BE LOWER THAN 1")
-            text.check <- c(text.check, tempo.cat)
-            arg.check <- c(arg.check, TRUE)
-        }
     }
     tempo <- fun_check(data = x.step.factor, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; eval(ee)
-    if(tempo$problem == FALSE & x.step.factor < 1){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": x.step.factor ARGUMENT CANNOT BE LOWER THAN 1")
-        text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
-    }
     tempo <- fun_check(data = y.step.factor, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; eval(ee)
-    if(tempo$problem == FALSE & y.step.factor < 1){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": y.step.factor ARGUMENT CANNOT BE LOWER THAN 1")
-        text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
-    }
     tempo <- fun_check(data = error, prop = TRUE, length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(data2)){
-        if(is.null(x2) | is.null(y2)){
-            tempo.cat <- paste0("ERROR IN ", function.name, ": x2 AND y2 ARGUMENTS CANNOT BE NULL IF data2 ARGUMENT IS NON NULL")
-            text.check <- c(text.check, tempo.cat)
-            arg.check <- c(arg.check, TRUE)
-        }
         tempo <- fun_check(data = data2, class = "data.frame", na.contain = TRUE, fun.name = function.name) ; eval(ee)
-        if(tempo$problem == FALSE & length(data2) < 2){
-            tempo.cat <- paste0("ERROR IN ", function.name, ": data2 ARGUMENT MUST BE A DATA FRAME OF AT LEAST 2 COLUMNS")
-            text.check <- c(text.check, tempo.cat)
-            arg.check <- c(arg.check, TRUE)
-        }
         if( ! is.null(x2)){
             tempo <- fun_check(data = x2, class = "vector", mode = "character", length = 1, fun.name = function.name) ; eval(ee)
-            if(tempo$problem == FALSE & ! (x2 %in% names(data2))){
-                tempo.cat <- paste0("ERROR IN ", function.name, ": x2 ARGUMENT MUST BE A COLUMN NAME OF data2")
-                text.check <- c(text.check, tempo.cat)
-                arg.check <- c(arg.check, TRUE)
-            }else if(tempo$problem == FALSE & x2 %in% names(data2)){
+            if(tempo$problem == FALSE & x2 %in% names(data2)){
                 tempo <- fun_check(data = data2[, x2], data.name = "x2 COLUMN OF data2", class = "vector", mode = "numeric", na.contain = TRUE, fun.name = function.name) ; eval(ee)
             }
         }
         if( ! is.null(y2)){
             tempo <- fun_check(data = y2, class = "vector", mode = "character", length = 1, fun.name = function.name) ; eval(ee)
-            if(tempo$problem == FALSE & ! (y2 %in% names(data2))){
-                tempo.cat <- paste0("ERROR IN ", function.name, ": y2 ARGUMENT MUST BE A COLUMN NAME OF data2")
-                text.check <- c(text.check, tempo.cat)
-                arg.check <- c(arg.check, TRUE)
-            }else if(tempo$problem == FALSE & y2 %in% names(data2)){
+            if(tempo$problem == FALSE & y2 %in% names(data2)){
                 tempo <- fun_check(data = data2[, y2], data.name = "y2 COLUMN OF data2", class = "vector", mode = "numeric", na.contain = TRUE, fun.name = function.name) ; eval(ee)
             }
         }
@@ -287,7 +225,10 @@ fun_segmentation <- function(
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n", ifelse(is.null(warn), "", paste0("IN ADDITION\nWARNING", ifelse(warn.count > 1, "S", ""), ":\n\n", warn))), call. = FALSE) #
         }
     }
-    # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using fun_check()
+    # end argument checking with fun_check()
+    # check with r_debugging_tools
+    # source("C:/Users/yhan/Documents/Git_projects/debugging_tools_for_r_dev/r_debugging_tools.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using fun_check()
+    # end check with r_debugging_tools
     # end argument primary checking
     
     # second round of checking and data preparation
@@ -334,10 +275,117 @@ fun_segmentation <- function(
     # end code that protects set.seed() in the global environment
     
     # warning initiation
+    ini.warning.length <- options()$warning.length
+    options(warning.length = 8170)
+    warn <- NULL
+    warn.count <- 0
     # end warning initiation
     
+    # argument checking
+    arg.check2 <- NULL #
+    text.check2 <- NULL #
+    ee2 <- expression(arg.check2 <- c(arg.check2, tempo$problem) , text.check2 <- c(text.check2, tempo$text))
+    if(length(data1) < 2){
+        tempo.cat <- paste0("ERROR IN ", function.name, ": data1 ARGUMENT MUST BE A DATA FRAME OF AT LEAST 2 COLUMNS")
+        text.check2 <- c(text.check2, tempo.cat)
+        arg.check2 <- c(arg.check2, TRUE)
+    }
+    if( ! (x1 %in% names(data1))){
+        tempo.cat <- paste0("ERROR IN ", function.name, ": x1 ARGUMENT MUST BE A COLUMN NAME OF data1")
+        text.check2 <- c(text.check2, tempo.cat)
+        arg.check2 <- c(arg.check2, TRUE)
+    }else if(x1 %in% names(data1)){
+        tempo <- fun_check(data = data1[, x1], data.name = "x1 COLUMN OF data1", class = "vector", mode = "numeric", na.contain = TRUE, fun.name = function.name) ; eval(ee2)
+    }  
+    if( ! (y1 %in% names(data1))){
+        tempo.cat <- paste0("ERROR IN ", function.name, ": y1 ARGUMENT MUST BE A COLUMN NAME OF data1")
+        text.check2 <- c(text.check2, tempo.cat)
+        arg.check2 <- c(arg.check2, TRUE)
+    }else if(y1 %in% names(data1)){
+        tempo <- fun_check(data = data1[, y1], data.name = "y1 COLUMN OF data1", class = "vector", mode = "numeric", na.contain = TRUE, fun.name = function.name) ; eval(ee2)
+    }
+    if(is.null(x.range.split) & is.null(y.range.split)){
+        tempo.cat <- paste0("ERROR IN ", function.name, ": AT LEAST ONE OF THE x.range.split AND y.range.split ARGUMENTS MUST BE NON NULL")
+        text.check2 <- c(text.check2, tempo.cat)
+        arg.check2 <- c(arg.check2, TRUE)
+    }
+    if( ! is.null(x.range.split)){
+        if(x.range.split < 1){
+            tempo.cat <- paste0("ERROR IN ", function.name, ": x.range.split ARGUMENT CANNOT BE LOWER THAN 1")
+            text.check2 <- c(text.check2, tempo.cat)
+            arg.check2 <- c(arg.check2, TRUE)
+        }
+    }
+    if( ! is.null(y.range.split)){
+        if(y.range.split < 1){
+            tempo.cat <- paste0("ERROR IN ", function.name, ": y.range.split ARGUMENT CANNOT BE LOWER THAN 1")
+            text.check2 <- c(text.check2, tempo.cat)
+            arg.check2 <- c(arg.check2, TRUE)
+        }
+    }
+    if(x.step.factor < 1){
+        tempo.cat <- paste0("ERROR IN ", function.name, ": x.step.factor ARGUMENT CANNOT BE LOWER THAN 1")
+        text.check2 <- c(text.check2, tempo.cat)
+        arg.check2 <- c(arg.check2, TRUE)
+    }
+    if(y.step.factor < 1){
+        tempo.cat <- paste0("ERROR IN ", function.name, ": y.step.factor ARGUMENT CANNOT BE LOWER THAN 1")
+        text.check2 <- c(text.check2, tempo.cat)
+        arg.check2 <- c(arg.check2, TRUE)
+    }
+    if( ! is.null(data2)){
+        if(is.null(x2) | is.null(y2)){
+            tempo.cat <- paste0("ERROR IN ", function.name, ": x2 AND y2 ARGUMENTS CANNOT BE NULL IF data2 ARGUMENT IS NON NULL")
+            text.check2 <- c(text.check2, tempo.cat)
+            arg.check2 <- c(arg.check2, TRUE)
+        }
+        if(length(data2) < 2){
+            tempo.cat <- paste0("ERROR IN ", function.name, ": data2 ARGUMENT MUST BE A DATA FRAME OF AT LEAST 2 COLUMNS")
+            text.check2 <- c(text.check2, tempo.cat)
+            arg.check2 <- c(arg.check2, TRUE)
+        }
+        if( ! is.null(x2)){
+            if( ! (x2 %in% names(data2))){
+                tempo.cat <- paste0("ERROR IN ", function.name, ": x2 ARGUMENT MUST BE A COLUMN NAME OF data2")
+                text.check2 <- c(text.check2, tempo.cat)
+                arg.check2 <- c(arg.check2, TRUE)
+            }
+        }
+        if( ! is.null(y2)){
+            if( ! (y2 %in% names(data2))){
+                tempo.cat <- paste0("ERROR IN ", function.name, ": y2 ARGUMENT MUST BE A COLUMN NAME OF data2")
+                text.check2 <- c(text.check2, tempo.cat)
+                arg.check2 <- c(arg.check2, TRUE)
+            }
+        }
+    }
+    if(plot == TRUE){
+        if(graph.in.file == TRUE & is.null(dev.list())){
+            tempo.cat2 <- paste0("ERROR IN ", function.name, ": \ngraph.in.file PARAMETER SET TO TRUE BUT NO ACTIVE GRAPHIC DEVICE DETECTED")
+            text.check2 <- c(text.check, tempo.cat)
+            arg.check2 <- c(arg.check, TRUE)
+        }else if(graph.in.file == TRUE & ! is.null(dev.list())){
+            warn.count2 <- warn.count + 1
+            tempo.warn2 <- paste0("(", warn.count,") GRAPHS PRINTED IN THE CURRENT DEVICE (TYPE ", toupper(names(dev.cur())), ")")
+            warn2 <- paste0(ifelse(is.null(warn), tempo.warn, paste0(warn, "\n\n", tempo.warn)))
+        }
+        if( ! is.null(lib.path)){
+            if(tempo$problem == FALSE){
+                if( ! all(dir.exists(lib.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
+                    tempo.cat2 <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
+                    text.check2 <- c(text.check, tempo.cat)
+                    arg.check2 <- c(arg.check, TRUE)
+                }
+            }
+        }
+    }
+    if( ! is.null(arg.check2)){
+        if(any(arg.check2, na.rm = TRUE) == TRUE){
+            stop(paste0("\n\n================\n\n", paste(text.check2[arg.check2], collapse = "\n"), "\n\n================\n\n", ifelse(is.null(warn), "", paste0("IN ADDITION\nWARNING", ifelse(warn.count > 1, "S", ""), ":\n\n", warn))), call. = FALSE) #
+        }
+    }
+    # end argument checking
     # other required function checking
-    
     if(plot == TRUE){
         req.function2 <- c(
             "fun_pack",
@@ -364,18 +412,13 @@ fun_segmentation <- function(
     # end reserved word checking
     # end second round of checking and data preparation
     
-    # package checking
-    if(plot == TRUE){
-        fun_pack(req.package = c("ggplot2"), lib.path = lib.path)
-    }
-    # end package checking
     # main code
     # na and Inf detection and removal (done now to be sure of the correct length of categ)
     data1.removed.row.nb <- NULL
     data1.removed.rows <- NULL
     data2.removed.row.nb <- NULL
     data2.removed.rows <- NULL
-    if(any(is.na(data1[, c(x1, y1)])) | any(is.infinite(data1[, x1])) | any(is.infinite(data1[, y1]))){
+    if(any(is.na(data1[, c(x1, y1)])) | any(is.infinite(data1[, x1]), na.rm = TRUE) | any(is.infinite(data1[, y1]), na.rm = TRUE)){
         tempo.na <- unlist(lapply(lapply(c(data1[c(x1, y1)]), FUN = is.na), FUN = which))
         tempo.inf <- unlist(lapply(lapply(c(data1[c(x1, y1)]), FUN = is.infinite), FUN = which))
         data1.removed.row.nb <- sort(unique(c(tempo.na, tempo.inf)))
@@ -1389,8 +1432,17 @@ fun_segmentation <- function(
     }
     on.exit(exp = options(warning.length = ini.warning.length), add = TRUE)
     tempo.list <- list(data1.removed.row.nb = data1.removed.row.nb, data1.removed.rows = data1.removed.rows, data2.removed.row.nb = data2.removed.row.nb, data2.removed.rows = data2.removed.rows, hframe = hframe, vframe = vframe, data1.signif.dot = data1.signif.dot, data1.non.signif.dot = data1.non.signif.dot, data1.inconsistent.dot = data1.incon.dot, data2.signif.dot = data2.signif.dot, data2.non.signif.dot = data2.non.signif.dot, data2.unknown.dot = data2.unknown.dot, data2.inconsistent.dot = data2.incon.dot, axes = axes, warn = warn)
+    # end main code
     # output
+    # warning output
+    # warning output
+    if(warn.print == TRUE & ! is.null(warn)){
+        on.exit(warning(paste0("FROM ", function.name, ":\n\n", warn), call. = FALSE))
+    }
+    on.exit(exp = options(warning.length = ini.warning.length), add = TRUE)
+    # end warning output
+    
+    # end warning output
     return(tempo.list)
     # end output
-    # end main code
 }
