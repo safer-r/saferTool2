@@ -361,20 +361,20 @@ fun_segmentation <- function(
     }
     if(plot == TRUE){
         if(graph.in.file == TRUE & is.null(dev.list())){
-            tempo.cat2 <- paste0("ERROR IN ", function.name, ": \ngraph.in.file PARAMETER SET TO TRUE BUT NO ACTIVE GRAPHIC DEVICE DETECTED")
+            tempo.cat <- paste0("ERROR IN ", function.name, ": \ngraph.in.file PARAMETER SET TO TRUE BUT NO ACTIVE GRAPHIC DEVICE DETECTED")
             text.check2 <- c(text.check, tempo.cat)
             arg.check2 <- c(arg.check, TRUE)
         }else if(graph.in.file == TRUE & ! is.null(dev.list())){
-            warn.count2 <- warn.count + 1
-            tempo.warn2 <- paste0("(", warn.count,") GRAPHS PRINTED IN THE CURRENT DEVICE (TYPE ", toupper(names(dev.cur())), ")")
-            warn2 <- paste0(ifelse(is.null(warn), tempo.warn, paste0(warn, "\n\n", tempo.warn)))
+            warn.count <- warn.count + 1
+            tempo.warn <- paste0("(", warn.count,") GRAPHS PRINTED IN THE CURRENT DEVICE (TYPE ", toupper(names(dev.cur())), ")")
+            warn <- paste0(ifelse(is.null(warn), tempo.warn, paste0(warn, "\n\n", tempo.warn)))
         }
         if( ! is.null(lib.path)){
             if(tempo$problem == FALSE){
                 if( ! all(dir.exists(lib.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
-                    tempo.cat2 <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
-                    text.check2 <- c(text.check, tempo.cat)
-                    arg.check2 <- c(arg.check, TRUE)
+                    tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
+                    text.check2 <- c(text.check2, tempo.cat)
+                    arg.check2 <- c(arg.check2, TRUE)
                 }
             }
         }
