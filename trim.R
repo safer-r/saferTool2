@@ -1,16 +1,3 @@
-######## trim() #### display values from a quantitative variable and trim according to defined cut-offs
-
-# Add name of the variable in the graph
-# not max and min for boxplot but 1.5IQR
-
-# todo list check OK
-# Check r_debugging_tools-v1.4.R
-# Check fun_test() 20201107 (see cute_checks.docx)
-# example sheet 
-# check all and any OK
-# -> clear to go Apollo
-# -> transferred into the cute package
-
 #' @title trim
 #' @description
 #' Trim and display values from a numeric vector or matrix.

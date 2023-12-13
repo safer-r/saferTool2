@@ -1,13 +1,3 @@
-######## codon_finder() #### gives the codon number and position in the codon of nucleotid positions
-
-# todo list check OK
-# Check r_debugging_tools-v1.4.R
-# Check fun_test() 20201107 (see cute_checks.docx)
-# example sheet 
-# check all and any OK
-# -> clear to go Apollo
-# -> transferred into the cute package
-
 #' @title codon_finder
 #' @description
 #' Gives the codon number and position in the codon of nucleotid positions.

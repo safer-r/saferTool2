@@ -1,13 +1,3 @@
-######## permut() #### progressively breaks a vector order
-
-# todo list check OK
-# Check r_debugging_tools-v1.4.R
-# Check fun_test() 20201107 (see cute_checks.docx)
-# example sheet 
-# check all and any OK
-# -> clear to go Apollo
-# -> transferred into the cute package
-
 #' @title permut
 #' @description
 #' Reorder the elements of the data1 vector by flipping 2 randomly selected  consecutive positions either:

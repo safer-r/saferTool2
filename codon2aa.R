@@ -1,13 +1,3 @@
-######## codon2aa() #### convert codon to amino acid using standard genetic code
-
-# todo list check OK
-# Check r_debugging_tools-v1.4.R
-# Check fun_test() 20201107 (see cute_checks.docx)
-# example sheet 
-# check all and any OK
-# -> clear to go Apollo
-# -> transferred into the cute package
-
 #' @title codon2aa
 #' @description
 #' Convert codon to amino acid using standard genetic code indicated in https://en.wikipedia.org/wiki/DNA_and_RNA_codon_tables.
@@ -17,12 +7,12 @@
 #' @details 
 #' REQUIRED PACKAGES
 #' 
-#' none
+#' cuteDev
 #' 
 #' 
 #' REQUIRED FUNCTIONS FROM CUTE_LITTLE_R_FUNCTION
 #' 
-#' fun_check()
+#' arg_check()
 #'
 #'
 #' WARNINGS
@@ -30,7 +20,7 @@
 #' None
 #' @examples
 #' fun_codon2aa(data = "ATC", display = TRUE)
-#' @seealso http
+#' @importFrom cuteDev arg_check
 #' @export
 fun_codon2aa <- function(
         data,

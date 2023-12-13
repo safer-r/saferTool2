@@ -1,13 +1,3 @@
-######## slide() #### return a computation made on a vector using a sliding window
-
-# todo list check OK
-# Check r_debugging_tools-v1.4.R
-# Check fun_test() 20201107 (see cute_checks.docx)
-# example sheet 
-# check all and any OK
-# -> clear to go Apollo
-# -> transferred into the cute package
-
 #' @title slide
 #' @description
 #' Return a computation made on a vector using a sliding window.
