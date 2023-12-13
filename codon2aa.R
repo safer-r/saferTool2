@@ -19,37 +19,41 @@
 #' 
 #' None
 #' @examples
-#' fun_codon2aa(data = "ATC", display = TRUE)
+#' codon2aa(data = "ATC", display = TRUE)
 #' @importFrom cuteDev arg_check
 #' @export
-fun_codon2aa <- function(
+codon2aa <- function(
         data,
         display = FALSE
 ){
     # DEBUGGING
     # data = "atg" ; display = FALSE
     # function name
-    function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()")
+    ini <- match.call(expand.dots = FALSE) # initial parameters (specific of arg_test())
+    function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()") # function name with "()" paste, which split into a vector of three: c("::()", "package()", "function()") if "package::function()" is used.
+    if(function.name[1] == "::()"){
+        function.name <- function.name[3]
+    }
     arg.names <- names(formals(fun = sys.function(sys.parent(n = 2)))) # names of all the arguments
     arg.user.setting <- as.list(match.call(expand.dots = FALSE))[-1] # list of the argument settings (excluding default values not provided by the user)
     # end function name
-    # required function checking
-    req.function <- c(
-        "fun_check"
+    
+    # package checking
+    # check of lib.path
+    # end check of lib.path
+    
+    # check of the required function from the required packages
+    .pack_and_function_check(
+        fun = c(
+            "cuteDev::arg_check"
+        ),
+        lib.path = NULL,
+        external.function.name = function.name
     )
-    tempo <- NULL
-    for(i1 in req.function){
-        if(length(find(i1, mode = "function")) == 0L){
-            tempo <- c(tempo, i1)
-        }
-    }
-    if( ! is.null(tempo)){
-        tempo.cat <- paste0("ERROR IN ", function.name, "\nREQUIRED cute FUNCTION", ifelse(length(tempo) > 1, "S ARE", " IS"), " MISSING IN THE R ENVIRONMENT:\n", paste0(tempo, collapse = "()\n"))
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
-    }
-    # end required function checking
-    # reserved words
-    # end reserved words
+    # end check of the required function from the required packages
+    # end package checking
+    
+    # argument primary checking
     # arg with no default values
     mandat.args <- c(
         "data"
@@ -60,20 +64,25 @@ fun_codon2aa <- function(
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end arg with no default values
-    # argument primary checking
+    
+    # argument checking with arg_check()
     arg.check <- NULL #
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
-    ee <- expression(arg.check <- c(arg.check, tempo$problem) , text.check <- c(text.check, tempo$text) , checked.arg.names <- c(checked.arg.names, tempo$object.name))
-    tempo <- fun_check(data = data, class = "vector", typeof = "character", fun.name = function.name) ; eval(ee)
-    tempo <- fun_check(data = display, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
+    ee <- expression(arg.check = c(arg.check, tempo$problem) , text.check = c(text.check, tempo$text) , checked.arg.names = c(checked.arg.names, tempo$object.name))
+    tempo <- cuteDev::arg_check(data = data, class = "vector", typeof = "character", fun.name = function.name) ; eval(ee)
+    tempo <- cuteDev::arg_check(data = display, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(arg.check)){
         if(any(arg.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
-    # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using fun_check()
+    # argument checking with arg_check()
+    # check with r_debugging_tools
+    # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using cuteDev::arg_check()
+    # check with r_debugging_tools
     # end argument primary checking
+    
     # second round of checking and data preparation
     # management of NA arguments
     if( ! (all(class(arg.user.setting) == "list", na.rm = TRUE) & length(arg.user.setting) == 0)){
@@ -112,11 +121,10 @@ fun_codon2aa <- function(
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end other checkings
-    # reserved word checking
-    # end reserved word checking
+    # reserved words (to avoid bugs)
+    # end reserved words (to avoid bugs)
     # end second round of checking and data preparation
-    # package checking
-    # end package checking
+
     # main code
     # standard genetic code
     sgc <- array(
@@ -150,6 +158,8 @@ fun_codon2aa <- function(
     )
     # end standard genetic code
     # output
+    # warning output
+    # end warning output
     if(display == TRUE){
         output <- sgc
     }else{
