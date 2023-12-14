@@ -7,11 +7,11 @@
 #' 
 #' Example of consecutive position flipping: ABCD -> BACD -> BADC, etc.
 #' 
-#' Designed for discrete values, but worls also for continuous values.
+#' Designed for discrete values, but works also for continuous values.
 #' @param data1 A vector of at least 2 elements. Must be numeric if data2 is specified.
 #' @param data2 A numeric vector of same length as data1.
 #' @param n Single numeric value of times "flipping 2 randomly selected consecutive positions". Ignored if data2 is specified.
-#' @param seed Single integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL, fun_permut() will systematically return the same result when the other parameters keep the same settings.
+#' @param seed Single integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL, permut() will systematically return the same result when the other parameters keep the same settings.
 #' @param print.count Single integer value. Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
 #' @param text.print Single character string indicating the optional message to add to the working progress message every print.count loop.
 #' @param cor.method Correlation method. Either "pearson", "kendall" or "spearman". Ignored if data2 is not specified.
@@ -29,14 +29,16 @@
 #' 
 #' lubridate
 #' 
+#' cuteDev
+#' 
+#' cuteTool
+#' 
 #' 
 #' REQUIRED FUNCTIONS FROM CUTE_LITTLE_R_FUNCTION
 #' 
-#' fun_check()
+#' arg_check()
 #' 
-#' fun_pack()
-#' 
-#' fun_round()
+#' round()
 #' 
 #' 
 #' WARNINGS
@@ -47,40 +49,43 @@
 #' 
 #' Ths code would be: pos <- ini.pos[1:2] ; pos <- sample.int(n = n , size = 2, replace = FALSE) ; tempo.pos[pos] <- tempo.pos[rev(pos)]
 #' @examples
-#' # example (1) showing that for loop, used in fun_permut(), is faster than while loop
+#' # example (1) showing that for loop, used in permut(), is faster than while loop
 #' 
 #' ini.time <- as.numeric(Sys.time()) ; 
 #' count <- 0 ; 
 #' for(i0 in 1:1e9){count <- count + 1} ; 
 #' tempo.time <- as.numeric(Sys.time()) ; 
-#' tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - ini.time)) ;
+#' tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - ini.time)) ;
 #' tempo.lapse
 #' 
-#' # example (2) showing that for loop, used in fun_permut(), is faster than while loop
+#' # example (2) showing that for loop, used in permut(), is faster than while loop
 #' 
 #' ini.time <- as.numeric(Sys.time()) ; 
 #' count <- 0 ; 
 #' while(count < 1e9){count <- count + 1} ; 
 #' tempo.time <- as.numeric(Sys.time()) ; 
-#' tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - ini.time)) ; 
+#' tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - ini.time)) ; 
 #' tempo.lapse
 #' 
-#' fun_permut(data1 = LETTERS[1:5], data2 = NULL, n = 100, seed = 1, print.count = 10, text.print = "CPU NB 4")
+#' permut(data1 = LETTERS[1:5], data2 = NULL, n = 100, seed = 1, print.count = 10, text.print = "CPU NB 4")
 #' 
-#' fun_permut(data1 = 101:110, data2 = 21:30, seed = 1, print.count = 1e4, text.print = "", cor.method = "spearman", cor.limit = 0.2)
+#' permut(data1 = 101:110, data2 = 21:30, seed = 1, print.count = 1e4, text.print = "", cor.method = "spearman", cor.limit = 0.2)
 #' 
 #' # a way to use the cor.limit argument just considering data1
 #' 
 #' obs1 <- 101:110 ; 
-#' fun_permut(data1 = obs1, data2 = obs1, seed = 1, print.count = 10, cor.method = "spearman", cor.limit = 0.2)
+#' permut(data1 = obs1, data2 = obs1, seed = 1, print.count = 10, cor.method = "spearman", cor.limit = 0.2)
 #' 
-#' fun_permut(data1 = 1:1e3, data2 = 1e3:1, seed = 1, print.count = 1e6, text.print = "", cor.method = "spearman", cor.limit = 0.7)
+#' permut(data1 = 1:1e3, data2 = 1e3:1, seed = 1, print.count = 1e6, text.print = "", cor.method = "spearman", cor.limit = 0.7)
 #' 
-#' fun_permut(data1 = 1:1e2, data2 = 1e2:1, seed = 1, print.count = 1e3, cor.limit = 0.5)
+#' permut(data1 = 1:1e2, data2 = 1e2:1, seed = 1, print.count = 1e3, cor.limit = 0.5)
 #' 
-#' fun_permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print.count = 1e3, cor.limit = 0.5)
+#' permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print.count = 1e3, cor.limit = 0.5)
+#' @importFrom cuteDev arg_check
+#' @importFrom cuteTool round
+#' @importFrom lubridate seconds_to_period
 #' @export
-fun_permut <- function(
+permut <- function(
         data1, 
         data2 = NULL, 
         n = NULL, 
@@ -98,30 +103,33 @@ fun_permut <- function(
     # data1 = 101:110 ; data2 = 21:30 ; n = 10 ; seed = 22 ; print.count = 10 ; text.print = "" ; cor.method = "spearman" ; cor.limit = 0.2 ; warn.print = TRUE ; lib.path = NULL
     # data1 = 1:1e3 ; data2 = 1e3:1 ; n = 20 ; seed = 22 ; print.count = 1e6 ; text.print = "" ; cor.method = "spearman" ; cor.limit = 0.5 ; warn.print = TRUE ; lib.path = NULL
     # function name
-    function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()")
+    ini <- match.call(expand.dots = FALSE) # initial parameters (specific of arg_test())
+    function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()") # function name with "()" paste, which split into a vector of three: c("::()", "package()", "function()") if "package::function()" is used.
+    if(function.name[1] == "::()"){
+        function.name <- function.name[3]
+    }
     arg.names <- names(formals(fun = sys.function(sys.parent(n = 2)))) # names of all the arguments
     arg.user.setting <- as.list(match.call(expand.dots = FALSE))[-1] # list of the argument settings (excluding default values not provided by the user)
     # end function name
-    # required function checking
-    req.function <- c(
-        "fun_pack", 
-        "fun_check", 
-        "fun_round"
-    )
-    tempo <- NULL
-    for(i1 in req.function){
-        if(length(find(i1, mode = "function")) == 0L){
-            tempo <- c(tempo, i1)
-        }
-    }
-    if( ! is.null(tempo)){
-        tempo.cat <- paste0("ERROR IN ", function.name, "\nREQUIRED cute FUNCTION", ifelse(length(tempo) > 1, "S ARE", " IS"), " MISSING IN THE R ENVIRONMENT:\n", paste0(tempo, collapse = "()\n"))
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
-    }
-    # end required function checking
-    # reserved words (to avoid bugs)
-    # end reserved words (to avoid bugs)
     
+    # package checking
+    # check of lib.path
+    # end check of lib.path
+    
+    # check of the required function from the required packages
+    .pack_and_function_check(
+        fun = c(
+            "cuteDev::arg_check",
+            "cuteTool::round",
+            "lubridate::seconds_to_period"
+        ),
+        lib.path = NULL,
+        external.function.name = function.name
+    )
+    # end check of the required function from the required packages
+    # end package checking
+    
+    # argument primary checking
     # arg with no default values
     mandat.args <- c(
         "data1"
@@ -133,62 +141,65 @@ fun_permut <- function(
     }
     # end arg with no default values
     
-    # argument primary checking
-    arg.check <- NULL #
+    # argument checking with arg_check()
+    argum.check <- NULL #
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
-    ee <- expression(arg.check <- c(arg.check, tempo$problem) , text.check <- c(text.check, tempo$text) , checked.arg.names <- c(checked.arg.names, tempo$object.name))
-    tempo <- fun_check(data = data1, class = "vector", fun.name = function.name) ; eval(ee)
+    ee <- expression(argum.check <- c(argum.check, tempo$problem) , text.check <- c(text.check, tempo$text) , checked.arg.names <- c(checked.arg.names, tempo$object.name))
+    tempo <- cuteDev::arg_check(data = data1, class = "vector", fun.name = function.name) ; eval(ee)
     if(tempo$problem == FALSE & length(data1) < 2){
         tempo.cat <- paste0("ERROR IN ", function.name, ": data1 ARGUMENT MUST BE A VECTOR OF MINIMUM LENGTH 2. HERE IT IS: ", length(data1))
         text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
+        argum.check <- c(argum.check, TRUE)
     }
     if( ! is.null(data2)){
-        tempo <- fun_check(data = data1, class = "vector", mode = "numeric", fun.name = function.name) ; eval(ee)
+        tempo <- cuteDev::arg_check(data = data1, class = "vector", mode = "numeric", fun.name = function.name) ; eval(ee)
         if(tempo$problem == TRUE){
             tempo.cat <- paste0("ERROR IN ", function.name, ": data1 MUST BE A NUMERIC VECTOR IF data2 ARGUMENT IS SPECIFIED")
             text.check <- c(text.check, tempo.cat)
-            arg.check <- c(arg.check, TRUE)
+            argum.check <- c(argum.check, TRUE)
         }
-        tempo <- fun_check(data = data2, class = "vector", mode = "numeric", fun.name = function.name) ; eval(ee)
+        tempo <- cuteDev::arg_check(data = data2, class = "vector", mode = "numeric", fun.name = function.name) ; eval(ee)
         if(length(data1) != length(data2)){
             tempo.cat <- paste0("ERROR IN ", function.name, ": data1 AND data2 MUST BE VECTOR OF SAME LENGTH. HERE IT IS ", length(data1)," AND ", length(data2))
             text.check <- c(text.check, tempo.cat)
-            arg.check <- c(arg.check, TRUE)
+            argum.check <- c(argum.check, TRUE)
         }
     }else if(is.null(n)){
         tempo.cat <- paste0("ERROR IN ", function.name, ": n ARGUMENT CANNOT BE NULL IF data2 ARGUMENT IS NULL")
         text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
+        argum.check <- c(argum.check, TRUE)
     }
     if( ! is.null(n)){
-        tempo <- fun_check(data = n, class = "vector", typeof = "integer", length = 1, double.as.integer.allowed = TRUE, neg.values = FALSE, fun.name = function.name) ; eval(ee)
+        tempo <- cuteDev::arg_check(data = n, class = "vector", typeof = "integer", length = 1, double.as.integer.allowed = TRUE, neg.values = FALSE, fun.name = function.name) ; eval(ee)
     }
     if( ! is.null(seed)){
-        tempo <- fun_check(data = seed, class = "vector", typeof = "integer", length = 1, double.as.integer.allowed = TRUE, neg.values = TRUE, fun.name = function.name) ; eval(ee)
+        tempo <- cuteDev::arg_check(data = seed, class = "vector", typeof = "integer", length = 1, double.as.integer.allowed = TRUE, neg.values = TRUE, fun.name = function.name) ; eval(ee)
     }
-    tempo <- fun_check(data = print.count, class = "vector", typeof = "integer", length = 1, double.as.integer.allowed = TRUE, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- fun_check(data = text.print, class = "character", length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- fun_check(data = cor.method, options = c("pearson", "kendall", "spearman"), length =1, fun.name = function.name) ; eval(ee)
-    tempo <- fun_check(data = cor.limit, class = "vector", mode = "numeric", prop = TRUE, length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- fun_check(data = warn.print, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
+    tempo <- cuteDev::arg_check(data = print.count, class = "vector", typeof = "integer", length = 1, double.as.integer.allowed = TRUE, neg.values = FALSE, fun.name = function.name) ; eval(ee)
+    tempo <- cuteDev::arg_check(data = text.print, class = "character", length = 1, fun.name = function.name) ; eval(ee)
+    tempo <- cuteDev::arg_check(data = cor.method, options = c("pearson", "kendall", "spearman"), length =1, fun.name = function.name) ; eval(ee)
+    tempo <- cuteDev::arg_check(data = cor.limit, class = "vector", mode = "numeric", prop = TRUE, length = 1, fun.name = function.name) ; eval(ee)
+    tempo <- cuteDev::arg_check(data = warn.print, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(lib.path)){
-        tempo <- fun_check(data = lib.path, class = "vector", mode = "character", fun.name = function.name) ; eval(ee)
+        tempo <- cuteDev::arg_check(data = lib.path, class = "vector", mode = "character", fun.name = function.name) ; eval(ee)
         if(tempo$problem == FALSE){
             if( ! all(dir.exists(lib.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
                 tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
                 text.check <- c(text.check, tempo.cat)
-                arg.check <- c(arg.check, TRUE)
+                argum.check <- c(argum.check, TRUE)
             }
         }
     }
-    if( ! is.null(arg.check)){
-        if(any(arg.check, na.rm = TRUE) == TRUE){
-            stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
+    if( ! is.null(argum.check)){
+        if(any(argum.check, na.rm = TRUE) == TRUE){
+            stop(paste0("\n\n================\n\n", paste(text.check[argum.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
-    # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using fun_check()
+    # end argument checking with arg_check()
+    # check with r_debugging_tools
+    # source("C:/Users/yhan/Documents/Git_projects/debugging_tools_for_r_dev/r_debugging_tools.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using cuteDev::arg_check()
+    # end check with r_debugging_tools
     # end argument primary checking
     
     # second round of checking and data preparation
@@ -227,24 +238,25 @@ fun_permut <- function(
     # end code that protects set.seed() in the global environment
     
     # warning initiation
+    ini.warning.length <- options()$warning.length
+    options(warning.length = 8170)
+    warn <- NULL
+    warn.count <- 0
     # end warning initiation
     
     # other checkings
     # end other checkings
     
-    # reserved word checking
-    # end reserved word checking
+    # reserved words (to avoid bugs)
+    # end reserved words (to avoid bugs)
     # end second round of checking and data preparation
     
-    # package checking
-    fun_pack(req.package = "lubridate", lib.path = lib.path)
-    # end package checking
     # main code
     # code that protects set.seed() in the global environment
     # see also Protocol 100-rev0 Parallelization in R.docx
     if(exists(".Random.seed", envir = .GlobalEnv)){ # if .Random.seed does not exists, it means that no random operation has been performed yet in any R environment
         tempo.random.seed <- .Random.seed
-        on.exit(assign(".Random.seed", tempo.random.seed, env = .GlobalEnv))
+        on.exit(assign(".Random.seed", tempo.random.seed, envir = .GlobalEnv))
     }else{
         on.exit(set.seed(NULL)) # inactivate seeding -> return to complete randomness
     }
@@ -288,7 +300,7 @@ fun_permut <- function(
                     count.loop <- 0
                     pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                     tempo.time <- as.numeric(Sys.time())
-                    tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - tempo.time.loop))
+                    tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - tempo.time.loop))
                     final.loop <- (tempo.time - tempo.time.loop) / i3 * n # expected duration in seconds
                     final.exp <- as.POSIXct(final.loop, origin = tempo.date.loop)
                     cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FOR LOOP ", i3, " / ", n, " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
@@ -323,7 +335,7 @@ fun_permut <- function(
             }
             if(tempo.cor < cor.limit){ # randomize directly all the position to be close to correlation zero
                 warn.count <- warn.count + 1
-                tempo.warn <- paste0("(", warn.count,") INITIAL ABSOLUTE VALUE OF THE ", toupper(cor.method), " CORRELATION ", fun_round(tempo.cor), " BETWEEN data1 AND data2 HAS BEEN DETECTED AS BELOW THE CORRELATION LIMIT PARAMETER ", cor.limit, "\nTHE data1 SEQUENCE HAS BEEN COMPLETELY RANDOMIZED TO CORRESPOND TO CORRELATION ZERO")
+                tempo.warn <- paste0("(", warn.count,") INITIAL ABSOLUTE VALUE OF THE ", toupper(cor.method), " CORRELATION ", cuteTool::round(tempo.cor), " BETWEEN data1 AND data2 HAS BEEN DETECTED AS BELOW THE CORRELATION LIMIT PARAMETER ", cor.limit, "\nTHE data1 SEQUENCE HAS BEEN COMPLETELY RANDOMIZED TO CORRESPOND TO CORRELATION ZERO")
                 warn <- paste0(ifelse(is.null(warn), tempo.warn, paste0(warn, "\n\n", tempo.warn))) #
                 for(i4 in 1:5){ # done 5 times to be sure of the complete randomness
                     tempo.pos <- sample(x = tempo.pos, size = length(tempo.pos), replace = FALSE)
@@ -338,8 +350,8 @@ fun_permut <- function(
                 smallest.cor.dec <- cor.ini - tempo.cor
                 # end smallest correlation decrease
                 # going out of tempo.cor == cor.ini
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "CORRELATION DECREASE AFTER A SINGLE PERMUTATION: ", fun_round(smallest.cor.dec, 4)))
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP -> GOING OUT FROM EQUALITY | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", fun_round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", fun_round(tempo.cor, 4)))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "CORRELATION DECREASE AFTER A SINGLE PERMUTATION: ", cuteTool::round(smallest.cor.dec, 4)))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP -> GOING OUT FROM EQUALITY | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4)))
                 print.count.loop <- logical(length = print.count)
                 print.count.loop[length(print.count.loop)] <- TRUE # counter to speedup
                 count.loop <- 0 # 
@@ -356,13 +368,13 @@ fun_permut <- function(
                         count.loop <- 0
                         pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                         tempo.time <- as.numeric(Sys.time())
-                        tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - tempo.time.loop))
-                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP", format(count.loop, big.mark=","), " / ? | COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", fun_round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", fun_round(tempo.cor, 4), " | TIME SPENT: ", tempo.lapse))
+                        tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - tempo.time.loop))
+                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP", format(count.loop, big.mark=","), " / ? | COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4), " | TIME SPENT: ", tempo.lapse))
                     }
                 }
                 tempo.time <- as.numeric(Sys.time())
-                tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - ini.time))
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP END | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", fun_round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", fun_round(tempo.cor, 4), " | TOTAL SPENT TIME: ", tempo.lapse))
+                tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - ini.time))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP END | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4), " | TOTAL SPENT TIME: ", tempo.lapse))
                 if(tempo.cor < cor.limit){
                     warn.count <- warn.count + 1
                     tempo.warn <- paste0("(", warn.count,") THE FIRST FOR & WHILE LOOP STEPS HAVE BEEN TOO FAR AND SUBSEQUENT LOOP STEPS WILL NOT RUN")
@@ -370,7 +382,7 @@ fun_permut <- function(
                 }
                 # end going out of tempo.cor == cor.ini
                 # estimation of the average correlation decrease per loop on x loops and for loop execution
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE/FOR LOOPS INITIATION | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", fun_round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", fun_round(tempo.cor, 4)))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE/FOR LOOPS INITIATION | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4)))
                 count.est <- 1e5
                 first.round <- TRUE
                 GOBACK <- FALSE
@@ -401,13 +413,13 @@ fun_permut <- function(
                         }
                         cor.est <- cor.est[which.max(cor.dec.per.loop)] # max to avoid to go to far with for loop (tempo.cor below tempo.limit)
                         cor.dec.per.loop <- max(cor.dec.per.loop, na.rm = TRUE) # max to avoid to go to far with for loop (tempo.cor below tempo.limit)
-                        loop.nb.est <- round((tempo.cor - cor.limit) / cor.dec.per.loop)
+                        loop.nb.est <- cuteTool::round((tempo.cor - cor.limit) / cor.dec.per.loop)
                     }else{
                         if(GOBACK == TRUE){
-                            loop.nb.est <- round(loop.nb.est / 2)
+                            loop.nb.est <- cuteTool::round(loop.nb.est / 2)
                         }else{
                             cor.dec.per.loop <- (cor.ini - tempo.cor) / count
-                            loop.nb.est <- round((tempo.cor - cor.limit) / cor.dec.per.loop)
+                            loop.nb.est <- cuteTool::round((tempo.cor - cor.limit) / cor.dec.per.loop)
                         }
                     }
                     # end estimation step
@@ -419,7 +431,7 @@ fun_permut <- function(
                         tempo.pos.secu <- tempo.pos
                         count.secu <- count
                         tempo.cor.secu <- tempo.cor
-                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "INITIAL SETTINGS BEFORE ROUND: ", round, " | LOOP COUNT: ", format(count, big.mark=","), " | GO BACK: ", GOBACK, " | LOOP NUMBER ESTIMATION: ", format(loop.nb.est, big.mark=","), " | CORRELATION LIMIT: ", fun_round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", fun_round(tempo.cor, 4)))
+                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "INITIAL SETTINGS BEFORE ROUND: ", round, " | LOOP COUNT: ", format(count, big.mark=","), " | GO BACK: ", GOBACK, " | LOOP NUMBER ESTIMATION: ", format(loop.nb.est, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4)))
                         print.count.loop <- logical(length = print.count)
                         print.count.loop[length(print.count.loop)] <- TRUE # not this to avoid long vector, but not forget to reset during printing: print.count.loop[(1:trunc(n / print.count) * print.count)] <- TRUE # counter to speedup
                         count.loop <- 0
@@ -434,7 +446,7 @@ fun_permut <- function(
                                 count.loop <- 0
                                 pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                                 tempo.time <- as.numeric(Sys.time())
-                                tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - tempo.time.loop))
+                                tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - tempo.time.loop))
                                 final.loop <- (tempo.time - tempo.time.loop) / i6 * loop.nb.est # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
                                 final.exp <- as.POSIXct(final.loop, origin = tempo.date.loop)
                                 cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FOR LOOP | ROUND ", round, " | LOOP: ", format(i6, big.mark=","), " / ", format(loop.nb.est, big.mark=","), " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
@@ -442,7 +454,7 @@ fun_permut <- function(
                         }
                         count <- count + loop.nb.est # out of the loop to speedup
                         tempo.cor <- abs(cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
-                        if(tempo.cor > tempo.cor.secu | ((tempo.cor - cor.limit) < 0 & abs(tempo.cor - cor.limit) > smallest.cor.dec * round(log10(max(ini.pos, na.rm = TRUE))))){
+                        if(tempo.cor > tempo.cor.secu | ((tempo.cor - cor.limit) < 0 & abs(tempo.cor - cor.limit) > smallest.cor.dec * cuteTool::round(log10(max(ini.pos, na.rm = TRUE))))){
                             GOBACK <- TRUE
                             tempo.pos <- tempo.pos.secu
                             count <- count.secu
@@ -451,7 +463,7 @@ fun_permut <- function(
                             GOBACK <- FALSE
                         }
                     }else{
-                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FINAL WHILE LOOP | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", fun_round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", fun_round(tempo.cor, 4)))
+                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FINAL WHILE LOOP | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4)))
                         print.count.loop <- logical(length = print.count)
                         print.count.loop[length(print.count.loop)] <- TRUE # counter to speedup
                         count.loop <- 0 # 
@@ -469,17 +481,17 @@ fun_permut <- function(
                                 count.loop <- 0
                                 pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                                 tempo.time <- as.numeric(Sys.time())
-                                tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - tempo.time.loop))
+                                tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - tempo.time.loop))
                                 final.loop <- (tempo.time - tempo.time.loop) / (tempo.cor.loop - tempo.cor) * (tempo.cor - cor.limit) # expected duration in seconds # tempo.cor.loop - tempo.cor always positive and tempo.cor decreases progressively starting from tempo.cor.loop
                                 final.exp <- as.POSIXct(final.loop, origin = tempo.date.loop)
-                                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE LOOP | LOOP NB: ", format(count.loop, big.mark=","), " | COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", fun_round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", fun_round(tempo.cor, 4), " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
+                                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE LOOP | LOOP NB: ", format(count.loop, big.mark=","), " | COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4), " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
                             }
                         }
                     }
                 }
                 tempo.time <- as.numeric(Sys.time())
-                tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - ini.time))
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE/FOR LOOPS END | LOOP COUNT: ", format(count, big.mark=","), " | NB OF ROUNDS: ", round, " | CORRELATION LIMIT: ", fun_round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", fun_round(tempo.cor, 4), " | TOTAL SPENT TIME: ", tempo.lapse))
+                tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - ini.time))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE/FOR LOOPS END | LOOP COUNT: ", format(count, big.mark=","), " | NB OF ROUNDS: ", round, " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4), " | TOTAL SPENT TIME: ", tempo.lapse))
             }
             tempo.cor <- ifelse(neg.cor == TRUE, -tempo.cor, tempo.cor)
         }
@@ -490,6 +502,12 @@ fun_permut <- function(
     }
     on.exit(exp = options(warning.length = ini.warning.length), add = TRUE)
     # output
+    # warning output
+    if(warn.print == TRUE & ! is.null(warn)){
+        on.exit(warning(paste0("FROM ", function.name, ":\n\n", warn), call. = FALSE))
+      }
+      on.exit(exp = options(warning.length = ini.warning.length), add = TRUE)
+    # end warning output
     output <- list(data = data1[tempo.pos], warn = warn, cor = if(is.null(data2)){cor(ini.pos, tempo.pos, method = "spearman")}else{tempo.cor}, count = count)
     return(output)
     # end output
