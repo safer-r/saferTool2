@@ -144,10 +144,10 @@ slide <- function(
     }
     # end arg with no default values
     # argument checking with arg_check()
-    arg.check <- NULL #
+    argum.check <- NULL #
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
-    ee <- expression(arg.check = c(arg.check, tempo$problem) , text.check = c(text.check, tempo$text) , checked.arg.names = c(checked.arg.names, tempo$object.name))
+    ee <- expression(argum.check = c(argum.check, tempo$problem) , text.check = c(text.check, tempo$text) , checked.arg.names = c(checked.arg.names, tempo$object.name))
     tempo <- cuteDev::arg_check(data = data, mode = "numeric", na.contain = TRUE, fun.name = function.name) ; eval(ee)
     tempo <- cuteDev::arg_check(data = window.size, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; eval(ee)
     tempo <- cuteDev::arg_check(data = step, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; eval(ee)
@@ -162,7 +162,7 @@ slide <- function(
     if(tempo1$problem == TRUE & tempo2$problem == TRUE){
         tempo.cat <- paste0("ERROR IN ", function.name, ": fun ARGUMENT MUST BE A FUNCTION OR A CHARACTER STRING OF THE NAME OF A FUNCTION")
         text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
+        argum.check <- c(argum.check, TRUE)
     }
     if( ! is.null(args)){
         tempo <- cuteDev::arg_check(data = args, class = "vector", mode = "character", length = 1, fun.name = function.name) ; eval(ee)
@@ -175,7 +175,7 @@ slide <- function(
             if(tempo$problem == FALSE & thread.nb < 1){
                 tempo.cat <- paste0("ERROR IN ", function.name, ": thread.nb PARAMETER MUST EQUAL OR GREATER THAN 1: ", thread.nb)
                 text.check <- c(text.check, tempo.cat)
-                arg.check <- c(arg.check, TRUE)
+                argum.check <- c(argum.check, TRUE)
             }
         }
     }
@@ -188,9 +188,9 @@ slide <- function(
     }
     tempo <- cuteDev::arg_check(data = verbose, class = "vector", mode = "logical", length = 1, fun.name = function.name) ; eval(ee)
     tempo <- cuteDev::arg_check(data = cute.path, class = "vector", typeof = "character", length = 1, fun.name = function.name) ; eval(ee)
-    if( ! is.null(arg.check)){
-        if(any(arg.check, na.rm = TRUE) == TRUE){
-            stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
+    if( ! is.null(argum.check)){
+        if(any(argum.check, na.rm = TRUE) == TRUE){
+            stop(paste0("\n\n================\n\n", paste(text.check[argum.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
     # argument checking with arg_check()
@@ -284,7 +284,7 @@ slide <- function(
     if(tempo.error1 | tempo.error2){
         tempo.cat <- paste0("ERROR IN ", function.name, ": ", ifelse(grepl(x = cute.path, pattern = "^http"), "URL", "FILE"), " PATH INDICATED IN THE cute.path PARAMETER DOES NOT EXISTS:\n", cute.path)
         text.check <- c(text.check, tempo.cat)
-        arg.check <- c(arg.check, TRUE)
+        argum.check <- c(argum.check, TRUE)
     }
     # end other checkings
     # reserved words (to avoid bugs)
