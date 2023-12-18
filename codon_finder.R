@@ -15,11 +15,6 @@
 #' REQUIRED PACKAGES
 #' 
 #' cuteDev
-#' 
-#' 
-#' REQUIRED FUNCTIONS FROM CUTE_LITTLE_R_FUNCTION
-#' 
-#' arg_check()
 #'
 #'
 #' WARNINGS
@@ -145,7 +140,7 @@ codon_finder <- function(
     # main code
     first <- seq.int(from = begin, to = end, by = 3)
     last <- seq.int(from = begin + 2, to = end, by = 3)
-    tempo <- lapply(X = pos, FUN = function(x = X){
+    tempo <- lapply(X = pos, FUN = function(x){
         tempo.log <- x >= first & x <= last
         if(sum(tempo.log, na.rm = TRUE) != 1){ # check that 1 possible TRUE
             tempo.cat <- paste0("ERROR IN ", function.name, ": INTERNAL ERROR. CODE HAS TO BE MODIFIED")

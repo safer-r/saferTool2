@@ -32,7 +32,7 @@
 #' parallel if parall argument is TRUE (included in the R installation packages but not automatically loaded)
 #' 
 #' 
-#' REQUIRED FUNCTIONS FROM CUTE_LITTLE_R_FUNCTION
+#' REQUIRED FUNCTIONS FROM THE cute PACKAGE
 #' 
 #' arg_check()
 #' 
@@ -220,7 +220,7 @@ slide <- function(
     }
     # end management of NA arguments
     # management of NULL arguments
-    tempo.arg <-c(
+    tempo.arg <- c(
         "data", 
         "window.size", 
         "step", 
