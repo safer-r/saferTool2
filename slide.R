@@ -83,6 +83,9 @@ slide <- function(
     # DEBUGGING
     # data = c(1:10, 100:110, 500) ; window.size = 5 ; step = 2 ; from = NULL ; to = NULL ; fun = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread.nb = NULL ; print.count = 100 ; res.path = NULL ; lib.path = NULL ; verbose = TRUE ; cute.path = "C:\\Users\\Gael\\Documents\\Git_projects\\cute_little_R_functions\\cute_little_R_functions.R"
     # data = lag.pos; window.size = window.size; step = step; fun = length; from = min(a$pos); to = max(a$pos)
+    # package name
+    package.name <- "cuteTool2"
+    # end package name
     # function name
     ini <- match.call(expand.dots = FALSE) # initial parameters (specific of arg_test())
     function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()") # function name with "()" paste, which split into a vector of three: c("::()", "package()", "function()") if "package::function()" is used.
@@ -97,10 +100,10 @@ slide <- function(
     # check of lib.path
     if( ! is.null(lib.path)){
         if( ! all(typeof(lib.path) == "character")){ # no na.rm = TRUE with typeof
-            tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT MUST BE A VECTOR OF CHARACTERS:\n", paste(lib.path, collapse = "\n"))
+            tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT MUST BE A VECTOR OF CHARACTERS:\n", paste(lib.path, collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }else if( ! all(dir.exists(lib.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
-            tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
+            tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }else{
             .libPaths(new = sub(x = lib.path, pattern = "/$|\\\\$", replacement = "")) # .libPaths(new = ) add path to default path. BEWARE: .libPaths() does not support / at the end of a submitted path. Thus check and replace last / or \\ in path
@@ -139,7 +142,7 @@ slide <- function(
     )
     tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "),missing("), "))")))
     if(any(tempo)){ # normally no NA for missing() output
-        tempo.cat <- paste0("ERROR IN ", function.name, "\nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
+        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: \nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end arg with no default values
@@ -160,7 +163,7 @@ slide <- function(
     tempo1 <- cuteDev::arg_check(data = fun, class = "vector", mode = "character", length = 1, fun.name = function.name)
     tempo2 <- cuteDev::arg_check(data = fun, class = "function", length = 1, fun.name = function.name)
     if(tempo1$problem == TRUE & tempo2$problem == TRUE){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": fun ARGUMENT MUST BE A FUNCTION OR A CHARACTER STRING OF THE NAME OF A FUNCTION")
+        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: fun ARGUMENT MUST BE A FUNCTION OR A CHARACTER STRING OF THE NAME OF A FUNCTION")
         text.check <- c(text.check, tempo.cat)
         argum.check <- c(argum.check, TRUE)
     }
@@ -173,7 +176,7 @@ slide <- function(
         if( ! is.null(thread.nb)){
             tempo <- cuteDev::arg_check(data = thread.nb, typeof = "integer", double.as.integer.allowed = TRUE, neg.values = FALSE, length = 1, fun.name = function.name) ; eval(ee)
             if(tempo$problem == FALSE & thread.nb < 1){
-                tempo.cat <- paste0("ERROR IN ", function.name, ": thread.nb PARAMETER MUST EQUAL OR GREATER THAN 1: ", thread.nb)
+                tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: thread.nb PARAMETER MUST EQUAL OR GREATER THAN 1: ", thread.nb)
                 text.check <- c(text.check, tempo.cat)
                 argum.check <- c(argum.check, TRUE)
             }
@@ -203,7 +206,7 @@ slide <- function(
     # new environment
     env.name <- paste0("env", as.numeric(Sys.time()))
     if(exists(env.name, where = -1)){ # verify if still ok when info() is inside a function
-        tempo.cat <- paste0("ERROR IN ", function.name, ": ENVIRONMENT env.name ALREADY EXISTS. PLEASE RERUN ONCE")
+        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: ENVIRONMENT env.name ALREADY EXISTS. PLEASE RERUN ONCE")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }else{
         assign(env.name, new.env())
@@ -214,7 +217,7 @@ slide <- function(
         tempo.arg <- names(arg.user.setting) # values provided by the user
         tempo.log <- suppressWarnings(sapply(lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
         if(any(tempo.log) == TRUE){ # normally no NA because is.na() used here
-            tempo.cat <- paste0("ERROR IN ", function.name, "\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
+            tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: \n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }
     }
@@ -239,7 +242,7 @@ slide <- function(
     )
     tempo.log <- sapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.null)
     if(any(tempo.log) == TRUE){# normally no NA with is.null()
-        tempo.cat <- paste0("ERROR IN ", function.name, ":\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS\n", "THIS ARGUMENT\n"), paste0(tempo.arg[tempo.log], collapse = "\n"),"\nCANNOT BE NULL")
+        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE:\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS\n", "THIS ARGUMENT\n"), paste0(tempo.arg[tempo.log], collapse = "\n"),"\nCANNOT BE NULL")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end management of NULL arguments
@@ -249,20 +252,20 @@ slide <- function(
     # end warning initiation
     # other checkings
     if(length(data) == 0){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": data ARGUMENT CANNOT BE LENGTH 0")
+        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: data ARGUMENT CANNOT BE LENGTH 0")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
     }
     if(any( ! is.finite(data), na.rm = TRUE)){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": data ARGUMENT CANNOT CONTAIN Inf VALUES")
+        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: data ARGUMENT CANNOT CONTAIN Inf VALUES")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
     }
     if(step > window.size){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": step ARGUMENT MUST BE LOWER THAN window.size ARGUMENT\nstep: ", paste(step, collapse = " "), "\nwindow.size: ", paste(window.size, collapse = " "))
+        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: step ARGUMENT MUST BE LOWER THAN window.size ARGUMENT\nstep: ", paste(step, collapse = " "), "\nwindow.size: ", paste(window.size, collapse = " "))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
     }
     if( ! is.null(res.path)){
         if( ! all(dir.exists(res.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and res.path == NA
-            tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE res.path ARGUMENT DOES NOT EXISTS:\n", paste(res.path, collapse = "\n"))
+            tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: DIRECTORY PATH INDICATED IN THE res.path ARGUMENT DOES NOT EXISTS:\n", paste(res.path, collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
         }
     }else{
@@ -270,7 +273,7 @@ slide <- function(
     }
     if( ! is.null(lib.path)){
         if( ! all(dir.exists(lib.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and lib.path == NA
-            tempo.cat <- paste0("ERROR IN ", function.name, ": DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
+            tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", paste(lib.path, collapse = "\n"))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
         }
     }
@@ -282,7 +285,7 @@ slide <- function(
         tempo.error2 <- ! file.exists(cute.path)
     }
     if(tempo.error1 | tempo.error2){
-        tempo.cat <- paste0("ERROR IN ", function.name, ": ", ifelse(grepl(x = cute.path, pattern = "^http"), "URL", "FILE"), " PATH INDICATED IN THE cute.path PARAMETER DOES NOT EXISTS:\n", cute.path)
+        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: ", ifelse(grepl(x = cute.path, pattern = "^http"), "URL", "FILE"), " PATH INDICATED IN THE cute.path PARAMETER DOES NOT EXISTS:\n", cute.path)
         text.check <- c(text.check, tempo.cat)
         argum.check <- c(argum.check, TRUE)
     }
@@ -307,7 +310,7 @@ slide <- function(
         right <- "<="
         right.last.wind <- ">="
     }else{
-        tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, "\nCODE INCONSISTENCY 1")
+        tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: \nCODE INCONSISTENCY 1")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     data <- as.vector(data)
@@ -316,7 +319,7 @@ slide <- function(
     wind <- data.frame(wind, right = wind$left + window.size, stringsAsFactors = TRUE)
     wind <- data.frame(wind, center = (wind$left + wind$right) / 2, stringsAsFactors = TRUE)
     if(all(wind$right < if(is.null(to)){max(data, na.rm = TRUE)}else{to})){
-        tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, "\nCODE INCONSISTENCY 2")
+        tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: \nCODE INCONSISTENCY 2")
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # The 3 next lines is for the rule of to argument with center (see to argument description)
@@ -354,7 +357,7 @@ slide <- function(
         # end warning output
         output <- eval(parse(text = paste0("sapply(lapply(log, FUN = function(X){(data[X])}), FUN = fun", if( ! is.null(args)){paste0(", ", args)}, ")"))) # take the values of the data vector according to log (list of logical, each compartment of length(data)) and apply fun with args of fun
         if(length(output) != nrow(wind)){
-            tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, "\nCODE INCONSISTENCY 3")
+            tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: \nCODE INCONSISTENCY 3")
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }else{
             output <- data.frame(wind, value = output, stringsAsFactors = TRUE)
@@ -452,7 +455,7 @@ slide <- function(
                 }
                 wind <- wind[x, ]
                 if(length(output) != nrow(wind)){
-                    tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, "\nCODE INCONSISTENCY 4")
+                    tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: \nCODE INCONSISTENCY 4")
                     stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
                 }else{
                     output <- data.frame(wind, value = output, stringsAsFactors = TRUE)
@@ -468,7 +471,7 @@ slide <- function(
         }
         # end result assembly
         if(nrow(output) != nrow(wind)){
-            tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, "\nCODE INCONSISTENCY 5\nlength(output): ", length(output), "\nnrow(wind): ", nrow(wind))
+            tempo.cat <- paste0("INTERNAL CODE ERROR IN ", function.name, " OF THE", package.name, " PACKAGE: \nCODE INCONSISTENCY 5\nlength(output): ", length(output), "\nnrow(wind): ", nrow(wind))
             stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }else{
             output <- output[order(output$left), ]

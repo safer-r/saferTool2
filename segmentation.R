@@ -106,6 +106,9 @@ fun_segmentation <- function(
     # set.seed(1) ; data1 = data.frame(x = rnorm(50), y = rnorm(50), stringsAsFactors = TRUE) ; data1[5:7, 2] <- NA ; x1 = names(data1)[1] ; y1 = names(data1)[2] ; x.range.split = 5 ; x.step.factor = 10 ; y.range.split = 5 ; y.step.factor = 10 ; error = 0 ; data2 = data.frame(x = rnorm(50, 0, 2), y = rnorm(50, 0, 2), stringsAsFactors = TRUE) ; set.seed(NULL) ; x2 = names(data2)[1] ; y2 = names(data2)[2] ; data2.pb.dot = "unknown" ; xy.cross.kind = "|" ; plot = TRUE ; graph.in.file = FALSE ; raster = FALSE ; warn.print = TRUE ; lib.path = NULL
     # set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; set.seed(NULL) ; x1 = names(data1)[1] ; y1 = names(data1)[2] ; x.range.split = 20 ; x.step.factor = 10 ; y.range.split = 23 ; y.step.factor = 10 ; error = 0 ; x2 = names(data2)[1] ; y2 = names(data2)[2] ; data2.pb.dot = "not.signif" ; xy.cross.kind = "|" ; plot = TRUE ; graph.in.file = FALSE ; raster = FALSE ; warn.print = TRUE ; lib.path = NULL
     # set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; set.seed(NULL) ; x1 = names(data1)[1] ; y1 = names(data1)[2] ; x.range.split = 20 ; x.step.factor = 10 ; y.range.split = NULL ; y.step.factor = 10 ; error = 0 ; x2 = names(data2)[1] ; y2 = names(data2)[2] ; data2.pb.dot = "unknown" ; xy.cross.kind = "&" ; plot = TRUE ; graph.in.file = FALSE ; raster = FALSE ; warn.print = TRUE ; lib.path = NULL
+    # package name
+    package.name <- "cuteTool2"
+    # end package name
     # function name
     function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()")
     arg.names <- names(formals(fun = sys.function(sys.parent(n = 2)))) # names of all the arguments
