@@ -1,0 +1,1 @@
+export("codon_finder", "codon2aa", "permut", "slide", "trim")
