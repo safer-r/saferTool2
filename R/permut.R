@@ -84,6 +84,7 @@
 #' @importFrom cuteDev arg_check
 #' @importFrom cuteTool round
 #' @importFrom lubridate seconds_to_period
+#' @importFrom stats cor
 #' @export
 permut <- function(
         data1, 
@@ -325,7 +326,7 @@ permut <- function(
             warn <- paste0(ifelse(is.null(warn), tempo.warn, paste0(warn, "\n\n", tempo.warn))) #
             tempo.cor <- 1
         }else{
-            cor.ini <- cor(x = data1, y = data2, use = "pairwise.complete.obs", method = cor.method)
+            cor.ini <- stats::cor(x = data1, y = data2, use = "pairwise.complete.obs", method = cor.method)
             tempo.cor <- cor.ini # correlation that will be modified during loops
             neg.cor <- FALSE
             if(tempo.cor < 0){
@@ -349,7 +350,7 @@ permut <- function(
                 count <- count + 1 # 1 and not 0 because already 1 performed just below
                 pos <- sample.int(n = pos.selec.seq.max , size = 1, replace = TRUE) # selection of 1 position # pos.selec.seq.max  because selection of 1 position in initial position, without the last because always up permutation (pos -> pos+1 & pos+1 -> pos)
                 tempo.pos[c(pos + 1, pos)] <- tempo.pos[c(pos, pos + 1)]
-                tempo.cor <- abs(cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
+                tempo.cor <- abs(stats::cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
                 smallest.cor.dec <- cor.ini - tempo.cor
                 # end smallest correlation decrease
                 # going out of tempo.cor == cor.ini
@@ -366,7 +367,7 @@ permut <- function(
                     count.loop <- count.loop + 1
                     pos2 <- pos[count.loop]
                     tempo.pos[c(pos2 + 1, pos2)] <- tempo.pos[c(pos2, pos2 + 1)]
-                    tempo.cor <- abs(cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
+                    tempo.cor <- abs(stats::cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
                     if(print.count.loop[count.loop]){
                         count.loop <- 0
                         pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
@@ -405,7 +406,7 @@ permut <- function(
                                 pos2 <- pos[i7] # selection of 1 position
                                 tempo.pos.est[c(pos2 + 1, pos2)] <- tempo.pos.est[c(pos2, pos2 + 1)]
                             }
-                            tempo.cor.est <- abs(cor(x = data1[tempo.pos.est], y = data2, use = "pairwise.complete.obs", method = cor.method))
+                            tempo.cor.est <- abs(stats::cor(x = data1[tempo.pos.est], y = data2, use = "pairwise.complete.obs", method = cor.method))
                             cor.est[i6] <- tempo.cor.est
                             tempo.cor.dec.per.loop <- (cor.est.ini - tempo.cor.est) / count.est # correlation decrease per loop
                             if(is.na(tempo.cor.dec.per.loop) | ! is.finite(tempo.cor.dec.per.loop)){
@@ -456,7 +457,7 @@ permut <- function(
                             }
                         }
                         count <- count + loop.nb.est # out of the loop to speedup
-                        tempo.cor <- abs(cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
+                        tempo.cor <- abs(stats::cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
                         if(tempo.cor > tempo.cor.secu | ((tempo.cor - cor.limit) < 0 & abs(tempo.cor - cor.limit) > smallest.cor.dec * cuteTool::round(log10(max(ini.pos, na.rm = TRUE))))){
                             GOBACK <- TRUE
                             tempo.pos <- tempo.pos.secu
@@ -479,7 +480,7 @@ permut <- function(
                             count.loop <- count.loop + 1
                             pos2 <- pos[count.loop]
                             tempo.pos[c(pos2 + 1, pos2)] <- tempo.pos[c(pos2, pos2 + 1)]
-                            tempo.cor <- abs(cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
+                            tempo.cor <- abs(stats::cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
                             if(print.count.loop[count.loop]){
                                 count.loop <- 0
                                 pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
@@ -503,13 +504,13 @@ permut <- function(
     if(warn.print == TRUE & ! is.null(warn)){
         on.exit(warning(paste0("FROM ", function.name, ":\n\n", warn), call. = FALSE), add = TRUE)
     }
-    on.exit(exp = options(warning.length = ini.warning.length), add = TRUE)
+    on.exit(expr = options(warning.length = ini.warning.length), add = TRUE)
     # output
     # warning output
     if(warn.print == TRUE & ! is.null(warn)){
         on.exit(warning(paste0("FROM ", function.name, ":\n\n", warn), call. = FALSE))
       }
-      on.exit(exp = options(warning.length = ini.warning.length), add = TRUE)
+      on.exit(expr = options(warning.length = ini.warning.length), add = TRUE)
     # end warning output
     output <- list(data = data1[tempo.pos], warn = warn, cor = if(is.null(data2)){cor(ini.pos, tempo.pos, method = "spearman")}else{tempo.cor}, count = count)
     return(output)

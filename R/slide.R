@@ -62,6 +62,7 @@
 #' @importFrom parallel clusterApply
 #' @importFrom parallel stopCluster
 #' @importFrom lubridate seconds_to_period
+#' @importFrom utils str
 #' @export
 slide <- function(
         data, 
@@ -388,7 +389,7 @@ slide <- function(
         if(verbose == TRUE){
             tempo.cat <- paste0("SPLIT OF TEST NUMBERS IN PARALLELISATION:")
             cat(paste0("\n    ", tempo.cat, "\n"))
-            str(cluster.list) # using print(str()) add a NULL below the result
+            utils::str(cluster.list) # using print(str()) add a NULL below the result
             cat("\n")
         }
         paral.output.list <- parallel::clusterApply( #
@@ -427,7 +428,7 @@ slide <- function(
                 process.id <- Sys.getpid()
                 cat(paste0("\nPROCESS ID ", process.id, " -> TESTS ", x[1], " TO ", x[length(x)], "\n"))
                 source(cute.path, local = .GlobalEnv)
-                fun_pack(req.package = "lubridate", lib.path = lib.path, load = TRUE) # load = TRUE to be sure that functions are present in the environment. And this prevent to use R.lib.path argument of python_pack()
+                # fun_pack(req.package = "lubridate", lib.path = lib.path, load = TRUE) # load = TRUE to be sure that functions are present in the environment. And this prevent to use R.lib.path argument of python_pack()
                 # end check again: very important because another R
                 ini.date <- Sys.time()
                 ini.time <- as.numeric(ini.date) # time of process begin, converted into 
