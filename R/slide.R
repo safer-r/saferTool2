@@ -56,6 +56,7 @@
 #' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "left", parall = TRUE) # effect of parall argument
 #' @importFrom cuteDev arg_check
 #' @importFrom cuteDev get_message
+#' @importFrom cuteTool round
 #' @importFrom parallel detectCores
 #' @importFrom parallel makeCluster
 #' @importFrom parallel clusterSplit
@@ -120,6 +121,7 @@ slide <- function(
         fun = c(
             "cuteDev::arg_check",
             "cuteDev::get_message",
+            "cuteTool::round",
             "parallel::detectCores",
             "parallel::makeCluster",
             "parallel::clusterSplit",
@@ -442,14 +444,14 @@ slide <- function(
                         if(print.count.loop == print.count){
                             print.count.loop <- 0
                             tempo.time <- as.numeric(Sys.time())
-                            tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - ini.time))
+                            tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)))
                             final.loop <- (tempo.time - ini.time) / i4 * length(x) # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
                             final.exp <- as.POSIXct(final.loop, origin = ini.date)
                             cat(paste0("\nIN PROCESS ", process.id, " | LOOP ", format(i4, big.mark=","), " / ", format(length(x), big.mark=","), " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
                         }
                         if(i4 == length(x)){
                             tempo.time <- as.numeric(Sys.time())
-                            tempo.lapse <- round(lubridate::seconds_to_period(tempo.time - ini.time))
+                            tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)))
                             cat(paste0("\nPROCESS ", process.id, " ENDED | LOOP ", format(i4, big.mark=","), " / ", format(length(x), big.mark=","), " | TIME SPENT: ", tempo.lapse, "\n\n"))
                         }
                     }
@@ -481,7 +483,7 @@ slide <- function(
     if(verbose == TRUE){
         end.date <- Sys.time()
         end.time <- as.numeric(end.date)
-        total.lapse <- round(lubridate::seconds_to_period(end.time - ini.time))
+        total.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(end.time - ini.time)))
         cat(paste0("\nslide JOB END\n\nTIME: ", end.date, "\n\nTOTAL TIME LAPSE: ", total.lapse, "\n\n\n"))
     }
     return(output)
