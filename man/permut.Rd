@@ -87,7 +87,7 @@ ini.time <- as.numeric(Sys.time()) ;
 count <- 0 ; 
 for(i0 in 1:1e9){count <- count + 1} ; 
 tempo.time <- as.numeric(Sys.time()) ; 
-tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - ini.time)) ;
+tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ;
 tempo.lapse
 
 # example (2) showing that for loop, used in permut(), is faster than while loop
@@ -96,7 +96,7 @@ ini.time <- as.numeric(Sys.time()) ;
 count <- 0 ; 
 while(count < 1e9){count <- count + 1} ; 
 tempo.time <- as.numeric(Sys.time()) ; 
-tempo.lapse <- cuteTool::round(lubridate::seconds_to_period(tempo.time - ini.time)) ; 
+tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ; 
 tempo.lapse
 
 permut(data1 = LETTERS[1:5], data2 = NULL, n = 100, seed = 1, print.count = 10, text.print = "CPU NB 4")
