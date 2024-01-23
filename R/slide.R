@@ -53,7 +53,7 @@
 #' 
 #' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "right") # effect of boundary argument
 #' 
-#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "left", parall = TRUE) # effect of parall argument
+#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "left", thread.nb = 2, parall = TRUE) # effect of parall argument
 #' @importFrom cuteDev arg_check
 #' @importFrom cuteDev get_message
 #' @importFrom cuteTool round
