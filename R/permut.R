@@ -55,7 +55,7 @@
 #' count <- 0 ; 
 #' for(i0 in 1:1e9){count <- count + 1} ; 
 #' tempo.time <- as.numeric(Sys.time()) ; 
-#' tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ;
+#' tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ;
 #' tempo.lapse
 #' 
 #' # example (2) showing that for loop, used in permut(), is faster than while loop
@@ -64,7 +64,7 @@
 #' count <- 0 ; 
 #' while(count < 1e9){count <- count + 1} ; 
 #' tempo.time <- as.numeric(Sys.time()) ; 
-#' tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ; 
+#' tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ; 
 #' tempo.lapse
 #' 
 #' permut(data1 = LETTERS[1:5], data2 = NULL, n = 100, seed = 1, print.count = 10, text.print = "CPU NB 4")
@@ -82,7 +82,7 @@
 #' 
 #' permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print.count = 1e3, cor.limit = 0.5)
 #' @importFrom cuteDev arg_check
-#' @importFrom cuteTool round
+#' @importFrom cuteTool round2
 #' @importFrom lubridate seconds_to_period
 #' @importFrom stats cor
 #' @export
@@ -124,7 +124,7 @@ permut <- function(
     .pack_and_function_check(
         fun = c(
             "cuteDev::arg_check",
-            "cuteTool::round",
+            "cuteTool::round2",
             "lubridate::seconds_to_period"
         ),
         lib.path = NULL,
@@ -304,7 +304,7 @@ permut <- function(
                     count.loop <- 0
                     pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                     tempo.time <- as.numeric(Sys.time())
-                    tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)))
+                    tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)))
                     final.loop <- (tempo.time - tempo.time.loop) / i3 * n # expected duration in seconds
                     final.exp <- as.POSIXct(final.loop, origin = tempo.date.loop)
                     cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FOR LOOP ", i3, " / ", n, " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
@@ -339,7 +339,7 @@ permut <- function(
             }
             if(tempo.cor < cor.limit){ # randomize directly all the position to be close to correlation zero
                 warn.count <- warn.count + 1
-                tempo.warn <- paste0("(", warn.count,") INITIAL ABSOLUTE VALUE OF THE ", toupper(cor.method), " CORRELATION ", cuteTool::round(tempo.cor), " BETWEEN data1 AND data2 HAS BEEN DETECTED AS BELOW THE CORRELATION LIMIT PARAMETER ", cor.limit, "\nTHE data1 SEQUENCE HAS BEEN COMPLETELY RANDOMIZED TO CORRESPOND TO CORRELATION ZERO")
+                tempo.warn <- paste0("(", warn.count,") INITIAL ABSOLUTE VALUE OF THE ", toupper(cor.method), " CORRELATION ", cuteTool::round2(tempo.cor), " BETWEEN data1 AND data2 HAS BEEN DETECTED AS BELOW THE CORRELATION LIMIT PARAMETER ", cor.limit, "\nTHE data1 SEQUENCE HAS BEEN COMPLETELY RANDOMIZED TO CORRESPOND TO CORRELATION ZERO")
                 warn <- paste0(ifelse(is.null(warn), tempo.warn, paste0(warn, "\n\n", tempo.warn))) #
                 for(i4 in 1:5){ # done 5 times to be sure of the complete randomness
                     tempo.pos <- sample(x = tempo.pos, size = length(tempo.pos), replace = FALSE)
@@ -354,8 +354,8 @@ permut <- function(
                 smallest.cor.dec <- cor.ini - tempo.cor
                 # end smallest correlation decrease
                 # going out of tempo.cor == cor.ini
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "CORRELATION DECREASE AFTER A SINGLE PERMUTATION: ", cuteTool::round(smallest.cor.dec, 4)))
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP -> GOING OUT FROM EQUALITY | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4)))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "CORRELATION DECREASE AFTER A SINGLE PERMUTATION: ", cuteTool::round2(smallest.cor.dec, 4)))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP -> GOING OUT FROM EQUALITY | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round2(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round2(tempo.cor, 4)))
                 print.count.loop <- logical(length = print.count)
                 print.count.loop[length(print.count.loop)] <- TRUE # counter to speedup
                 count.loop <- 0 # 
@@ -372,13 +372,13 @@ permut <- function(
                         count.loop <- 0
                         pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                         tempo.time <- as.numeric(Sys.time())
-                        tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)))
-                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP", format(count.loop, big.mark=","), " / ? | COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4), " | TIME SPENT: ", tempo.lapse))
+                        tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)))
+                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP", format(count.loop, big.mark=","), " / ? | COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round2(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round2(tempo.cor, 4), " | TIME SPENT: ", tempo.lapse))
                     }
                 }
                 tempo.time <- as.numeric(Sys.time())
-                tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)))
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP END | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4), " | TOTAL SPENT TIME: ", tempo.lapse))
+                tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FIRST WHILE LOOP STEP END | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round2(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round2(tempo.cor, 4), " | TOTAL SPENT TIME: ", tempo.lapse))
                 if(tempo.cor < cor.limit){
                     warn.count <- warn.count + 1
                     tempo.warn <- paste0("(", warn.count,") THE FIRST FOR & WHILE LOOP STEPS HAVE BEEN TOO FAR AND SUBSEQUENT LOOP STEPS WILL NOT RUN")
@@ -386,7 +386,7 @@ permut <- function(
                 }
                 # end going out of tempo.cor == cor.ini
                 # estimation of the average correlation decrease per loop on x loops and for loop execution
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE/FOR LOOPS INITIATION | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4)))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE/FOR LOOPS INITIATION | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round2(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round2(tempo.cor, 4)))
                 count.est <- 1e5
                 first.round <- TRUE
                 GOBACK <- FALSE
@@ -417,13 +417,13 @@ permut <- function(
                         }
                         cor.est <- cor.est[which.max(cor.dec.per.loop)] # max to avoid to go to far with for loop (tempo.cor below tempo.limit)
                         cor.dec.per.loop <- max(cor.dec.per.loop, na.rm = TRUE) # max to avoid to go to far with for loop (tempo.cor below tempo.limit)
-                        loop.nb.est <- cuteTool::round((tempo.cor - cor.limit) / cor.dec.per.loop)
+                        loop.nb.est <- cuteTool::round2((tempo.cor - cor.limit) / cor.dec.per.loop)
                     }else{
                         if(GOBACK == TRUE){
-                            loop.nb.est <- cuteTool::round(loop.nb.est / 2)
+                            loop.nb.est <- cuteTool::round2(loop.nb.est / 2)
                         }else{
                             cor.dec.per.loop <- (cor.ini - tempo.cor) / count
-                            loop.nb.est <- cuteTool::round((tempo.cor - cor.limit) / cor.dec.per.loop)
+                            loop.nb.est <- cuteTool::round2((tempo.cor - cor.limit) / cor.dec.per.loop)
                         }
                     }
                     # end estimation step
@@ -435,7 +435,7 @@ permut <- function(
                         tempo.pos.secu <- tempo.pos
                         count.secu <- count
                         tempo.cor.secu <- tempo.cor
-                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "INITIAL SETTINGS BEFORE ROUND: ", round, " | LOOP COUNT: ", format(count, big.mark=","), " | GO BACK: ", GOBACK, " | LOOP NUMBER ESTIMATION: ", format(loop.nb.est, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4)))
+                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "INITIAL SETTINGS BEFORE ROUND: ", round, " | LOOP COUNT: ", format(count, big.mark=","), " | GO BACK: ", GOBACK, " | LOOP NUMBER ESTIMATION: ", format(loop.nb.est, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round2(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round2(tempo.cor, 4)))
                         print.count.loop <- logical(length = print.count)
                         print.count.loop[length(print.count.loop)] <- TRUE # not this to avoid long vector, but not forget to reset during printing: print.count.loop[(1:trunc(n / print.count) * print.count)] <- TRUE # counter to speedup
                         count.loop <- 0
@@ -450,7 +450,7 @@ permut <- function(
                                 count.loop <- 0
                                 pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                                 tempo.time <- as.numeric(Sys.time())
-                                tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)))
+                                tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)))
                                 final.loop <- (tempo.time - tempo.time.loop) / i6 * loop.nb.est # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
                                 final.exp <- as.POSIXct(final.loop, origin = tempo.date.loop)
                                 cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FOR LOOP | ROUND ", round, " | LOOP: ", format(i6, big.mark=","), " / ", format(loop.nb.est, big.mark=","), " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
@@ -458,7 +458,7 @@ permut <- function(
                         }
                         count <- count + loop.nb.est # out of the loop to speedup
                         tempo.cor <- abs(stats::cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
-                        if(tempo.cor > tempo.cor.secu | ((tempo.cor - cor.limit) < 0 & abs(tempo.cor - cor.limit) > smallest.cor.dec * cuteTool::round(log10(max(ini.pos, na.rm = TRUE))))){
+                        if(tempo.cor > tempo.cor.secu | ((tempo.cor - cor.limit) < 0 & abs(tempo.cor - cor.limit) > smallest.cor.dec * cuteTool::round2(log10(max(ini.pos, na.rm = TRUE))))){
                             GOBACK <- TRUE
                             tempo.pos <- tempo.pos.secu
                             count <- count.secu
@@ -467,7 +467,7 @@ permut <- function(
                             GOBACK <- FALSE
                         }
                     }else{
-                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FINAL WHILE LOOP | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4)))
+                        cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "FINAL WHILE LOOP | LOOP COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round2(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round2(tempo.cor, 4)))
                         print.count.loop <- logical(length = print.count)
                         print.count.loop[length(print.count.loop)] <- TRUE # counter to speedup
                         count.loop <- 0 # 
@@ -485,17 +485,17 @@ permut <- function(
                                 count.loop <- 0
                                 pos <- sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                                 tempo.time <- as.numeric(Sys.time())
-                                tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)))
+                                tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)))
                                 final.loop <- (tempo.time - tempo.time.loop) / (tempo.cor.loop - tempo.cor) * (tempo.cor - cor.limit) # expected duration in seconds # tempo.cor.loop - tempo.cor always positive and tempo.cor decreases progressively starting from tempo.cor.loop
                                 final.exp <- as.POSIXct(final.loop, origin = tempo.date.loop)
-                                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE LOOP | LOOP NB: ", format(count.loop, big.mark=","), " | COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4), " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
+                                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE LOOP | LOOP NB: ", format(count.loop, big.mark=","), " | COUNT: ", format(count, big.mark=","), " | CORRELATION LIMIT: ", cuteTool::round2(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round2(tempo.cor, 4), " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
                             }
                         }
                     }
                 }
                 tempo.time <- as.numeric(Sys.time())
-                tempo.lapse <- cuteTool::round(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)))
-                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE/FOR LOOPS END | LOOP COUNT: ", format(count, big.mark=","), " | NB OF ROUNDS: ", round, " | CORRELATION LIMIT: ", cuteTool::round(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round(tempo.cor, 4), " | TOTAL SPENT TIME: ", tempo.lapse))
+                tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)))
+                cat(paste0("\n", ifelse(text.print == "", "", paste0(text.print, " | ")), "WHILE/FOR LOOPS END | LOOP COUNT: ", format(count, big.mark=","), " | NB OF ROUNDS: ", round, " | CORRELATION LIMIT: ", cuteTool::round2(cor.limit, 4), " | ABS TEMPO CORRELATION: ", cuteTool::round2(tempo.cor, 4), " | TOTAL SPENT TIME: ", tempo.lapse))
             }
             tempo.cor <- ifelse(neg.cor == TRUE, -tempo.cor, tempo.cor)
         }
