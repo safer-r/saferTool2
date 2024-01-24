@@ -108,9 +108,9 @@ permut(data1 = 101:110, data2 = 21:30, seed = 1, print.count = 1e4, text.print =
 obs1 <- 101:110 ; 
 permut(data1 = obs1, data2 = obs1, seed = 1, print.count = 10, cor.method = "spearman", cor.limit = 0.2)
 
-permut(data1 = 1:1e3, data2 = 1e3:1, seed = 1, print.count = 1e6, text.print = "", cor.method = "spearman", cor.limit = 0.7)
+permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e6, text.print = "", cor.method = "spearman", cor.limit = 0.7)
 
-permut(data1 = 1:1e2, data2 = 1e2:1, seed = 1, print.count = 1e3, cor.limit = 0.5)
+permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e3, cor.limit = 0.5)
 
 permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print.count = 1e3, cor.limit = 0.5)
 }
