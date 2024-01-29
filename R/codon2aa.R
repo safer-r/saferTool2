@@ -4,23 +4,9 @@
 #' @param data Single caracter string of three characters, or vector of three characters, indicating the DNA codon (only "A", "T", "G" and "C" allowed). Case insensitive. Omitted if display argument is TRUE.
 #' @param display Single logical value. Display the whole genetic table? if TRUE, override data.
 #' @returns The 1 letter uppercase amino acid of the submitted codon or the whole table if display argument is TRUE.
-#' @details 
-#' REQUIRED PACKAGES
-#' 
-#' cuteDev
-#' 
-#' 
-#' REQUIRED FUNCTIONS FROM THE cute PACKAGE
-#' 
-#' arg_check()
-#'
-#'
-#' WARNINGS
-#' 
-#' None
 #' @examples
 #' codon2aa(data = "ATC", display = TRUE)
-#' @importFrom cuteDev arg_check
+#' @importFrom saferDev arg_check
 #' @export
 codon2aa <- function(
         data,
@@ -29,7 +15,7 @@ codon2aa <- function(
     # DEBUGGING
     # data = "atg" ; display = FALSE
     # package name
-    package.name <- "cuteTool2"
+    package.name <- "saferTool2"
     # end package name
     # function name
     ini <- match.call(expand.dots = FALSE) # initial parameters (specific of arg_test())
@@ -48,7 +34,7 @@ codon2aa <- function(
     # check of the required function from the required packages
     .pack_and_function_check(
         fun = c(
-            "cuteDev::arg_check"
+            "saferDev::arg_check"
         ),
         lib.path = NULL,
         external.function.name = function.name
@@ -73,8 +59,8 @@ codon2aa <- function(
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
     ee <- expression(arg.check = c(arg.check, tempo$problem) , text.check = c(text.check, tempo$text) , checked.arg.names = c(checked.arg.names, tempo$object.name))
-    tempo <- cuteDev::arg_check(data = data, class = "vector", typeof = "character", fun.name = function.name) ; eval(ee)
-    tempo <- cuteDev::arg_check(data = display, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
+    tempo <- saferDev::arg_check(data = data, class = "vector", typeof = "character", fun.name = function.name) ; eval(ee)
+    tempo <- saferDev::arg_check(data = display, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(arg.check)){
         if(any(arg.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
@@ -82,7 +68,7 @@ codon2aa <- function(
     }
     # argument checking with arg_check()
     # check with r_debugging_tools
-    # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using cuteDev::arg_check()
+    # source("C:/Users/Gael/Documents/Git_versions_to_use/debugging_tools_for_r_dev-v1.7/r_debugging_tools-v1.7.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using saferDev::arg_check()
     # check with r_debugging_tools
     # end argument primary checking
     

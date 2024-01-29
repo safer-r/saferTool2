@@ -40,15 +40,20 @@ permut(
 }
 \value{
 A list containing:
+
 - $data: the modified vector.
+
 - $warn: potential warning messages (in case of negative correlation when data2 is specified). NULL if non warning message.
+
 - $cor: a spearman correlation between the initial positions (1:length(data1) and the final positions if data2 is not specified and the final correlation between data1 and data2 otherwise, according to cor.method.
+
 - $count: the number of loops used.
 }
 \description{
 Reorder the elements of the data1 vector by flipping 2 randomly selected  consecutive positions either:
 
 - n times (when n is precised) or.
+
 - until the correlation between data1 and data2 decreases down to the cor.limit (0.2 by default). See cor.limit below to deal with negative correlations.
 
 Example of consecutive position flipping: ABCD -> BACD -> BADC, etc.
@@ -56,22 +61,6 @@ Example of consecutive position flipping: ABCD -> BACD -> BADC, etc.
 Designed for discrete values, but works also for continuous values.
 }
 \details{
-REQUIRED PACKAGES
-
-lubridate
-
-cuteDev
-
-cuteTool
-
-
-REQUIRED FUNCTIONS FROM THE cute PACKAGE
-
-arg_check()
-
-round()
-
-
 WARNINGS
 
 see # https://www.r-bloggers.com/strategies-to-speedup-r-code/ for code speedup
@@ -87,7 +76,7 @@ ini.time <- as.numeric(Sys.time()) ;
 count <- 0 ; 
 for(i0 in 1:1e9){count <- count + 1} ; 
 tempo.time <- as.numeric(Sys.time()) ; 
-tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ;
+tempo.lapse <- saferTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ;
 tempo.lapse
 
 # example (2) showing that for loop, used in permut(), is faster than while loop
@@ -96,7 +85,7 @@ ini.time <- as.numeric(Sys.time()) ;
 count <- 0 ; 
 while(count < 1e9){count <- count + 1} ; 
 tempo.time <- as.numeric(Sys.time()) ; 
-tempo.lapse <- cuteTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ; 
+tempo.lapse <- saferTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ; 
 tempo.lapse
 
 permut(data1 = LETTERS[1:5], data2 = NULL, n = 100, seed = 1, print.count = 10, text.print = "CPU NB 4")

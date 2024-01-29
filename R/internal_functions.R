@@ -30,7 +30,7 @@
     # main code
     tempo.log <- grepl(x = fun, pattern = "^.+::.+$")
     if( ! all(tempo.log)){
-        tempo.cat <- paste0("ERROR IN THE CODE OF THE ", external.function.name, " OF THE cuteTool2 PACKAGE.\nTHE STRING IN fun ARGUMENT MUST CONTAIN \"::\":\n", paste(fun[ ! tempo.log], collapse = "\n"))
+        tempo.cat <- paste0("ERROR IN THE CODE OF THE ", external.function.name, " OF THE saferTool2 PACKAGE.\nTHE STRING IN fun ARGUMENT MUST CONTAIN \"::\":\n", paste(fun[ ! tempo.log], collapse = "\n"))
         stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     pkg.fun.name.list <- base::strsplit(fun, "::") # package in 1 and function in 2
@@ -41,7 +41,7 @@
         tempo.cat <- paste0(
             "ERROR IN ", 
             external.function.name, 
-            " OF THE cuteTool2 PACKAGE. REQUIRED PACKAGE", 
+            " OF THE saferTool2 PACKAGE. REQUIRED PACKAGE", 
             ifelse(length(tempo) == 1L, paste0(":\n", tempo), paste0("S:\n", paste(tempo, collapse = "\n"))), 
             "\nMUST BE INSTALLED IN", 
             ifelse(length(lib.path) == 1L, "", " ONE OF THESE FOLDERS"), 
@@ -56,7 +56,7 @@
         tempo.cat <- paste0(
             "ERROR IN ", 
             external.function.name, 
-            " OF THE cuteTool2 PACKAGE. REQUIRED FUNCTION",
+            " OF THE saferTool2 PACKAGE. REQUIRED FUNCTION",
             ifelse(length(tempo) == 1L, " IS ", "S ARE "), 
             "MISSING IN THE INSTALLED PACKAGE", 
             ifelse(length(tempo) == 1L, paste0(":\n", tempo), paste0("S:\n", paste(tempo, collapse = "\n")))

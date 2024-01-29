@@ -19,7 +19,7 @@ slide(
   res.path = NULL,
   lib.path = NULL,
   verbose = TRUE,
-  cute.path =
+  safer.path =
     "C:\\\\Users\\\\Gael\\\\Documents\\\\Git_projects\\\\cute_little_R_functions\\\\cute_little_R_functions.R"
 )
 }
@@ -52,37 +52,23 @@ slide(
 
 \item{verbose}{Single logical value. Display messages?}
 
-\item{cute.path}{Single character string indicating the absolute path of the cute.R file. Will be remove when cute will be a package. Ignored if parall is FALSE.}
+\item{safer.path}{Single character string indicating the absolute path of the safer.R file. Will be remove when safer will be a package. Ignored if parall is FALSE.}
 }
 \value{
 A data frame containing :
+
 - $left : the left boundary of each window (in the unit of the data argument).
+
 - $right : the right boundary of each window (in the unit of data argument).
+
 - $center : the center of each window (in the unit of data argument).
+
 - $value : the computed value by the fun argument in each window).
 }
 \description{
 Return a computation made on a vector using a sliding window.
 }
 \details{
-REQUIRED PACKAGES
-
-cuteDev
-
-lubridate
-
-parallel if parall argument is TRUE (included in the R installation packages but not automatically loaded)
-
-
-REQUIRED FUNCTIONS FROM THE cute PACKAGE
-
-arg_check()
-
-get_message()
-
-pack()
-
-
 WARNINGS
 
 The function uses two strategies, depending on the amout of memory required which depends on the data, window.size and step arguments. The first one uses lapply(), is generally fast but requires lots of memory. The second one uses a parallelized loop. The choice between the two strategies is automatic if parall argument is FALSE, and is forced toward parallelization if parall argument is TRUE.

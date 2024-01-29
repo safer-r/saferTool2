@@ -15,21 +15,21 @@ codon_finder(pos, begin, end)
 }
 \value{
 A data frame with column names:
+
 - pos: values of the pos argument.
+
 - codon_nb: the codon number in the CDS encompassing the pos value.
+
 - codon_pos: the position of pos in the codon (either 1, 2 or 3).
+
 - codon_begin: the first base position of the codon.
+
 - codon_end: the last base position of the codon.
 }
 \description{
 Gives the codon number and position in the codon of nucleotid positions.
 }
 \details{
-REQUIRED PACKAGES
-
-cuteDev
-
-
 WARNINGS
 
 Only for coding sequences (no introns): ((end - begin) + 1) / 3 must be an integer (i.e., modulo zero)
