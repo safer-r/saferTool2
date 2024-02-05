@@ -82,5 +82,7 @@ slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, bou
 
 slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "right") # effect of boundary argument
 
+\dontrun{
 slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "left", parall = TRUE, thread.nb = 2) # effect of parall argument
+}
 }
