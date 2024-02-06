@@ -1,6 +1,7 @@
 pandoc: 3.1.1
 pkgdown: 2.0.7
 pkgdown_sha: ~
-articles: {}
-last_built: 2024-02-05T19:21Z
+articles:
+  saferTool2: saferTool2.html
+last_built: 2024-02-06T15:32Z
 
