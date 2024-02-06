@@ -1,0 +1,43 @@
+url: ~
+
+template:
+  bootstrap: 5
+  bslib:
+        primary: "#0054AD"
+        border-radius: 0.5rem
+        btn-border-radius: 0.25rem
+
+authors:
+    Yushi Han:
+        href: https://github.com/yushiHn
+    Gaël Millot:
+        href: https://github.com/gael-millot
+    
+
+reference:
+- title: "arg_check"
+  contents: 
+  - arg_check
+- title: "arg_test"
+  contents: 
+  - arg_test
+- title: "env_check"
+  contents: 
+  - env_check
+- title: "get_message"
+  contents: 
+  - get_message
+- title: "is_function_here"
+  contents: 
+  - is_function_here
+- title: "is_package_here"
+  contents: 
+  - is_package_here
+- title: "is_python_package_here"
+  contents: 
+  - is_python_package_here
+- title: "report"
+  contents: 
+  - report
+
+

@@ -98,12 +98,12 @@ test_that("trim() handles displayed.nb argument without error", {
 # Unit test for the argument "tick.length"
   # Create a test case
   data <- 1:10
-  expect_no_error(trim(data = data, tick.length = 1.5))
+  expect_no_error(trim(data = data, tick.length = 0.5))
 
 # Unit test for the argument "sec.tick.length"
   # Create a test case
   data <- 1:10
-  expect_no_error(trim(data = data, sec.tick.length = 1.5))
+  expect_no_error(trim(data = data, sec.tick.length = 0.5))
 
 # Unit test for the argument "corner.text"
   # Create a test case
@@ -133,6 +133,6 @@ test_that("trim() handles displayed.nb argument without error", {
                        left.space = 0.2, up.space = 0.2, right.space = 0.2, orient = 1, dist.legend = 0.5,
                        amplif.label = 1.5, amplif.axis = 1.5, std.x.range = FALSE, std.y.range = FALSE,
                        cex.pt = 0.5, col.box = "red", x.nb.inter.tick = 6, y.nb.inter.tick = 6,
-                       tick.length = 1.5, sec.tick.length = 1.5, corner.text = "Test corner text",
+                       tick.length = 0.5, sec.tick.length = 0.5, corner.text = "Test corner text",
                        amplif.legend = 1.5, corner.text.size = 1.5, trim.return = FALSE, box.type = "l"))
 })
