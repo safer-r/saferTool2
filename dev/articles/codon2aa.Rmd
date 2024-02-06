@@ -1,0 +1,85 @@
+---
+title: "codon2aa"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ">"
+)
+```
+
+```{r setup}
+library(saferTool2)
+```
+
+### Datasets
+
+```{r}
+codon1 <- "atg"
+codon2 <- "tga"
+codon3 <- "ctt"
+codon4 <- "aga"
+codon5 <- "tat"
+codon6 <- "gcc"
+codon7 <- "cgg"
+codon8 <- "agg"
+codon9 <- "ttt"
+codon10 <- "aaa"
+codon11 <- "xyz"
+```
+<br>
+
+### Datasets info
+
+```{r}
+codon1
+codon2
+codon3
+codon4
+codon5
+codon6
+codon7
+codon8
+codon9
+codon10
+codon11
+```
+<br>
+
+### Argument data
+```{r}
+codon2aa(data = codon1)
+codon2aa(data = codon2)
+codon2aa(data = codon3)
+codon2aa(data = codon4)
+codon2aa(data = codon5)
+codon2aa(data = codon6)
+codon2aa(data = codon7)
+codon2aa(data = codon8)
+codon2aa(data = codon9)
+codon2aa(data = codon10)
+```
+<br>
+
+### All the arguments
+```{r}
+codon2aa(data = codon1, display = TRUE)
+codon2aa(data = codon2, display = FALSE)
+codon2aa(data = codon3, display = TRUE)
+codon2aa(data = codon4, display = FALSE)
+codon2aa(data = codon5, display = TRUE)
+codon2aa(data = codon6, display = FALSE)
+codon2aa(data = codon7, display = TRUE)
+codon2aa(data = codon8, display = FALSE)
+codon2aa(data = codon9, display = TRUE)
+codon2aa(data = codon10, display = FALSE)
+```
+<br>
+
+### Error example
+```{r, echo = TRUE, error = TRUE}
+codon2aa(data = codon11, display = FALSE)
+codon2aa(data = codon11, display = TRUE)
+```
+<br>

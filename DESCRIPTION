@@ -18,7 +18,12 @@ Imports:
     parallel,
     saferDev (>= 1.0),
     saferTool (>= 1.0)
-Remotes:  
+Remotes: 
     safer-r/saferDev,
     safer-r/saferTool
-
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
+Config/testthat/edition: 3
