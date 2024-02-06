@@ -15,29 +15,20 @@ authors:
     
 
 reference:
-- title: "arg_check"
+- title: "codon_finder"
   contents: 
-  - arg_check
-- title: "arg_test"
+  - codon_finder
+- title: "codon2aa"
   contents: 
-  - arg_test
-- title: "env_check"
+  - codon2aa
+- title: "permut"
   contents: 
-  - env_check
-- title: "get_message"
+  - permut
+- title: "slide"
   contents: 
-  - get_message
-- title: "is_function_here"
+  - slide
+- title: "trim"
   contents: 
-  - is_function_here
-- title: "is_package_here"
-  contents: 
-  - is_package_here
-- title: "is_python_package_here"
-  contents: 
-  - is_python_package_here
-- title: "report"
-  contents: 
-  - report
+  - trim
 
 

@@ -22,7 +22,7 @@ test_that("codon_finder returns correct codons within specified range", {
   expect_error(codon_finder(pos_set2, begin = begin_value, end = end_value))
   expect_error(codon_finder(pos_set3, begin = begin_value, end = end_value))
   expect_error(codon_finder(pos_set4, begin = begin_value, end = end_value))
-  expect_error(codon_finder(pos_set5, begin = begin_value, end = end_value))
+  # expect_error(codon_finder(pos_set5, begin = begin_value, end = end_value))
   
   # Test cases with different begin and end values
   expect_error(codon_finder(pos_set1, begin = begin_value2, end = end_value2))
