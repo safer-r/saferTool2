@@ -68,7 +68,7 @@ slide(data = data, window.size = 5, step = 2, fun = length, parall = FALSE)
 
 ### Argument thread.nb
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, parall = TRUE, thread.nb = NULL)
+slide(data = data, window.size = 5, step = 2, fun = length, parall = FALSE, thread.nb = NULL)
 ```
 <br>
 

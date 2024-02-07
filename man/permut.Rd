@@ -50,7 +50,7 @@ A list containing:
 - $count: the number of loops used.
 }
 \description{
-Reorder the elements of the data1 vector by flipping 2 randomly selected  consecutive positions either:
+Reorder the elements of the data1 vector by flipping 2 randomly selected consecutive positions either:
 
 - n times (when n is precised) or.
 
@@ -70,36 +70,7 @@ The random switch of non consecutive positions (ABCD -> DBCA for instance) does 
 Ths code would be: pos <- ini.pos[1:2] ; pos <- sample.int(n = n , size = 2, replace = FALSE) ; tempo.pos[pos] <- tempo.pos[rev(pos)]
 }
 \examples{
-# example (1) showing that for loop, used in permut(), is faster than while loop
+permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e4, text.print = "", cor.method = "spearman", cor.limit = 0.7)
 
-ini.time <- as.numeric(Sys.time()) ; 
-count <- 0 ; 
-for(i0 in 1:1e9){count <- count + 1} ; 
-tempo.time <- as.numeric(Sys.time()) ; 
-tempo.lapse <- saferTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ;
-tempo.lapse
-
-# example (2) showing that for loop, used in permut(), is faster than while loop
-
-ini.time <- as.numeric(Sys.time()) ; 
-count <- 0 ; 
-while(count < 1e9){count <- count + 1} ; 
-tempo.time <- as.numeric(Sys.time()) ; 
-tempo.lapse <- saferTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ; 
-tempo.lapse
-
-permut(data1 = LETTERS[1:5], data2 = NULL, n = 100, seed = 1, print.count = 10, text.print = "CPU NB 4")
-
-permut(data1 = 101:110, data2 = 21:30, seed = 1, print.count = 1e4, text.print = "", cor.method = "spearman", cor.limit = 0.2)
-
-# a way to use the cor.limit argument just considering data1
-
-obs1 <- 101:110 ; 
-permut(data1 = obs1, data2 = obs1, seed = 1, print.count = 10, cor.method = "spearman", cor.limit = 0.2)
-
-permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e6, text.print = "", cor.method = "spearman", cor.limit = 0.7)
-
-permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e3, cor.limit = 0.5)
-
-permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print.count = 1e3, cor.limit = 0.5)
+permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print.count = 1e4, cor.limit = 0.5)
 }
