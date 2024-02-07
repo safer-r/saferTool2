@@ -4,10 +4,25 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/articles/codon2aa.html</loc>
+  </url>
+  <url>
+    <loc>/articles/codon_finder.html</loc>
+  </url>
+  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
+    <loc>/articles/permut.html</loc>
+  </url>
+  <url>
     <loc>/articles/saferTool2.html</loc>
+  </url>
+  <url>
+    <loc>/articles/slide.html</loc>
+  </url>
+  <url>
+    <loc>/articles/trim.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
