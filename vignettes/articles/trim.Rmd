@@ -1,0 +1,185 @@
+---
+title: "trim"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ">"
+)
+```
+
+```{r setup}
+library(saferTool2)
+```
+<br>
+
+### Datasets
+
+```{r}
+data <- 1:10
+```
+<br>
+
+### Datasets info
+
+```{r}
+data
+```
+<br>
+
+### Argument displayed.nb
+```{r}
+trim(data = data, displayed.nb = 5)
+```
+<br>
+
+### Argument single.value.display
+```{r}
+trim(data = data, single.value.display = TRUE)
+```
+<br>
+
+### Argument trim.method
+```{r}
+trim(data = data, trim.method = "mean.sd")
+```
+<br>
+
+### Argument trim.cutoffs
+```{r}
+trim(data = data, trim.cutoffs = c(0.05, 0.975))
+```
+<br>
+
+### Argument interval.scale.disp
+```{r}
+trim(data = data, interval.scale.disp = FALSE)
+```
+<br>
+
+### Argument down.space
+```{r}
+trim(data = data, down.space = 0.2)
+```
+<br>
+
+### Argument left.space
+```{r}
+trim(data = data, left.space = 0.2)
+```
+<br>
+
+### Argument up.space
+```{r}
+trim(data = data, up.space = 0.2)
+```
+<br>
+
+### Argument right.space
+```{r}
+trim(data = data, right.space = 0.2)
+```
+<br>
+
+### Argument orient
+```{r}
+trim(data = data, orient = 1)
+```
+<br>
+
+### Argument dist.legend
+```{r}
+trim(data = data, dist.legend = 0.5)
+```
+<br>
+
+### Argument amplif.label
+```{r}
+trim(data = data, amplif.label = 0.7)
+```
+<br>
+
+### Argument amplif.axis
+```{r}
+trim(data = data, amplif.axis = 0.8)
+```
+<br>
+
+### Argument std.x.range
+```{r}
+trim(data = data, std.x.range = FALSE)
+```
+<br>
+
+### Argument std.y.range
+```{r}
+trim(data = data, std.y.range = FALSE)
+```
+<br>
+
+### Argument cex.pt
+```{r}
+trim(data = data, cex.pt = 0.5)
+```
+<br>
+
+### Argument col.box
+```{r}
+trim(data = data, col.box = "red")
+```
+<br>
+
+### Argument x.nb.inter.tick
+```{r}
+trim(data = data, x.nb.inter.tick = 6)
+```
+<br>
+
+### Argument y.nb.inter.tick
+```{r}
+trim(data = data, y.nb.inter.tick = 6)
+```
+<br>
+
+### Argument tick.length
+```{r}
+trim(data = data, tick.length = 0.5)
+```
+<br>
+
+
+### Argument sec.tick.length
+```{r}
+trim(data = data, sec.tick.length = 0.2)
+```
+<br>
+
+### Argument corner.text
+```{r}
+trim(data = data, corner.text = "Example corner text")
+```
+<br>
+
+### Argument amplif.legend
+```{r}
+trim(data = data, amplif.legend = 0.8)
+```
+<br>
+
+### Argument corner.text.size
+```{r}
+trim(data = data, corner.text.size = 0.8)
+```
+<br>
+
+### Argument trim.return
+```{r}
+trim(data = data, trim.return = FALSE)
+```
+<br>
+
+### All the arguments
+```{r}
+trim(data = data, displayed.nb = 5, single.value.display = TRUE, trim.method = "mean.sd", trim.cutoffs = c(0.05, 0.975), interval.scale.disp = TRUE, down.space = 0.2, left.space = 0.2, up.space = 0.2, right.space = 0.2, orient = 1, dist.legend = 0.5, amplif.label = 0.7, amplif.axis = 0.8, std.x.range = FALSE, std.y.range = FALSE, cex.pt = 0.5, col.box = "red", x.nb.inter.tick = 6, y.nb.inter.tick = 6, tick.length = 0.2, sec.tick.length = 0.2, corner.text = "Test corner text", amplif.legend = 0.8, corner.text.size = 0.8, trim.return = FALSE, box.type = "l")
+```

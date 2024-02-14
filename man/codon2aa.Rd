@@ -17,21 +17,6 @@ The 1 letter uppercase amino acid of the submitted codon or the whole table if d
 \description{
 Convert codon to amino acid using standard genetic code indicated in https://en.wikipedia.org/wiki/DNA_and_RNA_codon_tables.
 }
-\details{
-REQUIRED PACKAGES
-
-cuteDev
-
-
-REQUIRED FUNCTIONS FROM THE cute PACKAGE
-
-arg_check()
-
-
-WARNINGS
-
-None
-}
 \examples{
 codon2aa(data = "ATC", display = TRUE)
 }

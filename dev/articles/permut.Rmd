@@ -1,0 +1,130 @@
+---
+title: "permut"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ">"
+)
+```
+
+```{r setup}
+library(saferTool2)
+```
+<br>
+
+### Datasets
+
+```{r}
+vec1 <- 1:3 # vector of integers
+vec2 <- 1:3 / 3 # vector of proportions
+vec3 <- c(4, 5, 6) # vector of integers
+vec4 <- 101:103 # vector of integers
+vec5 <- c("a", "b","c") # vector of characters
+```
+<br>
+
+### Datasets info
+
+```{r}
+vec1 # vector of integers
+vec2 # vector of proportions
+vec3 # vector of integers
+vec4 # vector of integers
+vec5 # vector of characters
+```
+<br>
+
+
+### Argument data2
+```{r}
+permut(data1 = vec4, data2 = vec1)
+permut(data1 = vec3, data2 = vec2)
+permut(data1 = vec2, data2 = vec3)
+permut(data1 = vec1, data2 = vec4)
+permut(data1 = vec1, data2 = vec5)
+permut(data1 = vec2, data2 = vec5)
+permut(data1 = vec3, data2 = vec5)
+permut(data1 = vec4, data2 = vec5)
+permut(data1 = vec5, data2 = vec5)
+```
+<br>
+
+### Argument n
+```{r}
+permut(data1 = vec1, n = 5)
+permut(data1 = vec1, n = 10)
+permut(data1 = vec2, n = 5)
+permut(data1 = vec2, n = 10)
+permut(data1 = vec3, n = 5)
+permut(data1 = vec3, n = 10)
+permut(data1 = vec4, n = 5)
+permut(data1 = vec4, n = 10)
+permut(data1 = vec5, n = 5)
+permut(data1 = vec5, n = 10)
+```
+<br>
+
+### Argument seed
+```{r}
+arg_check(data = mat2, 
+    prop = TRUE # Check for values between 0 and 1 only
+)
+```
+<br>
+
+### Argument print.count
+```{r}
+arg_check(data = mat2, 
+    prop = TRUE # Check for values between 0 and 1 only
+)
+```
+<br>
+
+### Argument text.print
+```{r}
+arg_check(data = mat2, 
+    prop = TRUE # Check for values between 0 and 1 only
+)
+```
+<br>
+
+### Argument cor.method
+```{r}
+arg_check(data = mat2, 
+    prop = TRUE # Check for values between 0 and 1 only
+)
+```
+<br>
+
+### Argument cor.limit
+```{r}
+arg_check(data = mat2, 
+    prop = TRUE # Check for values between 0 and 1 only
+)
+```
+<br>
+
+### Argument warn.print
+```{r}
+arg_check(data = mat2, 
+    prop = TRUE # Check for values between 0 and 1 only
+)
+```
+<br>
+
+### Argument lib.path
+```{r}
+arg_check(data = mat2, 
+    prop = TRUE # Check for values between 0 and 1 only
+)
+```
+<br>
+
+### All the arguments
+```{r}
+arg_check(data = mat2, 
+    prop = TRUE # Check for values between 0 and 1 only
+)
+```

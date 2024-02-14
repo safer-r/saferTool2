@@ -1,0 +1,34 @@
+url: ~
+
+template:
+  bootstrap: 5
+  bslib:
+        primary: "#0054AD"
+        border-radius: 0.5rem
+        btn-border-radius: 0.25rem
+
+authors:
+    Yushi Han:
+        href: https://github.com/yushiHn
+    Gaël Millot:
+        href: https://github.com/gael-millot
+    
+
+reference:
+- title: "codon_finder"
+  contents: 
+  - codon_finder
+- title: "codon2aa"
+  contents: 
+  - codon2aa
+- title: "permut"
+  contents: 
+  - permut
+- title: "slide"
+  contents: 
+  - slide
+- title: "trim"
+  contents: 
+  - trim
+
+

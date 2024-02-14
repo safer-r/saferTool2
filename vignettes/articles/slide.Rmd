@@ -1,0 +1,127 @@
+---
+title: "slide"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ">"
+)
+```
+
+```{r setup}
+library(saferTool2)
+```
+<br>
+
+### Datasets
+
+```{r}
+data <- c(1:10, 100:110, 500)
+```
+<br>
+
+### Datasets info
+
+```{r}
+data
+```
+<br>
+
+
+### Simple example
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length)
+```
+<br>
+
+### Argument from
+```{r}
+slide(data = data, window.size = 5, step = 2, from = NULL, fun = length)
+```
+<br>
+
+### Argument to
+```{r}
+slide(data = data, window.size = 5, step = 2, to = NULL, fun = length)
+```
+<br>
+
+
+### Argument args
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, args = NULL)
+```
+<br>
+
+### Argument boundary
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, boundary = "left")
+```
+<br>
+
+### Argument parall
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, parall = FALSE)
+```
+<br>
+
+### Argument thread.nb
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, parall = FALSE, thread.nb = NULL)
+```
+<br>
+
+### Argument print.count
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, print.count = 100)
+```
+<br>
+
+### Argument res.path
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, res.path = NULL)
+```
+<br>
+
+
+### Argument lib.path
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, lib.path = NULL)
+```
+<br>
+
+
+### Argument verbose
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, verbose = TRUE)
+```
+<br>
+
+### Argument safer.path
+```{r}
+slide(data = data, window.size = 5, step = 2, fun = length, safer.path = ".")
+```
+<br>
+
+### All the arguments
+```{r}
+slide(
+      data = data,
+      window.size = 5,
+      step = 2,
+      from = NULL,
+      to = NULL,
+      fun = length,
+      args = NULL,
+      boundary = "left",
+      parall = FALSE,
+      thread.nb = NULL,
+      print.count = 100,
+      res.path = NULL,
+      lib.path = NULL,
+      verbose = TRUE,
+      safer.path = "."
+    )
+```
+

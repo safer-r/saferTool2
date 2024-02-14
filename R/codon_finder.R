@@ -6,17 +6,17 @@
 #' @param end Single indicating the position of the last base of the coding sequence.
 #' @returns
 #' A data frame with column names:
+#' 
 #' - pos: values of the pos argument.
+#' 
 #' - codon_nb: the codon number in the CDS encompassing the pos value.
+#' 
 #' - codon_pos: the position of pos in the codon (either 1, 2 or 3).
+#' 
 #' - codon_begin: the first base position of the codon.
+#' 
 #' - codon_end: the last base position of the codon.
 #' @details 
-#' REQUIRED PACKAGES
-#' 
-#' cuteDev
-#'
-#'
 #' WARNINGS
 #' 
 #' Only for coding sequences (no introns): ((end - begin) + 1) / 3 must be an integer (i.e., modulo zero)
@@ -26,7 +26,7 @@
 #' codon_finder(c(5, 6, 8, 10), begin = 5, end = 10)
 #' 
 #' codon_finder(c(0, 5, 6, 8, 10), begin = -2, end = 12)
-#' @importFrom cuteDev arg_check
+#' @importFrom saferDev arg_check
 #' @export
 codon_finder <- function(
         pos, 
@@ -36,7 +36,7 @@ codon_finder <- function(
     # DEBUGGING
     # pos = c(5, 6, 8, 10) ; begin = 5 ; end = 10
     # package name
-    package.name <- "cuteTool2"
+    package.name <- "saferTool2"
     # end package name
     # function name
     ini <- match.call(expand.dots = FALSE) # initial parameters (specific of arg_test())
@@ -55,7 +55,7 @@ codon_finder <- function(
     # check of the required function from the required packages
     .pack_and_function_check(
         fun = c(
-            "cuteDev::arg_check"
+            "saferDev::arg_check"
         ),
         lib.path = NULL,
         external.function.name = function.name
@@ -80,10 +80,10 @@ codon_finder <- function(
     argum.check <- NULL #
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
-    ee <- expression(argum.check = c(argum.check, tempo$problem) , text.check = c(text.check, tempo$text) , checked.arg.names = c(checked.arg.names, tempo$object.name))
-    tempo <- cuteDev::arg_check(data = pos, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, fun.name = function.name) ; eval(ee)
-    tempo <- cuteDev::arg_check(data = begin, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- cuteDev::arg_check(data = end, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name) ; eval(ee)
+    ee <- expression(argum.check <- c(argum.check, tempo$problem) , text.check <- c(text.check, tempo$text) , checked.arg.names <- c(checked.arg.names, tempo$object.name))
+    tempo <- saferDev::arg_check(data = pos, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, fun.name = function.name) ; eval(ee)
+    tempo <- saferDev::arg_check(data = begin, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name) ; eval(ee)
+    tempo <- saferDev::arg_check(data = end, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name) ; eval(ee)
     if( ! is.null(argum.check)){
         if(any(argum.check, na.rm = TRUE) == TRUE){
             stop(paste0("\n\n================\n\n", paste(text.check[argum.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
@@ -91,7 +91,7 @@ codon_finder <- function(
     }
     # end argument checking with arg_check()
     # check with r_debugging_tools
-    # source("C:/Users/yhan/Documents/Git_projects/debugging_tools_for_r_dev/r_debugging_tools.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using cuteDev::arg_check()
+    # source("C:/Users/yhan/Documents/Git_projects/debugging_tools_for_r_dev/r_debugging_tools.R") ; eval(parse(text = str_basic_arg_check_dev)) ; eval(parse(text = str_arg_check_with_fun_check_dev)) # activate this line and use the function (with no arguments left as NULL) to check arguments status and if they have been checked using saferDev::arg_check()
     # end check with r_debugging_tools
     # end argument primary checking
     
