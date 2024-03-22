@@ -1,8 +1,8 @@
 #' @title segmentation
 #' @description
-#' If data1 is a data frame corresponding to the data set of a scatterplot (with a x column for x-axis values and a y column for the y-axis column), then fun_segmentation() delimits a frame around the dots cloud using a sliding window set by x.range.split and x.step.factor to frame the top and bottom part of the cloud, and set by y.range.split and y.step.factor to frame the left and right part of the cloud.
+#' If data1 is a data frame corresponding to the data set of a scatterplot (with a x column for x-axis values and a y column for the y-axis column), then segmentation() delimits a frame around the dots cloud using a sliding window set by x.range.split and x.step.factor to frame the top and bottom part of the cloud, and set by y.range.split and y.step.factor to frame the left and right part of the cloud.
 #' 
-#' If a second data frame is provided, corresponding to the data set of a scatterplot (with a x column for x-axis values and a y column for the y-axis column), then fun_segmentation() defines the dots of this data frame, outside of the frame of the first data frame.
+#' If a second data frame is provided, corresponding to the data set of a scatterplot (with a x column for x-axis values and a y column for the y-axis column), then segmentation() defines the dots of this data frame, outside of the frame of the first data frame.
 #' @param data1 A data frame containing a column of x-axis values and a column of y-axis values.
 #' @param x1 Single character string of the data1 column name for x-axis (first column of data1 by default).
 #' @param y1 Single character string of the data1 column name for y-axis (second column of data1 by default).
@@ -76,13 +76,13 @@
 #' @examples
 #' # example explaining the unknown and inconsistent dots, and the cross 
 #' 
-#' set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data1[5:7, 2] <- NA ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; data2[11:13, 1] <- Inf ; set.seed(NULL) ; fun_segmentation(data1 = data1, x1 = names(data1)[1], y1 = names(data1)[2], x.range.split = 20, x.step.factor = 10, y.range.split = 23, y.step.factor = 10, error = 0, data2 = data2, x2 = names(data2)[1], y2 = names(data2)[2], data2.pb.dot = "not.signif", xy.cross.kind = "|", plot = TRUE, graph.in.file = FALSE, raster = FALSE, lib.path = NULL)
+#' set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data1[5:7, 2] <- NA ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; data2[11:13, 1] <- Inf ; set.seed(NULL) ; segmentation(data1 = data1, x1 = names(data1)[1], y1 = names(data1)[2], x.range.split = 20, x.step.factor = 10, y.range.split = 23, y.step.factor = 10, error = 0, data2 = data2, x2 = names(data2)[1], y2 = names(data2)[2], data2.pb.dot = "not.signif", xy.cross.kind = "|", plot = TRUE, graph.in.file = FALSE, raster = FALSE, lib.path = NULL)
 #' 
-#' set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; set.seed(NULL) ; fun_segmentation(data1 = data1, x1 = names(data1)[1], y1 = names(data1)[2], x.range.split = NULL, x.step.factor = 10, y.range.split = 23, y.step.factor = 10, error = 0, data2 = data2, x2 = names(data2)[1], y2 = names(data2)[2], data2.pb.dot = "unknown", xy.cross.kind = "|", plot = TRUE, graph.in.file = FALSE, raster = FALSE, lib.path = NULL)
+#' set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; set.seed(NULL) ; segmentation(data1 = data1, x1 = names(data1)[1], y1 = names(data1)[2], x.range.split = NULL, x.step.factor = 10, y.range.split = 23, y.step.factor = 10, error = 0, data2 = data2, x2 = names(data2)[1], y2 = names(data2)[2], data2.pb.dot = "unknown", xy.cross.kind = "|", plot = TRUE, graph.in.file = FALSE, raster = FALSE, lib.path = NULL)
 #' 
-#' set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; set.seed(NULL) ; fun_segmentation(data1 = data1, x1 = names(data1)[1], y1 = names(data1)[2], x.range.split = 20, x.step.factor = 10, y.range.split = NULL, y.step.factor = 10, error = 0, data2 = data2, x2 = names(data2)[1], y2 = names(data2)[2], data2.pb.dot = "unknown", xy.cross.kind = "&", plot = TRUE, graph.in.file = FALSE, raster = FALSE, lib.path = NULL)
+#' set.seed(1) ; data1 = data.frame(x = rnorm(500), y = rnorm(500), stringsAsFactors = TRUE) ; data2 = data.frame(x = rnorm(500, 0, 2), y = rnorm(500, 0, 2), stringsAsFactors = TRUE) ; set.seed(NULL) ; segmentation(data1 = data1, x1 = names(data1)[1], y1 = names(data1)[2], x.range.split = 20, x.step.factor = 10, y.range.split = NULL, y.step.factor = 10, error = 0, data2 = data2, x2 = names(data2)[1], y2 = names(data2)[2], data2.pb.dot = "unknown", xy.cross.kind = "&", plot = TRUE, graph.in.file = FALSE, raster = FALSE, lib.path = NULL)
 #' @export
-fun_segmentation <- function(
+segmentation <- function(
     data1, 
     x1, 
     y1, 

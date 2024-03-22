@@ -1,6 +1,7 @@
 #' @title .pack_and_function_check
 #' @description
 #' Check if 1) required functions are present in required packages and 2) required packages are installed locally.
+#' Simplified version of saferDev::is_function_here(), used as internal function for the other functions of the package.
 #' @param fun Character vector of the names of the required functions, preceded by the name of the package they belong to and a double colon. Example: c("ggplot2::geom_point", "grid::gpar").
 #' @param lib.path Character vector specifying the absolute pathways of the directories containing the listed packages in the fun argument, if not in the default directories. If NULL, the function checks only in the .libPaths() default R library folders.
 #' @param external.function.name Name of the function using the .pack_and_function_check() function.

@@ -34,9 +34,10 @@ Set of R functions for the development of R functions, written according to the 
 <br />
 
 ## Content
+<br />
 
 | Function | Description |
-| --- | --- |
+| :--- | :--- |
 | **codon2aa()** | Convert codon to amino acid using standard genetic code indicated in the [DNA and RNA codon tables](https://en.wikipedia.org/wiki/DNA_and_RNA_codon_tables). |
 | **codon_finder()** | Gives the codon number and position in the codon of nucleotid positions. |
 | **permut()** | Reorder the elements of the data1 vector by flipping 2 randomly selected  consecutive positions either: times (when n is precised) or: until the correlation between data1 and data2 decreases down to the cor.limit (0.2 by default). Example of consecutive position flipping: ABCD -> BACD -> BADC, etc. Designed for discrete values, but works also for continuous values. |
