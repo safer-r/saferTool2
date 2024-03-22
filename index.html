@@ -8,8 +8,8 @@
 <meta name="description" content="Sophisticated tools for modification of object.">
 <title>Sophisticated tools • saferTool2</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Sophisticated tools">
 <meta property="og:description" content="Sophisticated tools for modification of object.">
@@ -95,35 +95,36 @@
 <div class="section level2">
 <h2 id="content">Content<a class="anchor" aria-label="anchor" href="#content"></a>
 </h2>
+<p><br></p>
 <table class="table">
 <colgroup>
 <col width="50%">
 <col width="50%">
 </colgroup>
 <thead><tr class="header">
-<th>Function</th>
-<th>Description</th>
+<th align="left">Function</th>
+<th align="left">Description</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><strong>codon2aa()</strong></td>
-<td>Convert codon to amino acid using standard genetic code indicated in the <a href="https://en.wikipedia.org/wiki/DNA_and_RNA_codon_tables" class="external-link">DNA and RNA codon tables</a>.</td>
+<td align="left"><strong>codon2aa()</strong></td>
+<td align="left">Convert codon to amino acid using standard genetic code indicated in the <a href="https://en.wikipedia.org/wiki/DNA_and_RNA_codon_tables" class="external-link">DNA and RNA codon tables</a>.</td>
 </tr>
 <tr class="even">
-<td><strong>codon_finder()</strong></td>
-<td>Gives the codon number and position in the codon of nucleotid positions.</td>
+<td align="left"><strong>codon_finder()</strong></td>
+<td align="left">Gives the codon number and position in the codon of nucleotid positions.</td>
 </tr>
 <tr class="odd">
-<td><strong>permut()</strong></td>
-<td>Reorder the elements of the data1 vector by flipping 2 randomly selected consecutive positions either: times (when n is precised) or: until the correlation between data1 and data2 decreases down to the cor.limit (0.2 by default). Example of consecutive position flipping: ABCD -&gt; BACD -&gt; BADC, etc. Designed for discrete values, but works also for continuous values.</td>
+<td align="left"><strong>permut()</strong></td>
+<td align="left">Reorder the elements of the data1 vector by flipping 2 randomly selected consecutive positions either: times (when n is precised) or: until the correlation between data1 and data2 decreases down to the cor.limit (0.2 by default). Example of consecutive position flipping: ABCD -&gt; BACD -&gt; BADC, etc. Designed for discrete values, but works also for continuous values.</td>
 </tr>
 <tr class="even">
-<td><strong>slide()</strong></td>
-<td>Return a computation made on a vector using a sliding window.</td>
+<td align="left"><strong>slide()</strong></td>
+<td align="left">Return a computation made on a vector using a sliding window.</td>
 </tr>
 <tr class="odd">
-<td><strong>trim()</strong></td>
-<td>Trim and display values from a numeric vector or matrix. Plot 4 graphs: stripchart of values, stripchart of rank of values, histogram and normal QQPlot. Different kinds of intervals are displayed on the top of graphes to facilitate the analysis of the variable and a trimming setting. The trimming interval chosen is displayed on top of graphs.Both trimmed and not trimmed values are returned in a list.</td>
+<td align="left"><strong>trim()</strong></td>
+<td align="left">Trim and display values from a numeric vector or matrix. Plot 4 graphs: stripchart of values, stripchart of rank of values, histogram and normal QQPlot. Different kinds of intervals are displayed on the top of graphes to facilitate the analysis of the variable and a trimming setting. The trimming interval chosen is displayed on top of graphs.Both trimmed and not trimmed values are returned in a list.</td>
 </tr>
 </tbody>
 </table>
