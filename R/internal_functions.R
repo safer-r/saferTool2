@@ -27,44 +27,44 @@
     # fun = "ggplot2::geom_point" ; lib.path = "C:/Program Files/R/R-4.3.1/library" ; external.function.name = "fun1"
     # check of lib.path
     # already done in the main function
-    if(is.null(lib.path)){
+    if(base::is.null(lib.path)){
         lib.path <- .libPaths() # .libPaths(new = lib.path) # or .libPaths(new = c(.libPaths(), lib.path))
     }
     # end check of lib.path
     # main code
-    tempo.log <- grepl(x = fun, pattern = "^.+::.+$")
-    if( ! all(tempo.log)){
-        tempo.cat <- paste0("ERROR IN THE CODE OF THE ", external.function.name, " OF THE saferTool2 PACKAGE.\nTHE STRING IN fun ARGUMENT MUST CONTAIN \"::\":\n", paste(fun[ ! tempo.log], collapse = "\n"))
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    tempo.log <- base::grepl(x = fun, pattern = "^.+::.+$")
+    if( ! base::all(tempo.log)){
+        tempo.cat <- base::paste0("ERROR IN THE CODE OF THE ", external.function.name, " OF THE saferTool2 PACKAGE.\nTHE STRING IN fun ARGUMENT MUST CONTAIN \"::\":\n", base::paste(fun[ ! tempo.log], collapse = "\n"))
+        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     pkg.fun.name.list <- base::strsplit(fun, "::") # package in 1 and function in 2
-    pkg.name <- sapply(X = pkg.fun.name.list, FUN = function(x){x[1]})
-    pkg.log <- pkg.name %in% rownames(utils::installed.packages(lib.loc = lib.path))
-    if( ! all(pkg.log)){
+    pkg.name <- base::sapply(X = pkg.fun.name.list, FUN = function(x){x[1]})
+    pkg.log <- pkg.name %in% base::rownames(utils::installed.packages(lib.loc = lib.path))
+    if( ! base::all(pkg.log)){
         tempo <- pkg.name[ ! pkg.log]
-        tempo.cat <- paste0(
+        tempo.cat <- base::paste0(
             "ERROR IN ", 
             external.function.name, 
             " OF THE saferTool2 PACKAGE. REQUIRED PACKAGE", 
-            ifelse(length(tempo) == 1L, paste0(":\n", tempo), paste0("S:\n", paste(tempo, collapse = "\n"))), 
+            base::ifelse(base::length(tempo) == 1L, base::paste0(":\n", tempo), base::paste0("S:\n", base::paste(tempo, collapse = "\n"))), 
             "\nMUST BE INSTALLED IN", 
-            ifelse(length(lib.path) == 1L, "", " ONE OF THESE FOLDERS"), 
+            base::ifelse(base::length(lib.path) == 1L, "", " ONE OF THESE FOLDERS"), 
             ":\n", 
-            paste(lib.path, collapse = "\n")
+            base::paste(lib.path, collapse = "\n")
         )
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
-    fun.log <- sapply(X = pkg.fun.name.list, FUN = function(x){base::exists(x[2], envir = base::asNamespace(x[1]))})
-    if( ! all(fun.log)){
+    fun.log <- base::sapply(X = pkg.fun.name.list, FUN = function(x){base::exists(x[2], envir = base::asNamespace(x[1]))})
+    if( ! base::all(fun.log)){
         tempo <- fun[ ! fun.log]
-        tempo.cat <- paste0(
+        tempo.cat <- base::paste0(
             "ERROR IN ", 
             external.function.name, 
             " OF THE saferTool2 PACKAGE. REQUIRED FUNCTION",
-            ifelse(length(tempo) == 1L, " IS ", "S ARE "), 
+            base::ifelse(base::length(tempo) == 1L, " IS ", "S ARE "), 
             "MISSING IN THE INSTALLED PACKAGE", 
-            ifelse(length(tempo) == 1L, paste0(":\n", tempo), paste0("S:\n", paste(tempo, collapse = "\n")))
+            base::ifelse(base::length(tempo) == 1L, base::paste0(":\n", tempo), base::paste0("S:\n", base::paste(tempo, collapse = "\n")))
         )
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
 }
