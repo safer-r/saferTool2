@@ -75,7 +75,7 @@ trim <- function(
         displayed.nb = NULL, 
         single.value.display = FALSE, 
         trim.method = "", 
-        trim.cutoffs = c(0.05, 
+        trim.cutoffs = base::c(0.05, 
                          0.975), 
         interval.scale.disp = TRUE, 
         down.space = 0.75, 
@@ -108,13 +108,13 @@ trim <- function(
     package.name <- "saferTool2"
     # end package name
     # function name
-    ini <- match.call(expand.dots = FALSE) # initial parameters (specific of arg_test())
-    function.name <- paste0(as.list(match.call(expand.dots = FALSE))[[1]], "()") # function name with "()" paste, which split into a vector of three: c("::()", "package()", "function()") if "package::function()" is used.
+    ini <- base::match.call(expand.dots = FALSE) # initial parameters (specific of arg_test())
+    function.name <- base::paste0(base::as.list(base::match.call(expand.dots = FALSE))[[1]], "()") # function name with "()" paste, which split into a vector of three: c("::()", "package()", "function()") if "package::function()" is used.
     if(function.name[1] == "::()"){
         function.name <- function.name[3]
     }
-    arg.names <- names(formals(fun = sys.function(sys.parent(n = 2)))) # names of all the arguments
-    arg.user.setting <- as.list(match.call(expand.dots = FALSE))[-1] # list of the argument settings (excluding default values not provided by the user)
+    arg.names <- base::names(base::formals(fun = base::sys.function(base::sys.parent(n = 2)))) # names of all the arguments
+    arg.user.setting <- base::as.list(base::match.call(expand.dots = FALSE))[-1] # list of the argument settings (excluding default values not provided by the user)
     # end function name
     
     # package checking
@@ -123,7 +123,7 @@ trim <- function(
     
     # check of the required function from the required packages
     .pack_and_function_check(
-        fun = c(
+        fun = base::c(
             "saferDev::arg_check"
         ),
         lib.path = NULL,
@@ -134,13 +134,13 @@ trim <- function(
     
     # argument primary checking
     # arg with no default values
-    mandat.args <- c(
+    mandat.args <- base::c(
         "data"
     )
-    tempo <- eval(parse(text = paste0("c(missing(", paste0(mandat.args, collapse = "),missing("), "))")))
-    if(any(tempo)){ # normally no NA for missing() output
-        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: \nFOLLOWING ARGUMENT", ifelse(sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", paste0(mandat.args, collapse = "\n"))
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    tempo <- base::eval(base::parse(text = base::paste0("base::c(base::missing(", base::paste0(mandat.args, collapse = "),base::missing("), "))")))
+    if(base::any(tempo)){ # normally no NA for missing() output
+        tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: \nFOLLOWING ARGUMENT", base::ifelse(base::sum(tempo, na.rm = TRUE) > 1, "S HAVE", " HAS"), " NO DEFAULT VALUE AND REQUIRE ONE:\n", base::paste0(mandat.args, collapse = "\n"))
+        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end arg with no default values
     
@@ -149,43 +149,43 @@ trim <- function(
     argum.check <- NULL #
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
-    ee <- expression(argum.check <- c(argum.check, tempo$problem) , text.check <- c(text.check, tempo$text) , checked.arg.names <- c(checked.arg.names, tempo$object.name))
-    if( ! is.null(displayed.nb)){
-        tempo <- saferDev::arg_check(data = displayed.nb, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; eval(ee)
+    ee <- base::expression(argum.check <- base::c(argum.check, tempo$problem) , text.check <- base::c(text.check, tempo$text) , checked.arg.names <- base::c(checked.arg.names, tempo$object.name))
+    if( ! base::is.null(displayed.nb)){
+        tempo <- saferDev::arg_check(data = displayed.nb, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; base::eval(ee)
         if(displayed.nb < 2){
-            tempo.cat <- paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: displayed.nb ARGUMENT MUST BE A SINGLE INTEGER VALUE GREATER THAN 1 AND NOT: ", paste(displayed.nb, collapse = " "))
-            text.check <- c(text.check, tempo.cat)
-            argum.check <- c(argum.check, TRUE)
+            tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: displayed.nb ARGUMENT MUST BE A SINGLE INTEGER VALUE GREATER THAN 1 AND NOT: ", base::paste(displayed.nb, collapse = " "))
+            text.check <- base::c(text.check, tempo.cat)
+            argum.check <- base::c(argum.check, TRUE)
         }
     }
-    tempo <- saferDev::arg_check(data = single.value.display, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = trim.method, options = c("", "mean.sd", "quantile"), length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = trim.cutoffs, class = "vector", mode = "numeric", length = 2, prop = TRUE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = interval.scale.disp, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = down.space, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = left.space, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = up.space, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = right.space, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = orient, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = dist.legend, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = box.type, options = c("o", "l", "7", "c", "u", "]", "n"), length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = amplif.label, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = amplif.axis, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = std.x.range, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = std.y.range, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = cex.pt, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = col.box, class = "character", length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = x.nb.inter.tick, class = "integer", length = 1, neg.values = FALSE, double.as.integer.allowed = TRUE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = y.nb.inter.tick, class = "integer", length = 1, neg.values = FALSE, double.as.integer.allowed = TRUE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = tick.length, class = "vector", mode = "numeric", length = 1, prop = TRUE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = sec.tick.length, class = "vector", mode = "numeric", length = 1, prop = TRUE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = corner.text, class = "character", length = 1, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = amplif.legend, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = corner.text.size, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; eval(ee)
-    tempo <- saferDev::arg_check(data = trim.return, class = "logical", length = 1, fun.name = function.name) ; eval(ee)
-    if( ! is.null(argum.check)){
-        if(any(argum.check, na.rm = TRUE) == TRUE){
-            stop(paste0("\n\n================\n\n", paste(text.check[argum.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
+    tempo <- saferDev::arg_check(data = single.value.display, class = "logical", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = trim.method, options = base::c("", "mean.sd", "quantile"), length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = trim.cutoffs, class = "vector", mode = "numeric", length = 2, prop = TRUE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = interval.scale.disp, class = "logical", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = down.space, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = left.space, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = up.space, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = right.space, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = orient, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = dist.legend, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = box.type, options = base::c("o", "l", "7", "c", "u", "]", "n"), length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = amplif.label, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = amplif.axis, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = std.x.range, class = "logical", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = std.y.range, class = "logical", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = cex.pt, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = col.box, class = "character", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = x.nb.inter.tick, class = "integer", length = 1, neg.values = FALSE, double.as.integer.allowed = TRUE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = y.nb.inter.tick, class = "integer", length = 1, neg.values = FALSE, double.as.integer.allowed = TRUE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = tick.length, class = "vector", mode = "numeric", length = 1, prop = TRUE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = sec.tick.length, class = "vector", mode = "numeric", length = 1, prop = TRUE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = corner.text, class = "character", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = amplif.legend, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = corner.text.size, class = "vector", mode = "numeric", length = 1, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = trim.return, class = "logical", length = 1, fun.name = function.name) ; base::eval(ee)
+    if( ! base::is.null(argum.check)){
+        if(base::any(argum.check, na.rm = TRUE) == TRUE){
+            base::stop(base::paste0("\n\n================\n\n", base::paste(text.check[argum.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
         }
     }
     # end argument checking with arg_check()
@@ -196,18 +196,18 @@ trim <- function(
     
     # second round of checking and data preparation
     # management of NA arguments
-    if( ! (all(class(arg.user.setting) == "list", na.rm = TRUE) & length(arg.user.setting) == 0)){
-        tempo.arg <- names(arg.user.setting) # values provided by the user
-        tempo.log <- suppressWarnings(sapply(lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & lapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
-        if(any(tempo.log) == TRUE){ # normally no NA because is.na() used here
-            tempo.cat <- paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: \n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", paste0(tempo.arg[tempo.log], collapse = "\n"))
-            stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    if( ! (base::all(base::class(arg.user.setting) == "list", na.rm = TRUE) & base::length(arg.user.setting) == 0)){
+        tempo.arg <- base::names(arg.user.setting) # values provided by the user
+        tempo.log <- base::suppressWarnings(base::sapply(base::lapply(base::lapply(tempo.arg, FUN = get, env = base::sys.nframe(), inherit = FALSE), FUN = is.na), FUN = any)) & base::lapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = base::length) == 1L # no argument provided by the user can be just NA
+        if(base::any(tempo.log) == TRUE){ # normally no NA because is.na() used here
+            tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: \n", base::ifelse(base::sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS", "THIS ARGUMENT"), " CANNOT JUST BE NA:", base::paste0(tempo.arg[tempo.log], collapse = "\n"))
+            base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
         }
     }
     # end management of NA arguments
     
     # management of NULL arguments
-    tempo.arg <-c(
+    tempo.arg <-base::c(
         "data", 
         # "displayed.nb", # inactivated because can be null
         "single.value.display", 
@@ -236,10 +236,10 @@ trim <- function(
         "corner.text.size", 
         "trim.return"
     )
-    tempo.log <- sapply(lapply(tempo.arg, FUN = get, env = sys.nframe(), inherit = FALSE), FUN = is.null)
-    if(any(tempo.log) == TRUE){# normally no NA with is.null()
-        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE:\n", ifelse(sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS\n", "THIS ARGUMENT\n"), paste0(tempo.arg[tempo.log], collapse = "\n"),"\nCANNOT BE NULL")
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    tempo.log <- base::sapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = is.null)
+    if(base::any(tempo.log) == TRUE){# normally no NA with is.null()
+        tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE:\n", base::ifelse(base::sum(tempo.log, na.rm = TRUE) > 1, "THESE ARGUMENTS\n", "THIS ARGUMENT\n"), base::paste0(tempo.arg[tempo.log], collapse = "\n"),"\nCANNOT BE NULL")
+        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end management of NULL arguments
     
@@ -250,14 +250,14 @@ trim <- function(
     # end warning initiation
     
     # other checkings
-    if(all( ! is.finite(data))){ # is.finite() tests if it is not one of the values NA, NaN, Inf or -Inf
-        tempo.cat <- paste0("ERROR IN ", function.name, " FUNCTION OF THE ", package.name, " PACKAGE: \ndata ARGUMENT CANNOT CONTAIN NA AND Inf ONLY")
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    if(base::all( ! base::is.finite(data))){ # is.finite() tests if it is not one of the values NA, NaN, Inf or -Inf
+        tempo.cat <- base::paste0("ERROR IN ", function.name, " FUNCTION OF THE ", package.name, " PACKAGE: \ndata ARGUMENT CANNOT CONTAIN NA AND Inf ONLY")
+        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # argument checking without arg_check()
-    if( ! (all(class(data) == "numeric") | all(class(data) == "integer") | (all(class(data) %in% c("matrix", "array")) & base::mode(data) == "numeric"))){
-        tempo.cat <- paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX")
-        stop(paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    if( ! (base::all(base::class(data) == "numeric") | base::all(base::class(data) == "integer") | (base::all(base::class(data) %in% base::c("matrix", "array")) & base::mode(data) == "numeric"))){
+        tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX")
+        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end argument checking without arg_check()
     # end other checkings
@@ -267,43 +267,43 @@ trim <- function(
     # end second round of checking and data preparation
     
     # main code
-    if(all(class(data)%in% c("matrix", "array"))){
-        data <- as.vector(data)
+    if(base::all(base::class(data)%in% base::c("matrix", "array"))){
+        data <- base::as.vector(data)
     }
     na.nb <- NULL
-    if(any(is.na(data))){
-        na.nb <- sum(c(is.na(data)))
-        data <- data[ ! is.na(data)]
+    if(base::any(base::is.na(data))){
+        na.nb <- base::sum(base::c(base::is.na(data)))
+        data <- data[ ! base::is.na(data)]
     }
     color.cut <- grDevices::hsv(0.75, 1, 1) # color of interval selected
     col.mean <- grDevices::hsv(0.25, 1, 0.8) # color of interval using mean+/-sd
     col.quantile <- "orange" # color of interval using quantiles
-    quantiles.selection <- c(0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.975, 0.99) # quantiles used in axis to help for choosing trimming cutoffs
-    if(single.value.display == FALSE & length(unique(data)) == 1L){
+    quantiles.selection <- base::c(0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.975, 0.99) # quantiles used in axis to help for choosing trimming cutoffs
+    if(single.value.display == FALSE & base::length(base::unique(data)) == 1L){
         graphics::par(bty = "n", xaxt = "n", yaxt = "n", xpd = TRUE)
-        plot(1, pch = 16, col = "white", xlab = "", ylab = "")
-        graphics::text(x = 1, y = 1, paste0("No graphic displayed\nBecause data made of a single different value (", formatC(as.double(table(data))), ")"), cex = 2)
-        output <- list(trim.method = NULL, trim.cutoffs = NULL, real.trim.cutoffs = NULL, trimmed.values = NULL, kept.values = NULL)
+        base::plot(1, pch = 16, col = "white", xlab = "", ylab = "")
+        graphics::text(x = 1, y = 1, base::paste0("No graphic displayed\nBecause data made of a single different value (", base::formatC(base::as.double(base::table(data))), ")"), cex = 2)
+        output <- base::list(trim.method = NULL, trim.cutoffs = NULL, real.trim.cutoffs = NULL, trimmed.values = NULL, kept.values = NULL)
     }else{
-        output <- list(trim.method = trim.method, trim.cutoffs = trim.cutoffs, real.trim.cutoffs = NULL, trimmed.values = NULL, kept.values = NULL)
+        output <- base::list(trim.method = trim.method, trim.cutoffs = trim.cutoffs, real.trim.cutoffs = NULL, trimmed.values = NULL, kept.values = NULL)
         fun.rug <- function(sec.tick.length.f = sec.tick.length, x.nb.inter.tick.f = x.nb.inter.tick, y.nb.inter.tick.f = y.nb.inter.tick){
             if(x.nb.inter.tick.f > 0){
                 inter.tick.unit <- (graphics::par("xaxp")[2] - graphics::par("xaxp")[1]) / graphics::par("xaxp")[3]
-                par.ini <- graphics::par()[c("xpd", "tcl")]
+                par.ini <- graphics::par()[base::c("xpd", "tcl")]
                 graphics::par(xpd = FALSE)
                 graphics::par(tcl = -graphics::par()$mgp[2] * sec.tick.length.f) # tcl gives the length of the ticks as proportion of line text, knowing that mgp is in text lines. So the main ticks are a 0.5 of the distance of the axis numbers by default. The sign provides the side of the tick (negative for outside of the plot region)
-                suppressWarnings(graphics::rug(seq(graphics::par("xaxp")[1] - 10 * inter.tick.unit, graphics::par("xaxp")[2] + 10 * inter.tick.unit, by = inter.tick.unit / (1 + x.nb.inter.tick.f)), ticksize = NA, side = 1)) # ticksize = NA to allow the use of graphics::par()$tcl value
+                base::suppressWarnings(graphics::rug(base::seq(graphics::par("xaxp")[1] - 10 * inter.tick.unit, graphics::par("xaxp")[2] + 10 * inter.tick.unit, by = inter.tick.unit / (1 + x.nb.inter.tick.f)), ticksize = NA, side = 1)) # ticksize = NA to allow the use of graphics::par()$tcl value
                 graphics::par(par.ini)
-                rm(par.ini)
+                base::rm(par.ini)
             }
             if(y.nb.inter.tick.f > 0){
                 inter.tick.unit <- (graphics::par("yaxp")[2] - graphics::par("yaxp")[1]) / graphics::par("yaxp")[3]
-                par.ini <- graphics::par()[c("xpd", "tcl")]
+                par.ini <- graphics::par()[base::c("xpd", "tcl")]
                 graphics::par(xpd = FALSE)
                 graphics::par(tcl = -graphics::par()$mgp[2] * sec.tick.length.f) # tcl gives the length of the ticks as proportion of line text, knowing that mgp is in text lines. So the main ticks are a 0.5 of the distance of the axis numbers by default. The sign provides the side of the tick (negative for outside of the plot region)
-                suppressWarnings(graphics::rug(seq(graphics::par("yaxp")[1] - 10 * inter.tick.unit, graphics::par("yaxp")[2] + 10 * inter.tick.unit, by = inter.tick.unit / (1 + y.nb.inter.tick.f)), ticksize = NA, side = 2)) # ticksize = NA to allow the use of graphics::par()$tcl value
+                base::suppressWarnings(graphics::rug(base::seq(graphics::par("yaxp")[1] - 10 * inter.tick.unit, graphics::par("yaxp")[2] + 10 * inter.tick.unit, by = inter.tick.unit / (1 + y.nb.inter.tick.f)), ticksize = NA, side = 2)) # ticksize = NA to allow the use of graphics::par()$tcl value
                 graphics::par(par.ini)
-                rm(par.ini)
+                base::rm(par.ini)
             }
         }
         fun.add.cut <- function(data.f, trim.method.f = trim.method, trim.cutoffs.f = trim.cutoffs, color.cut.f = color.cut, return.f = FALSE){
@@ -311,13 +311,13 @@ trim <- function(
             # data.f = data ; trim.method.f = "mean.sd"; trim.cutoffs.f = trim.cutoffs ; color.cut.f = color.cut ; return.f = TRUE
             real.trim.cutoffs.f <- NULL
             if(trim.method.f != ""){
-                data.f <- sort(data.f)
+                data.f <- base::sort(data.f)
                 par.ini <- graphics::par()$xpd
                 graphics::par(xpd = FALSE)
                 if(trim.method.f == "mean.sd"){
-                    real.trim.cutoffs.f <- stats::qnorm(trim.cutoffs.f, mean(data.f, na.rm = TRUE), stats::sd(data.f, na.rm = TRUE))
-                    graphics::abline(v = stats::qnorm(trim.cutoffs.f, mean(data.f, na.rm = TRUE), stats::sd(data.f, na.rm = TRUE)), col = color.cut.f)
-                    graphics::segments(stats::qnorm(trim.cutoffs.f[1], mean(data.f, na.rm = TRUE), stats::sd(data.f, na.rm = TRUE)), graphics::par()$usr[4] * 0.75, stats::qnorm(trim.cutoffs.f[2], mean(data.f, na.rm = TRUE), stats::sd(data.f, na.rm = TRUE)), graphics::par()$usr[4] * 0.75, col = color.cut.f)
+                    real.trim.cutoffs.f <- stats::qnorm(trim.cutoffs.f, base::mean(data.f, na.rm = TRUE), stats::sd(data.f, na.rm = TRUE))
+                    graphics::abline(v = stats::qnorm(trim.cutoffs.f, base::mean(data.f, na.rm = TRUE), stats::sd(data.f, na.rm = TRUE)), col = color.cut.f)
+                    graphics::segments(stats::qnorm(trim.cutoffs.f[1], base::mean(data.f, na.rm = TRUE), stats::sd(data.f, na.rm = TRUE)), graphics::par()$usr[4] * 0.75, stats::qnorm(trim.cutoffs.f[2], base::mean(data.f, na.rm = TRUE), stats::sd(data.f, na.rm = TRUE)), graphics::par()$usr[4] * 0.75, col = color.cut.f)
                 }
                 if(trim.method.f == "quantile"){
                     real.trim.cutoffs.f <- stats::quantile(data.f, probs = trim.cutoffs.f, type = 7, na.rm = TRUE)
@@ -338,71 +338,71 @@ trim <- function(
             # warning output
             # end warning output
             if(return.f == TRUE){
-                output <- list(trim.method = trim.method.f, trim.cutoffs = trim.cutoffs.f, real.trim.cutoffs = real.trim.cutoffs.f, trimmed.values = trimmed.values.f, kept.values = kept.values.f)
-                return(output)
+                output <- base::list(trim.method = trim.method.f, trim.cutoffs = trim.cutoffs.f, real.trim.cutoffs = real.trim.cutoffs.f, trimmed.values = trimmed.values.f, kept.values = kept.values.f)
+                base::return(output)
             }
         }
         fun.interval.scale.display <- function(data.f, col.quantile.f = col.quantile, quantiles.selection.f = quantiles.selection, col.mean.f = col.mean){ # intervals on top of graphs
-            par.ini <- graphics::par()[c("mgp", "xpd")]
-            graphics::par(mgp = c(0.25, 0.25, 0), xpd = NA)
-            graphics::axis(side = 3, at = c(graphics::par()$usr[1], graphics::par()$usr[2]), labels = rep("", 2), col = col.quantile.f, lwd.ticks = 0)
+            par.ini <- graphics::par()[base::c("mgp", "xpd")]
+            graphics::par(mgp = base::c(0.25, 0.25, 0), xpd = NA)
+            graphics::axis(side = 3, at = base::c(graphics::par()$usr[1], graphics::par()$usr[2]), labels = base::rep("", 2), col = col.quantile.f, lwd.ticks = 0)
             graphics::par(xpd = FALSE)
-            graphics::axis(side = 3, at = stats::quantile(as.vector(data.f), probs = quantiles.selection.f, type = 7, na.rm = TRUE), labels = quantiles.selection.f, col.axis = col.quantile.f, col = col.quantile.f)
-            graphics::par(mgp = c(1.75, 1.75, 1.5), xpd = NA)
-            graphics::axis(side = 3, at = c(graphics::par()$usr[1], graphics::par()$usr[2]), labels = rep("", 2), col = col.mean.f, lwd.ticks = 0)
+            graphics::axis(side = 3, at = stats::quantile(base::as.vector(data.f), probs = quantiles.selection.f, type = 7, na.rm = TRUE), labels = quantiles.selection.f, col.axis = col.quantile.f, col = col.quantile.f)
+            graphics::par(mgp = base::c(1.75, 1.75, 1.5), xpd = NA)
+            graphics::axis(side = 3, at = base::c(graphics::par()$usr[1], graphics::par()$usr[2]), labels = base::rep("", 2), col = col.mean.f, lwd.ticks = 0)
             graphics::par(xpd = FALSE)
-            graphics::axis(side = 3, at = m + s * stats::qnorm(quantiles.selection.f), labels = formatC(round(stats::qnorm(quantiles.selection.f), 2)), col.axis = col.mean.f, col = col.mean.f, lwd.ticks = 1)
+            graphics::axis(side = 3, at = m + s * stats::qnorm(quantiles.selection.f), labels = base::formatC(base::round(stats::qnorm(quantiles.selection.f), 2)), col.axis = col.mean.f, col = col.mean.f, lwd.ticks = 1)
             graphics::par(par.ini)
         }
-        zone<-matrix(1:4, ncol=2)
+        zone<-base::matrix(1:4, ncol=2)
         graphics::layout(zone)
-        graphics::par(omi = c(0, 0, 1.5, 0), mai = c(down.space, left.space, up.space, right.space), las = orient, mgp = c(dist.legend / 0.2, 0.5, 0), xpd = FALSE, bty= box.type, cex.lab = amplif.label, cex.axis = amplif.axis, xaxs = ifelse(std.x.range, "i", "r"), yaxs = ifelse(std.y.range, "i", "r"))
+        graphics::par(omi = base::c(0, 0, 1.5, 0), mai = base::c(down.space, left.space, up.space, right.space), las = orient, mgp = base::c(dist.legend / 0.2, 0.5, 0), xpd = FALSE, bty= box.type, cex.lab = amplif.label, cex.axis = amplif.axis, xaxs = base::ifelse(std.x.range, "i", "r"), yaxs = base::ifelse(std.y.range, "i", "r"))
         graphics::par(tcl = -graphics::par()$mgp[2] * tick.length) # tcl gives the length of the ticks as proportion of line text, knowing that mgp is in text lines. So the main ticks are a 0.5 of the distance of the axis numbers by default. The sign provides the side of the tick (negative for outside of the plot region)
-        if(is.null(displayed.nb)){
-            sampled.data <- as.vector(data)
+        if(base::is.null(displayed.nb)){
+            sampled.data <- base::as.vector(data)
             if(corner.text == ""){
-                corner.text <- paste0("ALL VALUES OF THE DATASET DISPLAYED")
+                corner.text <- base::paste0("ALL VALUES OF THE DATASET DISPLAYED")
             }else{
-                corner.text <- paste0(corner.text, "\nALL VALUES OF THE DATASET DISPLAYED")
+                corner.text <- base::paste0(corner.text, "\nALL VALUES OF THE DATASET DISPLAYED")
             }
         }else{
-            if(length(as.vector(data)) > displayed.nb){
-                sampled.data <- sample(as.vector(data), displayed.nb, replace = FALSE)
+            if(base::length(base::as.vector(data)) > displayed.nb){
+                sampled.data <- base::sample(base::as.vector(data), displayed.nb, replace = FALSE)
                 if(corner.text == ""){
-                    corner.text <- paste0("WARNING: ONLY ", displayed.nb, " VALUES ARE DISPLAYED AMONG THE ", length(as.vector(data)), " VALUES OF THE DATASET ANALYZED")
+                    corner.text <- base::paste0("WARNING: ONLY ", displayed.nb, " VALUES ARE DISPLAYED AMONG THE ", base::length(base::as.vector(data)), " VALUES OF THE DATASET ANALYZED")
                 }else{
-                    corner.text <- paste0(corner.text, "\nWARNING: ONLY ", displayed.nb, " VALUES ARE DISPLAYED AMONG THE ", length(as.vector(data)), " VALUES OF THE DATASET ANALYZED")
+                    corner.text <- base::paste0(corner.text, "\nWARNING: ONLY ", displayed.nb, " VALUES ARE DISPLAYED AMONG THE ", base::length(base::as.vector(data)), " VALUES OF THE DATASET ANALYZED")
                 }
             }else{
-                sampled.data <- as.vector(data)
+                sampled.data <- base::as.vector(data)
                 if(corner.text == ""){
-                    corner.text <- paste0("WARNING: THE DISPLAYED NUMBER OF VALUES PARAMETER ", deparse(substitute(displayed.nb)), " HAS BEEN SET TO ", displayed.nb, " WHICH IS ABOVE THE NUMBER OF VALUES OF THE DATASET ANALYZED -> ALL VALUES DISPLAYED")
+                    corner.text <- base::paste0("WARNING: THE DISPLAYED NUMBER OF VALUES PARAMETER ", base::deparse(base::substitute(displayed.nb)), " HAS BEEN SET TO ", displayed.nb, " WHICH IS ABOVE THE NUMBER OF VALUES OF THE DATASET ANALYZED -> ALL VALUES DISPLAYED")
                 }else{
-                    corner.text <- paste0(corner.text, "\nWARNING: THE DISPLAYED NUMBER OF VALUES PARAMETER ", deparse(substitute(displayed.nb)), " HAS BEEN SET TO ", displayed.nb, " WHICH IS ABOVE THE NUMBER OF VALUES OF THE DATASET ANALYZED -> ALL VALUES DISPLAYED")
+                    corner.text <- base::paste0(corner.text, "\nWARNING: THE DISPLAYED NUMBER OF VALUES PARAMETER ", base::deparse(base::substitute(displayed.nb)), " HAS BEEN SET TO ", displayed.nb, " WHICH IS ABOVE THE NUMBER OF VALUES OF THE DATASET ANALYZED -> ALL VALUES DISPLAYED")
                 }
             }
         }
-        if( ! is.null(na.nb)){
+        if( ! base::is.null(na.nb)){
             if(corner.text == ""){
-                corner.text <- paste0("WARNING: NUMBER OF NA REMOVED IS ", na.nb)
+                corner.text <- base::paste0("WARNING: NUMBER OF NA REMOVED IS ", na.nb)
             }else{
-                corner.text <- paste0("WARNING: NUMBER OF NA REMOVED IS ", na.nb)
+                corner.text <- base::paste0("WARNING: NUMBER OF NA REMOVED IS ", na.nb)
             }
         }
-        graphics::stripchart(sampled.data, method="jitter", jitter=0.4, vertical=FALSE, ylim=c(0.5, 1.5), group.names = "", xlab = "Value", ylab="", pch=1, cex = cex.pt / 0.2)
+        graphics::stripchart(sampled.data, method="jitter", jitter=0.4, vertical=FALSE, ylim= base::c(0.5, 1.5), group.names = "", xlab = "Value", ylab="", pch=1, cex = cex.pt / 0.2)
         fun.rug(y.nb.inter.tick.f = 0)
-        graphics::boxplot(as.vector(data), horizontal=TRUE, add=TRUE, boxwex = 0.4, staplecol = col.box, whiskcol = col.box, medcol = col.box, boxcol = col.box, range = 0, whisklty = 1)
-        m <- mean(as.vector(data), na.rm = TRUE)
-        s <- stats::sd(as.vector(data), na.rm = TRUE)
+        graphics::boxplot(base::as.vector(data), horizontal=TRUE, add=TRUE, boxwex = 0.4, staplecol = col.box, whiskcol = col.box, medcol = col.box, boxcol = col.box, range = 0, whisklty = 1)
+        m <- base::mean(base::as.vector(data), na.rm = TRUE)
+        s <- stats::sd(base::as.vector(data), na.rm = TRUE)
         graphics::segments(m, 0.8, m, 1, lwd=2, col="red") # mean 
         graphics::segments(m -1.96 * s, 0.9, m + 1.96 * s, 0.9, lwd=1, col="red") # mean 
         graph.xlim <- graphics::par()$usr[1:2] # for graphics::hist() and stats::qqnorm() below
         if(interval.scale.disp == TRUE){
             fun.interval.scale.display(data.f = data)
             if(corner.text == ""){
-                corner.text <- paste0("MULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", paste(formatC(round(stats::qnorm(quantiles.selection), 2))[-(1:(length(quantiles.selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", paste(quantiles.selection, collapse = ", "))
+                corner.text <- base::paste0("MULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", base::paste(base::formatC(base::round(stats::qnorm(quantiles.selection), 2))[-(1:(base::length(quantiles.selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", base::paste(quantiles.selection, collapse = ", "))
             }else{
-                corner.text <- paste0(corner.text, "\nMULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", paste(formatC(round(stats::qnorm(quantiles.selection), 2))[-(1:(length(quantiles.selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", paste(quantiles.selection, collapse = ", "))
+                corner.text <- base::paste0(corner.text, "\nMULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", base::paste(base::formatC(base::round(stats::qnorm(quantiles.selection), 2))[-(1:(base::length(quantiles.selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", base::paste(quantiles.selection, collapse = ", "))
             }
         }
         output.tempo <- fun.add.cut(data.f = data, return.f = TRUE) # to recover real.trim.cutoffs
@@ -412,43 +412,43 @@ trim <- function(
         graphics::par(xpd = NA)
         if(trim.method != ""){
             if(corner.text == ""){
-                corner.text <- paste0("SELECTED CUT-OFFS (PROPORTION): ", paste(trim.cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", paste(output.tempo$real.trim.cutoffs, collapse = ", "))
+                corner.text <- base::paste0("SELECTED CUT-OFFS (PROPORTION): ", base::paste(trim.cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", base::paste(output.tempo$real.trim.cutoffs, collapse = ", "))
             }else{
-                corner.text <- paste0(corner.text, "\nSELECTED CUT-OFFS (PROPORTION): ", paste(trim.cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", paste(output.tempo$real.trim.cutoffs, collapse = ", "))
+                corner.text <- base::paste0(corner.text, "\nSELECTED CUT-OFFS (PROPORTION): ", base::paste(trim.cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", base::paste(output.tempo$real.trim.cutoffs, collapse = ", "))
             }
             if(interval.scale.disp == TRUE){
-                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = c(c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", paste0("Trimming interval: ", paste0(trim.cutoffs, collapse = " , ")), "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=c(col.box, "red", color.cut, col.mean, col.quantile), bty="n", cex = amplif.legend)
+                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", base::paste0("Trimming interval: ", base::paste0(trim.cutoffs, collapse = " , ")), "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=base::c(col.box, "red", color.cut, col.mean, col.quantile), bty="n", cex = amplif.legend)
             }else{
-                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = c(c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", paste0("Trimming interval: ", paste0(trim.cutoffs, collapse = " , "))), yjust = 0, lty=1, col=c(col.box, "red", color.cut), bty="n", cex = amplif.legend, y.intersp=1.25)
+                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", base::paste0("Trimming interval: ", base::paste0(trim.cutoffs, collapse = " , "))), yjust = 0, lty=1, col=base::c(col.box, "red", color.cut), bty="n", cex = amplif.legend, y.intersp=1.25)
             }
         }else{
             if(interval.scale.disp == TRUE){
-                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = c(c("min, Q1, Median, Q3, max"), "mean +/- sd", "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=c(col.box, "red", col.mean, col.quantile), bty="n", cex = amplif.legend)
+                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- sd", "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=base::c(col.box, "red", col.mean, col.quantile), bty="n", cex = amplif.legend)
             }else{
-                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = c(c("min, Q1, Median, Q3, max"), "mean +/- sd"), yjust = 0, lty=1, col=c(col.box, "red"), bty="n", cex = amplif.legend, y.intersp=1.25)
+                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- sd"), yjust = 0, lty=1, col=base::c(col.box, "red"), bty="n", cex = amplif.legend, y.intersp=1.25)
             }
         }
-        graphics::par(xpd = FALSE, xaxs = ifelse(std.x.range, "i", "r"), yaxs = ifelse(std.y.range, "i", "r"))
-        graphics::hist(as.vector(data), main = "", xlim = graph.xlim, xlab = "Value", ylab="Density", col = grDevices::grey(0.25)) # removed: breaks = seq(min(as.vector(data), na.rm = TRUE), max(as.vector(data), na.rm = TRUE), length.out = length(as.vector(data)) / 10)
+        graphics::par(xpd = FALSE, xaxs = base::ifelse(std.x.range, "i", "r"), yaxs = base::ifelse(std.y.range, "i", "r"))
+        graphics::hist(base::as.vector(data), main = "", xlim = graph.xlim, xlab = "Value", ylab="Density", col = grDevices::grey(0.25)) # removed: breaks = seq(min(as.vector(data), na.rm = TRUE), max(as.vector(data), na.rm = TRUE), length.out = length(as.vector(data)) / 10)
         graphics::abline(h = graphics::par()$usr[3])
         fun.rug()
         if(interval.scale.disp == TRUE){
             fun.interval.scale.display(data.f = data)
         }
         fun.add.cut(data.f = data)
-        graphics::par(xaxs = ifelse(std.x.range, "i", "r"))
-        graphics::stripchart(rank(sampled.data), method="stack", vertical=FALSE, ylim=c(0.99, 1.3), group.names = "", xlab = "Rank of values", ylab="", pch=1, cex = cex.pt / 0.2)
+        graphics::par(xaxs = base::ifelse(std.x.range, "i", "r"))
+        graphics::stripchart(base::rank(sampled.data), method="stack", vertical=FALSE, ylim=base::c(0.99, 1.3), group.names = "", xlab = "Rank of values", ylab="", pch=1, cex = cex.pt / 0.2)
         fun.rug(y.nb.inter.tick.f = 0)
         x.text <- graphics::par("usr")[2] + (graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1]) * (1 - graphics::par("plt")[2]) / 2
         y.text <- (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / ((graphics::par()$omd[4] / 2) * ((graphics::par("plt")[4] - graphics::par("plt")[3])))) * (1 - graphics::par("omd")[4])) # BEWARE. Here in "(graphics::par()$omd[4] / 2", division by two because there are 2 graphs staked on the y axis, and not one
         graphics::par(xpd=NA)
-        text(x = x.text, y = y.text, paste0(corner.text), adj=c(1, 1.1), cex = corner.text.size) # text at the topright corner
+        base::text(x = x.text, y = y.text, base::paste0(corner.text), adj=base::c(1, 1.1), cex = corner.text.size) # text at the topright corner
         graphics::par(xpd=FALSE)
-        graphics::par(xaxs = ifelse(std.x.range, "i", "r"), yaxs = ifelse(std.y.range, "i", "r"))
-        stats::qqnorm(as.vector(sampled.data), main = "", datax = TRUE, ylab = "Value", pch = 1, col = "red", cex = cex.pt / 0.2)
+        graphics::par(xaxs = base::ifelse(std.x.range, "i", "r"), yaxs = base::ifelse(std.y.range, "i", "r"))
+        stats::qqnorm(base::as.vector(sampled.data), main = "", datax = TRUE, ylab = "Value", pch = 1, col = "red", cex = cex.pt / 0.2)
         fun.rug()
-        if(diff(stats::quantile(as.vector(data), probs = c(0.25, 0.75), na.rm = TRUE)) != 0){ # otherwise, error generated
-            stats::qqline(as.vector(data), datax = TRUE)
+        if(base::diff(stats::quantile(base::as.vector(data), probs = base::c(0.25, 0.75), na.rm = TRUE)) != 0){ # otherwise, error generated
+            stats::qqline(base::as.vector(data), datax = TRUE)
         }
         if(interval.scale.disp == TRUE){
             fun.interval.scale.display(data.f = data)
@@ -456,7 +456,7 @@ trim <- function(
         fun.add.cut(data.f = data)
     }
     if(trim.return == TRUE){
-        return(output)
+        base::return(output)
     }
     # end output
     # end main code
