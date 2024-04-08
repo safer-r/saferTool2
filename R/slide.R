@@ -16,6 +16,7 @@
 #' @param lib.path Character vector specifying the absolute pathways of the directories containing the required packages if not in the default directories. Ignored if NULL.
 #' @param verbose Single logical value. Display messages?
 #' @param safer.path Single character string indicating the absolute path of the safer.R file. Will be remove when safer will be a package. Ignored if parall is FALSE.
+#' @param safer_check Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.
 #' @returns
 #' A data frame containing :
 #' 
@@ -68,11 +69,12 @@ slide <- function(
         res.path = NULL, 
         lib.path = NULL, 
         verbose = TRUE, 
-        safer.path = "C:\\Users\\Gael\\Documents\\Git_projects\\cute_little_R_functions\\cute_little_R_functions.R"
+        safer.path = "C:\\Users\\Gael\\Documents\\Git_projects\\cute_little_R_functions\\cute_little_R_functions.R",
+        safer_check = TRUE
 ){
     # DEBUGGING
-    # data = c(1:10, 100:110, 500) ; window.size = 5 ; step = 2 ; from = NULL ; to = NULL ; fun = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread.nb = NULL ; print.count = 100 ; res.path = NULL ; lib.path = NULL ; verbose = TRUE ; safer.path = "C:\\Users\\Gael\\Documents\\Git_projects\\cute_little_R_functions\\cute_little_R_functions.R"
-    # data = lag.pos; window.size = window.size; step = step; fun = length; from = min(a$pos); to = max(a$pos)
+    # data = c(1:10, 100:110, 500) ; window.size = 5 ; step = 2 ; from = NULL ; to = NULL ; fun = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread.nb = NULL ; print.count = 100 ; res.path = NULL ; lib.path = NULL ; verbose = TRUE ; safer.path = "C:\\Users\\Gael\\Documents\\Git_projects\\cute_little_R_functions\\cute_little_R_functions.R" ; safer_check = TRUE
+    # data = lag.pos; window.size = window.size; step = step; fun = length; from = min(a$pos); to = max(a$pos) ; safer_check = TRUE
     # package name
     package.name <- "saferTool2"
     # end package name
@@ -105,7 +107,8 @@ slide <- function(
     # end check of lib.path
     
     # check of the required function from the required packages
-    .pack_and_function_check(
+    if(safer_check == TRUE){
+        .pack_and_function_check(
         fun = base::c(
             "saferDev::arg_check",
             "saferDev::get_message",
@@ -120,6 +123,7 @@ slide <- function(
         lib.path = lib.path,
         external.function.name = function.name
     )
+    }
     # end check of the required function from the required packages
     # end package checking
     
@@ -141,31 +145,31 @@ slide <- function(
     argum.check <- NULL #
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
-    ee <- base::expression(argum.check <- c(argum.check, tempo$problem) , text.check <- c(text.check, tempo$text) , checked.arg.names <- c(checked.arg.names, tempo$object.name))
-    tempo <- saferDev::arg_check(data = data, mode = "numeric", na.contain = TRUE, fun.name = function.name) ; base::eval(ee)
-    tempo <- saferDev::arg_check(data = window.size, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; base::eval(ee)
-    tempo <- saferDev::arg_check(data = step, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; base::eval(ee)
+    ee <- base::expression(argum.check <- base::c(argum.check, tempo$problem) , text.check <- base::c(text.check, tempo$text) , checked.arg.names <- base::c(checked.arg.names, tempo$object.name))
+    tempo <- saferDev::arg_check(data = data, mode = "numeric", na.contain = TRUE, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = window.size, class = "vector", mode = "numeric", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = step, class = "vector", mode = "numeric", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     if( ! base::is.null(from)){
-        tempo <- saferDev::arg_check(data = from, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; base::eval(ee)
+        tempo <- saferDev::arg_check(data = from, class = "vector", mode = "numeric", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     }
     if( ! base::is.null(to)){
-        tempo <- saferDev::arg_check(data = to, class = "vector", mode = "numeric", length = 1, fun.name = function.name) ; base::eval(ee)
+        tempo <- saferDev::arg_check(data = to, class = "vector", mode = "numeric", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     }
-    tempo1 <- saferDev::arg_check(data = fun, class = "vector", mode = "character", length = 1, fun.name = function.name)
-    tempo2 <- saferDev::arg_check(data = fun, class = "function", length = 1, fun.name = function.name)
+    tempo1 <- saferDev::arg_check(data = fun, class = "vector", mode = "character", length = 1, fun.name = function.name, safer_check = FALSE)
+    tempo2 <- saferDev::arg_check(data = fun, class = "function", length = 1, fun.name = function.name, safer_check = FALSE)
     if(tempo1$problem == TRUE & tempo2$problem == TRUE){
         tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: fun ARGUMENT MUST BE A FUNCTION OR A CHARACTER STRING OF THE NAME OF A FUNCTION")
         text.check <- base::c(text.check, tempo.cat)
         argum.check <- base::c(argum.check, TRUE)
     }
     if( ! base::is.null(args)){
-        tempo <- saferDev::arg_check(data = args, class = "vector", mode = "character", length = 1, fun.name = function.name) ; base::eval(ee)
+        tempo <- saferDev::arg_check(data = args, class = "vector", mode = "character", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     }
-    tempo <- saferDev::arg_check(data = boundary, options = c("left", "right"), length = 1, fun.name = function.name) ; base::eval(ee)
-    tempo <- saferDev::arg_check(data = parall, class = "vector", mode = "logical", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = boundary, options = c("left", "right"), length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = parall, class = "vector", mode = "logical", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     if(parall == TRUE){
         if( ! base::is.null(thread.nb)){
-            tempo <- saferDev::arg_check(data = thread.nb, typeof = "integer", double.as.integer.allowed = TRUE, neg.values = FALSE, length = 1, fun.name = function.name) ; base::eval(ee)
+            tempo <- saferDev::arg_check(data = thread.nb, typeof = "integer", double.as.integer.allowed = TRUE, neg.values = FALSE, length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
             if(tempo$problem == FALSE & thread.nb < 1){
                 tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: thread.nb PARAMETER MUST EQUAL OR GREATER THAN 1: ", thread.nb)
                 text.check <- base::c(text.check, tempo.cat)
@@ -173,15 +177,15 @@ slide <- function(
             }
         }
     }
-    tempo <- saferDev::arg_check(data = print.count, class = "vector", typeof = "integer", length = 1, double.as.integer.allowed = TRUE, neg.values = FALSE, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = print.count, class = "vector", typeof = "integer", length = 1, double.as.integer.allowed = TRUE, neg.values = FALSE, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     if( ! base::is.null(res.path)){
-        tempo <- saferDev::arg_check(data = res.path, class = "vector", mode = "character", fun.name = function.name) ; base::eval(ee)
+        tempo <- saferDev::arg_check(data = res.path, class = "vector", mode = "character", fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     }
     if( ! base::is.null(lib.path)){
-        tempo <- saferDev::arg_check(data = lib.path, class = "vector", mode = "character", fun.name = function.name) ; base::eval(ee)
+        tempo <- saferDev::arg_check(data = lib.path, class = "vector", mode = "character", fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     }
-    tempo <- saferDev::arg_check(data = verbose, class = "vector", mode = "logical", length = 1, fun.name = function.name) ; base::eval(ee)
-    tempo <- saferDev::arg_check(data = safer.path, class = "vector", typeof = "character", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = verbose, class = "vector", mode = "logical", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = safer.path, class = "vector", typeof = "character", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     if( ! base::is.null(argum.check)){
         if(base::any(argum.check, na.rm = TRUE) == TRUE){
             base::stop(base::paste0("\n\n================\n\n", base::paste(text.check[argum.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
@@ -194,6 +198,8 @@ slide <- function(
     # end argument primary checking
     
     # second round of checking and data preparation
+    # reserved words (to avoid bugs)
+    # end reserved words (to avoid bugs)
     # new environment
     env.name <- base::paste0("env", base::as.numeric(base::Sys.time()))
     if(base::exists(env.name, where = -1)){ # verify if still ok when info() is inside a function
@@ -229,7 +235,8 @@ slide <- function(
         # "res.path", # inactivated because can be null
         # "lib.path", # inactivated because can be null
         "verbose", 
-        "safer.path"
+        "safer.path",
+        "safer_check"
     )
     tempo.log <- base::sapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = is.null)
     if(base::any(tempo.log) == TRUE){# normally no NA with is.null()
@@ -269,7 +276,7 @@ slide <- function(
         }
     }
     if(base::grepl(x = safer.path, pattern = "^http")){
-        tempo.error1 <- base::any(base::grepl(x = saferDev::get_message(data = "base::source(safer.path)", kind = "error", header = FALSE, env = base::get(env.name, envir = base::sys.nframe(), inherits = FALSE)), pattern = "^[Ee]rror"), na.rm = TRUE)
+        tempo.error1 <- base::any(base::grepl(x = saferDev::get_message(data = "base::source(safer.path)", kind = "error", header = FALSE, env = base::get(env.name, envir = base::sys.nframe(), inherits = FALSE), safer_check = FALSE), pattern = "^[Ee]rror"), na.rm = TRUE)
         tempo.error2 <- FALSE
     }else{
         tempo.error1 <- FALSE
@@ -281,8 +288,6 @@ slide <- function(
         argum.check <- base::c(argum.check, TRUE)
     }
     # end other checkings
-    # reserved words (to avoid bugs)
-    # end reserved words (to avoid bugs)
     # end second round of checking and data preparation
     
     # main code
@@ -327,7 +332,7 @@ slide <- function(
     if(parall == FALSE){
         base::assign("wind", wind, envir = base::get(env.name, envir = base::sys.nframe(), inherits = FALSE)) # wind assigned in a new envir for test
         base::assign("data", data, envir = base::get(env.name, envir = base::sys.nframe(), inherits = FALSE)) # data assigned in a new envir for test
-        tempo.message <- saferDev::get_message(data="base::lapply(X = wind$left, Y = data, FUN = function(X, Y){res <- base::get(left)(Y, X) ; base::return(res)})", kind = "error", header = FALSE, env = base::get(env.name, envir = base::sys.nframe(), inherits = FALSE), print.no = FALSE) # no env = sys.nframe(), inherit = FALSE in get(left) because look for function in the classical scope
+        tempo.message <- saferDev::get_message(data="base::lapply(X = wind$left, Y = data, FUN = function(X, Y){res <- base::get(left)(Y, X) ; base::return(res)})", kind = "error", header = FALSE, env = base::get(env.name, envir = base::sys.nframe(), inherits = FALSE), print.no = FALSE, safer_check = FALSE) # no env = sys.nframe(), inherit = FALSE in get(left) because look for function in the classical scope
         # rm(env.name) # optional, because should disappear at the end of the function execution
     }else{
         tempo.message <- "ERROR" # with this, force the parallelization by default
@@ -432,14 +437,14 @@ slide <- function(
                         if(print.count.loop == print.count){
                             print.count.loop <- 0
                             tempo.time <- base::as.numeric(base::Sys.time())
-                            tempo.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)))
+                            tempo.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)), safer_check = FALSE)
                             final.loop <- (tempo.time - ini.time) / i4 * base::length(x) # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
                             final.exp <- base::as.POSIXct(final.loop, origin = ini.date)
                             base::cat(base::paste0("\nIN PROCESS ", process.id, " | LOOP ", base::format(i4, big.mark=","), " / ", base::format(base::length(x), big.mark=","), " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
                         }
                         if(i4 == base::length(x)){
                             tempo.time <- base::as.numeric(base::Sys.time())
-                            tempo.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)))
+                            tempo.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(tempo.time - ini.time)), safer_check = FALSE)
                             base::cat(base::paste0("\nPROCESS ", process.id, " ENDED | LOOP ", base::format(i4, big.mark=","), " / ", base::format(base::length(x), big.mark=","), " | TIME SPENT: ", tempo.lapse, "\n\n"))
                         }
                     }
@@ -471,7 +476,7 @@ slide <- function(
     if(verbose == TRUE){
         end.date <- base::Sys.time()
         end.time <- base::as.numeric(end.date)
-        total.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(end.time - ini.time)))
+        total.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(end.time - ini.time)), safer_check = FALSE)
         base::cat(base::paste0("\nslide JOB END\n\nTIME: ", end.date, "\n\nTOTAL TIME LAPSE: ", total.lapse, "\n\n\n"))
     }
     base::return(output)
