@@ -442,7 +442,7 @@ trim <- function(
         x.text <- graphics::par("usr")[2] + (graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1]) * (1 - graphics::par("plt")[2]) / 2
         y.text <- (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / ((graphics::par()$omd[4] / 2) * ((graphics::par("plt")[4] - graphics::par("plt")[3])))) * (1 - graphics::par("omd")[4])) # BEWARE. Here in "(graphics::par()$omd[4] / 2", division by two because there are 2 graphs staked on the y axis, and not one
         graphics::par(xpd=NA)
-        base::text(x = x.text, y = y.text, base::paste0(corner.text), adj=base::c(1, 1.1), cex = corner.text.size) # text at the topright corner
+        graphics::text(x = x.text, y = y.text, base::paste0(corner.text), adj=base::c(1, 1.1), cex = corner.text.size) # text at the topright corner
         graphics::par(xpd=FALSE)
         graphics::par(xaxs = base::ifelse(std.x.range, "i", "r"), yaxs = base::ifelse(std.y.range, "i", "r"))
         stats::qqnorm(base::as.vector(sampled.data), main = "", datax = TRUE, ylab = "Value", pch = 1, col = "red", cex = cex.pt / 0.2)
