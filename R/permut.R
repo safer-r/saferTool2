@@ -268,7 +268,7 @@ permut <- function(
                     count.loop <- 0
                     pos <- base::sample.int(n = pos.selec.seq.max , size = print.count, replace = TRUE) # BEWARE: never forget to resample here
                     tempo.time <- base::as.numeric(base::Sys.time())
-                    tempo.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)), safer_check = FALSE), 
+                    tempo.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(tempo.time - tempo.time.loop)), safer_check = FALSE) 
                     final.loop <- (tempo.time - tempo.time.loop) / i3 * n # expected duration in seconds
                     final.exp <- base::as.POSIXct(final.loop, origin = tempo.date.loop)
                     base::cat(base::paste0("\n", base::ifelse(text.print == "", "", base::paste0(text.print, " | ")), "FOR LOOP ", i3, " / ", n, " | TIME SPENT: ", tempo.lapse, " | EXPECTED END: ", final.exp))
