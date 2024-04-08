@@ -92,7 +92,7 @@ codon2aa <- function(
     tempo.arg <-base::c(
         "data", 
         "display",
-        "safer_check = TRUE"
+        "safer_check"
     )
     tempo.log <- base::sapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = is.null)
     if(base::any(tempo.log) == TRUE){# normally no NA with is.null()
