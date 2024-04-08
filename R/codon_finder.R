@@ -4,6 +4,7 @@
 #' @param pos Vector of integers indicating the positions of nucleotids in a sequence. Must be between begin and end arguments.
 #' @param begin Single integer indicating the position of the first base of the coding sequence.
 #' @param end Single indicating the position of the last base of the coding sequence.
+#' @param safer_check Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.
 #' @returns
 #' A data frame with column names:
 #' 
@@ -31,10 +32,11 @@
 codon_finder <- function(
         pos, 
         begin, 
-        end
+        end,
+        safer_check = TRUE
 ){
     # DEBUGGING
-    # pos = c(5, 6, 8, 10) ; begin = 5 ; end = 10
+    # pos = c(5, 6, 8, 10) ; begin = 5 ; end = 10 ; safer_check = TRUE
     # package name
     package.name <- "saferTool2"
     # end package name
@@ -53,13 +55,15 @@ codon_finder <- function(
     # end check of lib.path
 
     # check of the required function from the required packages
-    .pack_and_function_check(
-        fun = base::c(
-            "saferDev::arg_check"
+    if(safer_check == TRUE){
+        .pack_and_function_check(
+            fun = base::c(
+                "saferDev::arg_check"
         ),
         lib.path = NULL,
         external.function.name = function.name
     )
+    }
     # end check of the required function from the required packages
     # end package checking
 
@@ -81,9 +85,9 @@ codon_finder <- function(
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
     ee <- base::expression(argum.check <- base::c(argum.check, tempo$problem) , text.check <- c(text.check, tempo$text) , checked.arg.names <- base::c(checked.arg.names, tempo$object.name))
-    tempo <- saferDev::arg_check(data = pos, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, fun.name = function.name) ; base::eval(ee)
-    tempo <- saferDev::arg_check(data = begin, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name) ; base::eval(ee)
-    tempo <- saferDev::arg_check(data = end, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = pos, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = begin, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = end, class = "vector", typeof = "integer", double.as.integer.allowed = TRUE, length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     if( ! base::is.null(argum.check)){
         if(base::any(argum.check, na.rm = TRUE) == TRUE){
             base::stop(base::paste0("\n\n================\n\n", base::paste(text.check[argum.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
@@ -96,6 +100,8 @@ codon_finder <- function(
     # end argument primary checking
     
     # second round of checking and data preparation
+    # reserved words (to avoid bugs)
+    # end reserved words (to avoid bugs)
     # management of NA arguments
     if( ! (base::all(base::class(arg.user.setting) == "list", na.rm = TRUE) & base::length(arg.user.setting) == 0)){
         tempo.arg <- base::names(arg.user.setting) # values provided by the user
@@ -110,7 +116,8 @@ codon_finder <- function(
     tempo.arg <-base::c(
         "pos", 
         "begin", 
-        "end"
+        "end",
+        "safer_check"
     )
     tempo.log <- base::sapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = is.null)
     if(base::any(tempo.log) == TRUE){# normally no NA with is.null()
@@ -136,8 +143,6 @@ codon_finder <- function(
         base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
     # end other checkings
-    # reserved words (to avoid bugs)
-    # end reserved words (to avoid bugs)
     # end second round of checking and data preparation
     
     # main code
