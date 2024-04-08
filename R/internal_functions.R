@@ -28,7 +28,7 @@
     # check of lib.path
     # already done in the main function
     if(base::is.null(lib.path)){
-        lib.path <- .libPaths() # .libPaths(new = lib.path) # or .libPaths(new = c(.libPaths(), lib.path))
+        lib.path <- base::.libPaths() # .libPaths(new = lib.path) # or .libPaths(new = c(.libPaths(), lib.path))
     }
     # end check of lib.path
     # main code
