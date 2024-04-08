@@ -88,6 +88,7 @@ permut <- function(
         fun = base::c(
             "saferDev::arg_check",
             "saferTool::round2",
+            "stats::cor",
             "lubridate::seconds_to_period"
         ),
         lib.path = NULL,
@@ -214,7 +215,6 @@ permut <- function(
     warn <- NULL
     warn.count <- 0
     # end warning initiation
-    
     # other checkings
     # end other checkings
     # end second round of checking and data preparation
