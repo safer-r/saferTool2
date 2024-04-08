@@ -3,6 +3,7 @@
 #' Convert codon to amino acid using standard genetic code indicated in https://en.wikipedia.org/wiki/DNA_and_RNA_codon_tables.
 #' @param data Single caracter string of three characters, or vector of three characters, indicating the DNA codon (only "A", "T", "G" and "C" allowed). Case insensitive. Omitted if display argument is TRUE.
 #' @param display Single logical value. Display the whole genetic table? if TRUE, override data.
+#' @param safer_check Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.
 #' @returns The 1 letter uppercase amino acid of the submitted codon or the whole table if display argument is TRUE.
 #' @examples
 #' codon2aa(data = "ATC", display = TRUE)
@@ -10,10 +11,11 @@
 #' @export
 codon2aa <- function(
         data,
-        display = FALSE
+        display = FALSE,
+        safer_check = TRUE
 ){
     # DEBUGGING
-    # data = "atg" ; display = FALSE
+    # data = "atg" ; display = FALSE ; safer_check = TRUE
     # package name
     package.name <- "saferTool2"
     # end package name
@@ -32,13 +34,14 @@ codon2aa <- function(
     # end check of lib.path
     
     # check of the required function from the required packages
-    .pack_and_function_check(
+    if(safer_check == TRUE){.pack_and_function_check(
         fun = base::c(
             "saferDev::arg_check"
         ),
         lib.path = NULL,
         external.function.name = function.name
     )
+    }
     # end check of the required function from the required packages
     # end package checking
     
@@ -59,8 +62,8 @@ codon2aa <- function(
     text.check <- NULL #
     checked.arg.names <- NULL # for function debbuging: used by r_debugging_tools
     ee <- base::expression(arg.check = c(arg.check, tempo$problem) , text.check = c(text.check, tempo$text) , checked.arg.names = c(checked.arg.names, tempo$object.name))
-    tempo <- saferDev::arg_check(data = data, class = "vector", typeof = "character", fun.name = function.name) ; base::eval(ee)
-    tempo <- saferDev::arg_check(data = display, class = "logical", length = 1, fun.name = function.name) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = data, class = "vector", typeof = "character", fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
+    tempo <- saferDev::arg_check(data = display, class = "logical", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     if( ! base::is.null(arg.check)){
         if(base::any(arg.check, na.rm = TRUE) == TRUE){
             base::stop(base::paste0("\n\n================\n\n", base::paste(text.check[arg.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
@@ -88,7 +91,8 @@ codon2aa <- function(
     # management of NULL arguments
     tempo.arg <-base::c(
         "data", 
-        "display"
+        "display",
+        "safer_check = TRUE"
     )
     tempo.log <- base::sapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = is.null)
     if(base::any(tempo.log) == TRUE){# normally no NA with is.null()
