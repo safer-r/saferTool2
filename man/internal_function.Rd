@@ -18,6 +18,7 @@ An error message if at least one of the checked packages is missing in lib.path,
 }
 \description{
 Check if 1) required functions are present in required packages and 2) required packages are installed locally.
+Simplified version of saferDev::is_function_here(), used as internal function for the other functions of the package.
 }
 \examples{
 # .pack_and_function_check(fun = "ggplot2::notgood") # commented because this example returns an error

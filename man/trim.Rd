@@ -9,7 +9,7 @@ trim(
   displayed.nb = NULL,
   single.value.display = FALSE,
   trim.method = "",
-  trim.cutoffs = c(0.05, 0.975),
+  trim.cutoffs = base::c(0.05, 0.975),
   interval.scale.disp = TRUE,
   down.space = 0.75,
   left.space = 0.75,
@@ -31,7 +31,8 @@ trim(
   corner.text = "",
   amplif.legend = 1,
   corner.text.size = 0.75,
-  trim.return = FALSE
+  trim.return = FALSE,
+  safer_check = TRUE
 )
 }
 \arguments{
@@ -88,6 +89,8 @@ trim(
 \item{corner.text.size}{Single positive numeric value to increase or decrease the size of the text. Value 1 does not change it, 0.5 decreases by half, 2 increases by 2.}
 
 \item{trim.return}{Single logical value. Return the trimmed and non trimmed values? NULL returned for trimmed and non trimmed values if trim.method == "".}
+
+\item{safer_check}{Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.}
 }
 \value{
 A list containing:

@@ -20,7 +20,8 @@ slide(
   lib.path = NULL,
   verbose = TRUE,
   safer.path =
-    "C:\\\\Users\\\\Gael\\\\Documents\\\\Git_projects\\\\cute_little_R_functions\\\\cute_little_R_functions.R"
+    "C:\\\\Users\\\\Gael\\\\Documents\\\\Git_projects\\\\cute_little_R_functions\\\\cute_little_R_functions.R",
+  safer_check = TRUE
 )
 }
 \arguments{
@@ -53,6 +54,8 @@ slide(
 \item{verbose}{Single logical value. Display messages?}
 
 \item{safer.path}{Single character string indicating the absolute path of the safer.R file. Will be remove when safer will be a package. Ignored if parall is FALSE.}
+
+\item{safer_check}{Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.}
 }
 \value{
 A data frame containing :

@@ -4,12 +4,14 @@
 \alias{codon2aa}
 \title{codon2aa}
 \usage{
-codon2aa(data, display = FALSE)
+codon2aa(data, display = FALSE, safer_check = TRUE)
 }
 \arguments{
 \item{data}{Single caracter string of three characters, or vector of three characters, indicating the DNA codon (only "A", "T", "G" and "C" allowed). Case insensitive. Omitted if display argument is TRUE.}
 
 \item{display}{Single logical value. Display the whole genetic table? if TRUE, override data.}
+
+\item{safer_check}{Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.}
 }
 \value{
 The 1 letter uppercase amino acid of the submitted codon or the whole table if display argument is TRUE.

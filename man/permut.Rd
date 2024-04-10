@@ -14,7 +14,8 @@ permut(
   cor.method = "spearman",
   cor.limit = 0.2,
   warn.print = FALSE,
-  lib.path = NULL
+  lib.path = NULL,
+  safer_check = TRUE
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ permut(
 \item{warn.print}{Single logical value. Print warnings at the end of the execution? No print if no warning messages}
 
 \item{lib.path}{Character vector specifying the absolute pathways of the directories containing the required packages if not in the default directories. Ignored if NULL.}
+
+\item{safer_check}{Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.}
 }
 \value{
 A list containing:

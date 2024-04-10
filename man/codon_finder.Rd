@@ -4,7 +4,7 @@
 \alias{codon_finder}
 \title{codon_finder}
 \usage{
-codon_finder(pos, begin, end)
+codon_finder(pos, begin, end, safer_check = TRUE)
 }
 \arguments{
 \item{pos}{Vector of integers indicating the positions of nucleotids in a sequence. Must be between begin and end arguments.}
@@ -12,6 +12,8 @@ codon_finder(pos, begin, end)
 \item{begin}{Single integer indicating the position of the first base of the coding sequence.}
 
 \item{end}{Single indicating the position of the last base of the coding sequence.}
+
+\item{safer_check}{Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.}
 }
 \value{
 A data frame with column names:
