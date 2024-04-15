@@ -5,6 +5,7 @@
 #' @param fun Character vector of the names of the required functions, preceded by the name of the package they belong to and a double colon. Example: c("ggplot2::geom_point", "grid::gpar").
 #' @param lib.path Character vector specifying the absolute pathways of the directories containing the listed packages in the fun argument, if not in the default directories. If NULL, the function checks only in the .libPaths() default R library folders.
 #' @param external.function.name Name of the function using the .pack_and_function_check() function.
+#' @param external.package.name Name of the package of the function using the .pack_and_function_check() function.
 #' @returns An error message if at least one of the checked packages is missing in lib.path, or if at least one of the checked functions is missing in the required package, nothing otherwise.
 #' @examples
 #' # .pack_and_function_check(fun = "ggplot2::notgood") # commented because this example returns an error
@@ -19,7 +20,8 @@
 .pack_and_function_check <- function(
         fun, 
         lib.path,
-        external.function.name
+        external.function.name,
+        external.package.name
 ){
     # WARNING
     # arguments of the .pack_and_function_check() function are not checked, so use carefully inside other functions
@@ -67,4 +69,93 @@
         )
         base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
     }
+}
+
+
+#' @title .base_op_check
+#' @description
+#' Check if critical operators of R are not present in other packages or in the global env.
+#' Others functions of the R scope can be overwritten because safer functions always use :: when using any function.
+#' @param external.function.name Name of the function using the .pack_and_function_check() function.
+#' @param external.package.name Name of the package of the function using the .pack_and_function_check() function.
+#' @returns An error message if at least one of the checked operator is present in the R scope, nothing otherwise.
+#' @examples
+#' \dontrun{
+#' # Example that shouldn't be run because this is an internal function
+#' assign("!", 1) ; .base_op_check(external.function.name = "fun1") # commented because this example returns an error
+#' }
+#' @keywords internal
+#' @rdname internal_function
+.base_op_check <- function(
+    external.function.name,
+    external.package.name
+){
+    # WARNING
+    # arguments of the .base_op_check() function are not checked, so use carefully inside other functions
+    # DEBUGGING
+    # external.function.name = "test"
+    # main code
+    reserved.objects <- base::c(
+        "-", 
+        "!", 
+        "!=", 
+        "$", 
+        "%%", 
+        "%*%", 
+        "%/%", 
+        "%in%", 
+        "&", 
+        "&&", 
+        "(", 
+        "*", 
+        "/", 
+        ":", 
+        "::", 
+        ":::", 
+        "@", 
+        "[", 
+        "[[", 
+        "^", 
+        "{", 
+        "|", 
+        "||", 
+        "~", 
+        "+", 
+        "<", 
+        "<-", 
+        "<<-", 
+        "<=", 
+        "=", 
+        "==", 
+        ">", 
+        ">=", 
+        "\\", 
+        "if", 
+        "else", 
+        "function",
+        "for",
+        "while",
+        "repeat"
+    )
+    tempo.log <- base::sapply(X = reserved.objects, FUN = function(x){ 
+        if( ! base::all(utils::find(x) == "package:base")){
+            base::return(TRUE)
+        }else{
+            base::return(FALSE)
+        }
+    })
+    if(base::any(tempo.log)){
+        tempo.name <-  reserved.objects[tempo.log]
+        tempo.pos <- base::sapply(X = tempo.name, FUN = function(x){base::paste(utils::find(x), collapse = " ")})
+        tempo.cat <- base::paste0(
+            "ERROR IN ", 
+            external.function.name, 
+            " OF THE ", external.package.name, " PACKAGE.\nCRITICAL R OBJECT",
+            base::ifelse(base::length(tempo.log) == 1L, " ", "S "), 
+            "CANNOT BE PRESENT SOMEWHERE ELSE IN THE R SCOPE THAN IN \"package::base\":\n", 
+            base::paste(base::paste(tempo.name, tempo.pos, sep = "\t"), collapse = "\n")
+        )
+        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
+    }
+    # end main code
 }
