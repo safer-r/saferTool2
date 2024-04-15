@@ -175,7 +175,7 @@ permut <- function(
     # reserved words (to avoid bugs)
     # end reserved words (to avoid bugs)
     # management of NA arguments
-    if( ! (base::all(base::class(arg.user.setting) == "list", na.rm = TRUE) & base::length(arg.user.setting) == 0)){
+    if( ! (base::all(base::class(arg.user.setting) %in% base::c("list", "NULL"), na.rm = TRUE) & base::length(arg.user.setting) == 0)){
         tempo.arg <- base::names(arg.user.setting) # values provided by the user
         tempo.log <- base::suppressWarnings(base::sapply(base::lapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = is.na), FUN = base::any)) & base::lapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = length) == 1L # no argument provided by the user can be just NA
         if(base::any(tempo.log) == TRUE){ # normally no NA because is.na() used here
@@ -330,7 +330,7 @@ permut <- function(
                     count <- count + 1
                     count.loop <- count.loop + 1
                     pos2 <- pos[count.loop]
-                    tempo.pos[base::c(pos2 + 1, pos2)] <- tempo.pos[c(pos2, pos2 + 1)]
+                    tempo.pos[base::c(pos2 + 1, pos2)] <- tempo.pos[base::c(pos2, pos2 + 1)]
                     tempo.cor <- base::abs(stats::cor(x = data1[tempo.pos], y = data2, use = "pairwise.complete.obs", method = cor.method))
                     if(print.count.loop[count.loop]){
                         count.loop <- 0
