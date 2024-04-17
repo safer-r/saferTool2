@@ -127,7 +127,8 @@ slide <- function(
             "parallel::clusterSplit",
             "parallel::clusterApply",
             "parallel::stopCluster",
-            "lubridate::seconds_to_period"
+            "lubridate::seconds_to_period",
+            "utils::str"
         ),
         lib.path = lib.path,
         external.function.name = function.name,
