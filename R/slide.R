@@ -52,7 +52,6 @@
 #' @importFrom parallel clusterApply
 #' @importFrom parallel stopCluster
 #' @importFrom lubridate seconds_to_period
-#' @importFrom utils str
 #' @export
 slide <- function(
         data, 
@@ -127,8 +126,7 @@ slide <- function(
             "parallel::clusterSplit",
             "parallel::clusterApply",
             "parallel::stopCluster",
-            "lubridate::seconds_to_period",
-            "utils::str"
+            "lubridate::seconds_to_period"
         ),
         lib.path = lib.path,
         external.function.name = function.name,

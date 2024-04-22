@@ -45,7 +45,6 @@
 #' @importFrom saferDev arg_check
 #' @importFrom saferTool round2
 #' @importFrom lubridate seconds_to_period
-#' @importFrom stats cor
 #' @export
 permut <- function(
         data1, 
@@ -97,7 +96,6 @@ permut <- function(
         fun = base::c(
             "saferDev::arg_check",
             "saferTool::round2",
-            "stats::cor",
             "lubridate::seconds_to_period"
         ),
         lib.path = NULL,
