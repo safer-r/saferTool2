@@ -34,9 +34,6 @@ test_that("slide() works correctly", {
 # Test case 12: Test 'verbose' argument
   # expect_error(slide(data = 1:10, window.size = 5, step = 2, fun = length, verbose = "not_logical"))
 
-# Test case 13: Test 'safer.path' argument
-  # expect_error(slide(data = 1:10, window.size = 5, step = 2, fun = length, safer.path = "invalid_path"))
-
 # Comprehensive test for all arguments
-  expect_error(slide(data = NULL, window.size = "5", step = "2", fun = 123, args = 123, boundary = "invalid", parall = "not_logical", thread.nb = "not_numeric", print.count = "not_numeric", res.path = "invalid_directory", lib.path = "invalid_directory", verbose = "not_logical", safer.path = "invalid_path"))
+  expect_error(slide(data = NULL, window.size = "5", step = "2", fun = 123, args = 123, boundary = "invalid", parall = "not_logical", thread.nb = "not_numeric", print.count = "not_numeric", res.path = "invalid_directory", lib.path = "invalid_directory", verbose = "not_logical"))
 })

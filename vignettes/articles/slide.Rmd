@@ -68,7 +68,7 @@ slide(data = data, window.size = 5, step = 2, fun = length, parall = FALSE)
 
 ### Argument thread.nb
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, parall = FALSE, thread.nb = NULL)
+slide(data = data, window.size = 5, step = 2, fun = length, parall = TRUE, thread.nb = NULL)
 ```
 <br>
 
@@ -98,12 +98,6 @@ slide(data = data, window.size = 5, step = 2, fun = length, verbose = TRUE)
 ```
 <br>
 
-### Argument safer.path
-```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, safer.path = ".")
-```
-<br>
-
 ### All the arguments
 ```{r}
 slide(
@@ -120,8 +114,7 @@ slide(
       print.count = 100,
       res.path = NULL,
       lib.path = NULL,
-      verbose = TRUE,
-      safer.path = "."
+      verbose = TRUE
     )
 ```
 
