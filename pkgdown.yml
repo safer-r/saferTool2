@@ -1,12 +1,12 @@
 pandoc: 3.1.1
-pkgdown: 2.0.7
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
-  codon2aa: codon2aa.html
   codon_finder: codon_finder.html
+  codon2aa: codon2aa.html
   permut: permut.html
+  saferTool2: saferTool2.html
   slide: slide.html
   trim: trim.html
-  saferTool2: saferTool2.html
-last_built: 2024-04-05T15:50Z
+last_built: 2024-04-24T16:11Z
 
