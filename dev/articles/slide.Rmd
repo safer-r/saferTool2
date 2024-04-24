@@ -31,70 +31,70 @@ data
 
 ### Simple example
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length)
+slide(data = data, window.size = 5, step = 2, FUN  = length)
 ```
 <br>
 
 ### Argument from
 ```{r}
-slide(data = data, window.size = 5, step = 2, from = NULL, fun = length)
+slide(data = data, window.size = 5, step = 2, from = NULL, FUN  = length)
 ```
 <br>
 
 ### Argument to
 ```{r}
-slide(data = data, window.size = 5, step = 2, to = NULL, fun = length)
+slide(data = data, window.size = 5, step = 2, to = NULL, FUN  = length)
 ```
 <br>
 
 
 ### Argument args
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, args = NULL)
+slide(data = data, window.size = 5, step = 2, FUN  = length, args = NULL)
 ```
 <br>
 
 ### Argument boundary
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, boundary = "left")
+slide(data = data, window.size = 5, step = 2, FUN  = length, boundary = "left")
 ```
 <br>
 
 ### Argument parall
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, parall = FALSE)
+slide(data = data, window.size = 5, step = 2, FUN  = length, parall = FALSE)
 ```
 <br>
 
 ### Argument thread.nb
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, parall = TRUE, thread.nb = NULL)
+slide(data = data, window.size = 5, step = 2, FUN  = length, parall = TRUE, thread.nb = NULL)
 ```
 <br>
 
 ### Argument print.count
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, print.count = 100)
+slide(data = data, window.size = 5, step = 2, FUN  = length, print.count = 100)
 ```
 <br>
 
 ### Argument res.path
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, res.path = NULL)
+slide(data = data, window.size = 5, step = 2, FUN  = length, res.path = NULL)
 ```
 <br>
 
 
 ### Argument lib.path
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, lib.path = NULL)
+slide(data = data, window.size = 5, step = 2, FUN  = length, lib.path = NULL)
 ```
 <br>
 
 
 ### Argument verbose
 ```{r}
-slide(data = data, window.size = 5, step = 2, fun = length, verbose = TRUE)
+slide(data = data, window.size = 5, step = 2, FUN  = length, verbose = TRUE)
 ```
 <br>
 
@@ -106,7 +106,7 @@ slide(
       step = 2,
       from = NULL,
       to = NULL,
-      fun = length,
+      FUN  = length,
       args = NULL,
       boundary = "left",
       parall = FALSE,
