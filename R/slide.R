@@ -6,7 +6,7 @@
 #' @param step Single numeric value indicating the step between each window (in the same unit as data value). Cannot be larger than window.size.
 #' @param from Single numeric value of the left boundary of the first sliding window. If NULL, min(data) is used. The first window will strictly have from or min(data) as left boundary.
 #' @param to Single numeric value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window.size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window.size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window.size / 2.
-#' @param FUN Function or single character string indicating the name of the function to apply in each window. Example of function: FUN = mean.Example of character string: FUN = "mean".
+#' @param FUN Function or single character string indicating the name of the function to apply in each window. Example of function: FUN = mean. Example of character string: FUN = "mean".
 #' @param args Single character string of additional arguments of FUN (separated by a comma between the quotes). Example args = "na.rm = TRUE" for FUN = mean. Ignored if NULL.
 #' @param boundary Either "left" or "right". Indicates if the sliding window includes values equal to left boundary and exclude values equal to right boundary ("left") or the opposite ("right").
 #' @param parall Single logical value. Force parallelization ?

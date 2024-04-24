@@ -10,7 +10,7 @@ slide(
   step,
   from = NULL,
   to = NULL,
-  fun,
+  FUN,
   args = NULL,
   boundary = "left",
   parall = FALSE,
@@ -19,8 +19,6 @@ slide(
   res.path = NULL,
   lib.path = NULL,
   verbose = TRUE,
-  safer.path =
-    "C:\\\\Users\\\\Gael\\\\Documents\\\\Git_projects\\\\cute_little_R_functions\\\\cute_little_R_functions.R",
   safer_check = TRUE
 )
 }
@@ -35,9 +33,9 @@ slide(
 
 \item{to}{Single numeric value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window.size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window.size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window.size / 2.}
 
-\item{fun}{Function or single character string indicating the name of the function to apply in each window. Example of function: fun = mean.Example of character string: fun = "mean".}
+\item{FUN}{Function or single character string indicating the name of the function to apply in each window. Example of function: FUN = mean. Example of character string: FUN = "mean".}
 
-\item{args}{Single character string of additional arguments of fun (separated by a comma between the quotes). Example args = "na.rm = TRUE" for fun = mean. Ignored if NULL.}
+\item{args}{Single character string of additional arguments of FUN (separated by a comma between the quotes). Example args = "na.rm = TRUE" for FUN = mean. Ignored if NULL.}
 
 \item{boundary}{Either "left" or "right". Indicates if the sliding window includes values equal to left boundary and exclude values equal to right boundary ("left") or the opposite ("right").}
 
@@ -53,8 +51,6 @@ slide(
 
 \item{verbose}{Single logical value. Display messages?}
 
-\item{safer.path}{Single character string indicating the absolute path of the safer.R file. Will be remove when safer will be a package. Ignored if parall is FALSE.}
-
 \item{safer_check}{Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.}
 }
 \value{
@@ -66,7 +62,7 @@ A data frame containing :
 
 - $center : the center of each window (in the unit of data argument).
 
-- $value : the computed value by the fun argument in each window).
+- $value : the computed value by the FUN argument in each window).
 }
 \description{
 Return a computation made on a vector using a sliding window.
@@ -81,11 +77,11 @@ The parall argument forces the parallelization, which is convenient when the dat
 Always use the env argument when slide() is used inside functions.
 }
 \examples{
-slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "left")
+slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left")
 
-slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "right") # effect of boundary argument
+slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "right") # effect of boundary argument
 
 \dontrun{
-slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "left", parall = TRUE, thread.nb = 2) # effect of parall argument
+slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left", parall = TRUE, thread.nb = 2) # effect of parall argument
 }
 }
