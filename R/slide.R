@@ -59,7 +59,7 @@ slide <- function(
         step, 
         from = NULL, 
         to = NULL, 
-        fun, 
+        fun,
         args = NULL, 
         boundary = "left", 
         parall = FALSE, 
@@ -117,16 +117,16 @@ slide <- function(
     # check of the required function from the required packages
     if(safer_check == TRUE){
         .pack_and_function_check(
-        fun = base::c(
-            "saferDev::arg_check",
-            "saferDev::get_message",
-            "saferTool::round2",
-            "parallel::detectCores",
-            "parallel::makeCluster",
-            "parallel::clusterSplit",
-            "parallel::clusterApply",
-            "parallel::stopCluster",
-            "lubridate::seconds_to_period"
+            fun = base::c(
+                "saferDev::arg_check",
+                "saferDev::get_message",
+                "saferTool::round2",
+                "parallel::detectCores",
+                "parallel::makeCluster",
+                "parallel::clusterSplit",
+                "parallel::clusterApply",
+                "parallel::stopCluster",
+                "lubridate::seconds_to_period"
         ),
         lib.path = lib.path,
         external.function.name = function.name,

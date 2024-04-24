@@ -98,7 +98,7 @@ permut <- function(
             "saferTool::round2",
             "lubridate::seconds_to_period"
         ),
-        lib.path = NULL,
+        lib.path = lib.path,
         external.function.name = function.name,
         external.package.name = package.name
     )
