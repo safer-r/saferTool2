@@ -15,7 +15,6 @@
 #' @param res.path Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.
 #' @param lib.path Character vector specifying the absolute pathways of the directories containing the required packages if not in the default directories. Ignored if NULL.
 #' @param verbose Single logical value. Display messages?
-#' @param safer.path Single character string indicating the absolute path of the safer.R file. Will be remove when safer will be a package. Ignored if parall is FALSE.
 #' @param safer_check Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.
 #' @returns
 #' A data frame containing :
@@ -68,11 +67,10 @@ slide <- function(
         res.path = NULL, 
         lib.path = NULL, 
         verbose = TRUE, 
-        safer.path = "C:\\Users\\Gael\\Documents\\Git_projects\\cute_little_R_functions\\cute_little_R_functions.R",
         safer_check = TRUE
 ){
     # DEBUGGING
-    # data = c(1:10, 100:110, 500) ; window.size = 5 ; step = 2 ; from = NULL ; to = NULL ; fun = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread.nb = NULL ; print.count = 100 ; res.path = NULL ; lib.path = NULL ; verbose = TRUE ; safer.path = "C:\\Users\\Gael\\Documents\\Git_projects\\cute_little_R_functions\\cute_little_R_functions.R" ; safer_check = TRUE
+    # data = c(1:10, 100:110, 500) ; window.size = 5 ; step = 2 ; from = NULL ; to = NULL ; fun = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread.nb = NULL ; print.count = 100 ; res.path = NULL ; lib.path = NULL ; verbose = TRUE ; safer_check = TRUE
     # data = lag.pos; window.size = window.size; step = step; fun = length; from = min(a$pos); to = max(a$pos) ; safer_check = TRUE
     # package name
     package.name <- "saferTool2"
@@ -194,7 +192,6 @@ slide <- function(
         tempo <- saferDev::arg_check(data = lib.path, class = "vector", mode = "character", fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     }
     tempo <- saferDev::arg_check(data = verbose, class = "vector", mode = "logical", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
-    tempo <- saferDev::arg_check(data = safer.path, class = "vector", typeof = "character", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     if( ! base::is.null(argum.check)){
         if(base::any(argum.check, na.rm = TRUE) == TRUE){
             base::stop(base::paste0("\n\n================\n\n", base::paste(text.check[argum.check], collapse = "\n"), "\n\n================\n\n"), call. = FALSE) #
@@ -244,7 +241,6 @@ slide <- function(
         # "res.path", # inactivated because can be null
         # "lib.path", # inactivated because can be null
         "verbose", 
-        "safer.path",
         "safer_check"
     )
     tempo.log <- base::sapply(base::lapply(tempo.arg, FUN = base::get, env = base::sys.nframe(), inherit = FALSE), FUN = base::is.null)
@@ -283,18 +279,6 @@ slide <- function(
             tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: DIRECTORY PATH INDICATED IN THE lib.path ARGUMENT DOES NOT EXISTS:\n", base::paste(lib.path, collapse = "\n"))
             base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE)
         }
-    }
-    if(base::grepl(x = safer.path, pattern = "^http")){
-        tempo.error1 <- base::any(base::grepl(x = saferDev::get_message(data = "base::source(safer.path)", kind = "error", header = FALSE, env = base::get(env.name, envir = base::sys.nframe(), inherits = FALSE), safer_check = FALSE), pattern = "^[Ee]rror"), na.rm = TRUE)
-        tempo.error2 <- FALSE
-    }else{
-        tempo.error1 <- FALSE
-        tempo.error2 <- ! base::file.exists(safer.path)
-    }
-    if(tempo.error1 | tempo.error2){
-        tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: ", base::ifelse(base::grepl(x = safer.path, pattern = "^http"), "URL", "FILE"), " PATH INDICATED IN THE safer.path PARAMETER DOES NOT EXISTS:\n", safer.path)
-        text.check <- base::c(text.check, tempo.cat)
-        argum.check <- base::c(argum.check, TRUE)
     }
     # end other checkings
     # end second round of checking and data preparation
@@ -411,7 +395,6 @@ slide <- function(
             res.path = res.path, 
             lib.path = lib.path, 
             verbose = verbose, 
-            safer.path = safer.path, 
             fun = function(
         x, 
         function.name, 
@@ -425,13 +408,11 @@ slide <- function(
         right, 
         res.path, 
         lib.path, 
-        verbose, 
-        safer.path
+        verbose
             ){
                 # check again: very important because another R
                 process.id <- base::Sys.getpid()
                 base::cat(base::paste0("\nPROCESS ID ", process.id, " -> TESTS ", x[1], " TO ", x[base::length(x)], "\n"))
-                base::source(safer.path, local = .GlobalEnv)
                 # fun_pack(req.package = "lubridate", lib.path = lib.path, load = TRUE) # load = TRUE to be sure that functions are present in the environment. And this prevent to use R.lib.path argument of python_pack()
                 # end check again: very important because another R
                 ini.date <- base::Sys.time()
