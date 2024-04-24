@@ -52,24 +52,6 @@
 #' @examples
 #' trim(data = c(1:100, 1:10), displayed.nb = NULL, single.value.display = FALSE, trim.method = "mean.sd", trim.cutoffs = c(0.05, 0.975), interval.scale.disp = TRUE, down.space = 0.75, left.space = 0.75, up.space = 0.3, right.space = 0.25, orient = 1, dist.legend = 0.37, box.type = "l", amplif.label = 1.25, amplif.axis = 1.25, std.x.range = TRUE, std.y.range = TRUE, cex.pt = 0.2, col.box = grDevices::hsv(0.55, 0.8, 0.8), x.nb.inter.tick = 4, y.nb.inter.tick = 0, tick.length = 0.5, sec.tick.length = 0.3, corner.text = "", amplif.legend = 1, corner.text.size = 0.75, trim.return = TRUE)
 #' @importFrom saferDev arg_check
-#' @importFrom grDevices hsv
-#' @importFrom graphics par
-#' @importFrom graphics text
-#' @importFrom graphics rug
-#' @importFrom stats qnorm
-#' @importFrom stats sd
-#' @importFrom graphics abline
-#' @importFrom graphics segments
-#' @importFrom stats quantile
-#' @importFrom graphics axis
-#' @importFrom graphics layout
-#' @importFrom graphics stripchart
-#' @importFrom graphics boxplot
-#' @importFrom graphics legend
-#' @importFrom graphics hist
-#' @importFrom grDevices grey
-#' @importFrom stats qqnorm
-#' @importFrom stats qqline
 #' @export
 trim <- function(
         data, 
@@ -135,25 +117,7 @@ trim <- function(
     if(safer_check == TRUE){
         .pack_and_function_check(
         fun = base::c(
-            "graphics::abline",
-            "graphics::axis",
-            "graphics::boxplot",
-            "grDevices::grey",
-            "graphics::hist",
-            "graphics::layout",
-            "graphics::legend",
-            "graphics::par",
-            "graphics::rug",
-            "graphics::segments",
-            "graphics::stripchart",
-            "graphics::text",
-            "grDevices::hsv",
-            "saferDev::arg_check",
-            "stats::qnorm",
-            "stats::qqline",
-            "stats::qqnorm",
-            "stats::quantile",
-            "stats::sd"
+            "saferDev::arg_check"
         ),
         lib.path = NULL,
         external.function.name = function.name,
