@@ -6,8 +6,8 @@
 #' @param step Single numeric value indicating the step between each window (in the same unit as data value). Cannot be larger than window.size.
 #' @param from Single numeric value of the left boundary of the first sliding window. If NULL, min(data) is used. The first window will strictly have from or min(data) as left boundary.
 #' @param to Single numeric value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window.size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window.size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window.size / 2.
-#' @param fun Function or single character string indicating the name of the function to apply in each window. Example of function: fun = mean.Example of character string: fun = "mean".
-#' @param args Single character string of additional arguments of fun (separated by a comma between the quotes). Example args = "na.rm = TRUE" for fun = mean. Ignored if NULL.
+#' @param FUN Function or single character string indicating the name of the function to apply in each window. Example of function: FUN = mean.Example of character string: FUN = "mean".
+#' @param args Single character string of additional arguments of FUN (separated by a comma between the quotes). Example args = "na.rm = TRUE" for FUN = mean. Ignored if NULL.
 #' @param boundary Either "left" or "right". Indicates if the sliding window includes values equal to left boundary and exclude values equal to right boundary ("left") or the opposite ("right").
 #' @param parall Single logical value. Force parallelization ?
 #' @param thread.nb Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.
@@ -35,12 +35,12 @@
 #' 
 #' Always use the env argument when slide() is used inside functions.
 #' @examples
-#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "left")
+#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left")
 #' 
-#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "right") # effect of boundary argument
+#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "right") # effect of boundary argument
 #' 
 #' \dontrun{
-#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, fun = length, boundary = "left", parall = TRUE, thread.nb = 2) # effect of parall argument
+#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left", parall = TRUE, thread.nb = 2) # effect of parall argument
 #' }
 #' @importFrom saferDev arg_check
 #' @importFrom saferDev get_message
@@ -58,7 +58,7 @@ slide <- function(
         step, 
         from = NULL, 
         to = NULL, 
-        fun,
+        FUN,
         args = NULL, 
         boundary = "left", 
         parall = FALSE, 
@@ -70,8 +70,8 @@ slide <- function(
         safer_check = TRUE
 ){
     # DEBUGGING
-    # data = c(1:10, 100:110, 500) ; window.size = 5 ; step = 2 ; from = NULL ; to = NULL ; fun = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread.nb = NULL ; print.count = 100 ; res.path = NULL ; lib.path = NULL ; verbose = TRUE ; safer_check = TRUE
-    # data = lag.pos; window.size = window.size; step = step; fun = length; from = min(a$pos); to = max(a$pos) ; safer_check = TRUE
+    # data = c(1:10, 100:110, 500) ; window.size = 5 ; step = 2 ; from = NULL ; to = NULL ; FUN = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread.nb = NULL ; print.count = 100 ; res.path = NULL ; lib.path = NULL ; verbose = TRUE ; safer_check = TRUE
+    # data = lag.pos; window.size = window.size; step = step; FUN = length; from = min(a$pos); to = max(a$pos) ; safer_check = TRUE
     # package name
     package.name <- "saferTool2"
     # end package name
@@ -140,7 +140,7 @@ slide <- function(
         "data", 
         "window.size", 
         "step", 
-        "fun"
+        "FUN"
     )
     tempo <- base::eval(base::parse(text = base::paste0("base::c(base::missing(", base::paste0(mandat.args, collapse = "),base::missing("), "))")))
     if(base::any(tempo)){ # normally no NA for missing() output
@@ -162,10 +162,10 @@ slide <- function(
     if( ! base::is.null(to)){
         tempo <- saferDev::arg_check(data = to, class = "vector", mode = "numeric", length = 1, fun.name = function.name, safer_check = FALSE) ; base::eval(ee)
     }
-    tempo1 <- saferDev::arg_check(data = fun, class = "vector", mode = "character", length = 1, fun.name = function.name, safer_check = FALSE)
-    tempo2 <- saferDev::arg_check(data = fun, class = "function", length = 1, fun.name = function.name, safer_check = FALSE)
+    tempo1 <- saferDev::arg_check(data = FUN, class = "vector", mode = "character", length = 1, fun.name = function.name, safer_check = FALSE)
+    tempo2 <- saferDev::arg_check(data = FUN, class = "function", length = 1, fun.name = function.name, safer_check = FALSE)
     if(tempo1$problem == TRUE & tempo2$problem == TRUE){
-        tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: fun ARGUMENT MUST BE A FUNCTION OR A CHARACTER STRING OF THE NAME OF A FUNCTION")
+        tempo.cat <- base::paste0("ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: FUN ARGUMENT MUST BE A FUNCTION OR A CHARACTER STRING OF THE NAME OF A FUNCTION")
         text.check <- base::c(text.check, tempo.cat)
         argum.check <- base::c(argum.check, TRUE)
     }
@@ -232,7 +232,7 @@ slide <- function(
         "step", 
         # "from", # inactivated because can be null
         # "to", # inactivated because can be null
-        "fun", 
+        "FUN", 
         # "args", # inactivated because can be null
         "boundary", 
         # "parall", 
@@ -289,7 +289,7 @@ slide <- function(
     }
     ini.date <- base::Sys.time()
     ini.time <- base::as.numeric(ini.date) # time of process begin, converted into seconds
-    fun <- base::match.fun(fun) # make fun <- get(fun) is fun is a function name written as character string of length 1
+    FUN <- base::match.fun(FUN) # make FUN <- get(FUN) if FUN is a function name written as character string of length 1
     if(boundary == "left"){
         left <- ">="
         right <- "<"
@@ -344,7 +344,7 @@ slide <- function(
         # output
         # warning output
         # end warning output
-        output <- base::eval(base::parse(text = base::paste0("base::sapply(base::lapply(log, FUN = function(X){(data[X])}), FUN = base::fun", if( ! base::is.null(args)){base::paste0(", ", args)}, ")"))) # take the values of the data vector according to log (list of logical, each compartment of length(data)) and apply fun with args of fun
+        output <- base::eval(base::parse(text = base::paste0("base::sapply(base::lapply(log, FUN = function(X){(data[X])}), FUN = FUN", if( ! base::is.null(args)){base::paste0(", ", args)}, ")"))) # take the values of the data vector according to log (list of logical, each compartment of length(data)) and apply fun with args of fun
         if(base::length(output) != base::nrow(wind)){
             tempo.cat <- base::paste0("INTERNAL CODE ERROR IN ", function.name, " OF THE ", package.name, " PACKAGE: \nCODE INCONSISTENCY 3")
             base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in stop() to be able to add several messages between ==
@@ -385,7 +385,7 @@ slide <- function(
             x = cluster.list,
             function.name = function.name, 
             data = data, 
-            FUN = fun, # because fun argument of clusterApply
+            FUN = FUN,
             args = args, 
             thread.nb = thread.nb, 
             print.count = print.count, 
