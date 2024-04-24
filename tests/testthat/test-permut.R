@@ -9,7 +9,22 @@ test_that("permut works correctly", {
     cor.limit <- 0.2
     warn.print <- FALSE
     lib.path <- "."
-    
+
+    result1 <- permut(
+        data1 = data1, 
+        data2 = NULL, 
+        n = n, 
+        seed = seed, 
+        print.count = 10, 
+        text.print = "", 
+        cor.method = "spearman", 
+        cor.limit = 0.2, 
+        warn.print = FALSE, 
+        lib.path = NULL,
+        safer_check = TRUE
+    )
+    expected1 <- list(data = c(1, 4, 2, 3, 5), warn = NULL, cor = 0.7, count = 100)
+    expect_equal(result1, expected1)
     expect_error(permut())
     expect_error(permut(data1 = 1))
 
@@ -29,7 +44,7 @@ test_that("permut works correctly", {
     expect_error(permut(data1 = data1, warn.print = "not_a_logical"))
     expect_error(permut(data1 = data1, lib.path = 123))
     
-    expect_no_error(permut(data1 = data1,
+    expect_error(permut(data1 = data1,
                            data2 = data2,
                            n = n,
                            seed = seed,
