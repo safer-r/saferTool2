@@ -4,12 +4,13 @@ Title: Sophisticated tools
 Version: 1.0
 Date: 2023-12-20
 Authors@R: c(
-    person("Yushi", "Han", , "yushi.han2000@gmail.com", role = "aut", comment = c(ORCID = "0009-0009-9908-1958")),
-    person("Gaël", "Millot", , "gael.millot@pasteur.fr", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0591-3509"))
+    person(given = "Haiding", family = "Wang", email = "haiding.wang@etu.u-paris.fr", role = c("aut", "ctb")),
+    person(given = "Yushi", family = "Han",  email = "yushi.han2000@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0009-0009-9908-1958")),
+    person(given = "Gael", family = "Millot",  email = "gael.millot@pasteur.fr", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-0591-3509"))
   )
-Author: Yushi Han [aut], Gaël Millot [aut, cre]
+Author: Haiding Wang [aut, ctb], Yushi Han [aut, ctb], Gael Millot [cre, aut, ctb]
 Encoding: UTF-8
-Maintainer: Gaël Millot <gael.millot@pasteur.fr>
+Maintainer: Gael Millot <gael.millot@pasteur.fr>
 Description: Sophisticated tools for modification of object.
 License: GPL-3
 RoxygenNote: 7.3.1
