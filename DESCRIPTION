@@ -4,7 +4,7 @@ Title: Sophisticated tools
 Version: 1.0
 Date: 2023-12-20
 Authors@R: c(
-    person(given = "Haiding", family = "Wang", email = "haiding.wang@etu.u-paris.fr", role = c("aut", "ctb")),
+    person(given = "Haiding", family = "Wang", email = "haiding.wang@etu.u-paris.fr", role = c("aut", "ctb"), , comment = c(ORCID = "0009-0008-4831-2022")),
     person(given = "Yushi", family = "Han",  email = "yushi.han2000@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0009-0009-9908-1958")),
     person(given = "Gael", family = "Millot",  email = "gael.millot@pasteur.fr", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-0591-3509"))
   )
