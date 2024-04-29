@@ -53,5 +53,6 @@ test_that("permut works correctly", {
                            cor.method = cor.method,
                            cor.limit = cor.limit,
                            warn.print = warn.print,
-                           lib.path = lib.path))
+                           lib.path = lib.path,
+                           safer_check = TRUE))
 })

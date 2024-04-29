@@ -35,5 +35,5 @@ test_that("slide() works correctly", {
   # expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, verbose = "not_logical"))
 
 # Comprehensive test for all arguments
-  expect_error(slide(data = NULL, window.size = "5", step = "2", FUN  = 123, args = 123, boundary = "invalid", parall = "not_logical", thread.nb = "not_numeric", print.count = "not_numeric", res.path = "invalid_directory", lib.path = "invalid_directory", verbose = "not_logical"))
+  expect_error(slide(data = NULL, window.size = "5", step = "2", FUN  = 123, args = 123, boundary = "invalid", parall = "not_logical", thread.nb = "not_numeric", print.count = "not_numeric", res.path = "invalid_directory", lib.path = "invalid_directory", verbose = "not_logical", safer_check = TRUE))
 })

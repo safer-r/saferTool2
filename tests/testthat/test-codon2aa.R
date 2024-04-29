@@ -39,4 +39,8 @@ test_that("codon2aa returns correct amino acid", {
   # Test cases for invalid codon
   expect_error(codon2aa(data = codon11, display = FALSE))
   expect_error(codon2aa(data = codon11, display = TRUE))
+
+  # Test cases for all argument 
+  expect_no_error(codon2aa(data = codon1, display = TRUE, safer_check = TRUE))
+  expect_error(codon2aa(data = codon11, display = TRUE, safer_check = TRUE))
 })

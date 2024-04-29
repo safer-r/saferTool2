@@ -18,16 +18,16 @@ test_that("codon_finder returns correct codons within specified range", {
   expect_error(codon_finder(pos_set5, begin = 5, end = 10))
   
   # Test cases with specified begin and end values
-  expect_error(codon_finder(pos_set1, begin = begin_value, end = end_value))
-  expect_error(codon_finder(pos_set2, begin = begin_value, end = end_value))
-  expect_error(codon_finder(pos_set3, begin = begin_value, end = end_value))
-  expect_error(codon_finder(pos_set4, begin = begin_value, end = end_value))
+  expect_error(codon_finder(pos_set1, begin = begin_value, end = end_value, safer_check = TRUE))
+  expect_error(codon_finder(pos_set2, begin = begin_value, end = end_value, safer_check = TRUE))
+  expect_error(codon_finder(pos_set3, begin = begin_value, end = end_value, safer_check = TRUE))
+  expect_error(codon_finder(pos_set4, begin = begin_value, end = end_value, safer_check = TRUE))
   # expect_error(codon_finder(pos_set5, begin = begin_value, end = end_value))
   
   # Test cases with different begin and end values
-  expect_error(codon_finder(pos_set1, begin = begin_value2, end = end_value2))
-  expect_error(codon_finder(pos_set2, begin = begin_value2, end = end_value2))
-  expect_error(codon_finder(pos_set3, begin = begin_value2, end = end_value2))
-  expect_error(codon_finder(pos_set4, begin = begin_value2, end = end_value2))
-  expect_error(codon_finder(pos_set5, begin = begin_value2, end = end_value2))
+  expect_error(codon_finder(pos_set1, begin = begin_value2, end = end_value2, safer_check = TRUE))
+  expect_error(codon_finder(pos_set2, begin = begin_value2, end = end_value2, safer_check = TRUE))
+  expect_error(codon_finder(pos_set3, begin = begin_value2, end = end_value2, safer_check = TRUE))
+  expect_error(codon_finder(pos_set4, begin = begin_value2, end = end_value2, safer_check = TRUE))
+  expect_error(codon_finder(pos_set5, begin = begin_value2, end = end_value2, safer_check = TRUE))
 })

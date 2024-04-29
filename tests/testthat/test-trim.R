@@ -134,5 +134,5 @@ test_that("trim() handles displayed.nb argument without error", {
                        amplif.label = 1.5, amplif.axis = 1.5, std.x.range = FALSE, std.y.range = FALSE,
                        cex.pt = 0.5, col.box = "red", x.nb.inter.tick = 6, y.nb.inter.tick = 6,
                        tick.length = 0.5, sec.tick.length = 0.5, corner.text = "Test corner text",
-                       amplif.legend = 1.5, corner.text.size = 1.5, trim.return = FALSE, box.type = "l"))
+                       amplif.legend = 1.5, corner.text.size = 1.5, trim.return = FALSE, box.type = "l", safer_check = TRUE))
 })
