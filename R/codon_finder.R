@@ -23,6 +23,9 @@
 #' Only for coding sequences (no introns): ((end - begin) + 1) / 3 must be an integer (i.e., modulo zero)
 #' 
 #' Negatives positions allowed but this implies that one base has the position 0 in the sequence
+#' @author Gael Millot <gael.millot@pasteur.fr>
+#' @author Yushi Han <yushi.han2000@gmail.com>
+#' @author Haiding Wang <wanghaiding442@gmail.com>
 #' @examples
 #' codon_finder(c(5, 6, 8, 10), begin = 5, end = 10)
 #' 

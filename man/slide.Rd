@@ -62,7 +62,7 @@ A data frame containing :
 
 - $center : the center of each window (in the unit of data argument).
 
-- $value : the computed value by the FUN argument in each window).
+- $value : the computed value by the fun argument in each window).
 }
 \description{
 Return a computation made on a vector using a sliding window.
@@ -84,4 +84,11 @@ slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, bou
 \dontrun{
 slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left", parall = TRUE, thread.nb = 2) # effect of parall argument
 }
+}
+\author{
+Gael Millot <gael.millot@pasteur.fr>
+
+Yushi Han <yushi.han2000@gmail.com>
+
+Haiding Wang <wanghaiding442@gmail.com>
 }

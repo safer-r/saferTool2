@@ -7,6 +7,9 @@
 #' @param external.function.name Name of the function using the .pack_and_function_check() function.
 #' @param external.package.name Name of the package of the function using the .pack_and_function_check() function.
 #' @returns An error message if at least one of the checked packages is missing in lib.path, or if at least one of the checked functions is missing in the required package, nothing otherwise.
+#' @author Gael Millot <gael.millot@pasteur.fr>
+#' @author Yushi Han <yushi.han2000@gmail.com>
+#' @author Haiding Wang <wanghaiding442@gmail.com>
 #' @examples
 #' # .pack_and_function_check(fun = "ggplot2::notgood") # commented because this example returns an error
 #' \dontrun{

@@ -22,3 +22,10 @@ Convert codon to amino acid using standard genetic code indicated in https://en.
 \examples{
 codon2aa(data = "ATC", display = TRUE)
 }
+\author{
+Gael Millot <gael.millot@pasteur.fr>
+
+Yushi Han <yushi.han2000@gmail.com>
+
+Haiding Wang <wanghaiding442@gmail.com>
+}

@@ -5,6 +5,9 @@
 #' @param display Single logical value. Display the whole genetic table? if TRUE, override data.
 #' @param safer_check Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.
 #' @returns The 1 letter uppercase amino acid of the submitted codon or the whole table if display argument is TRUE.
+#' @author Gael Millot <gael.millot@pasteur.fr>
+#' @author Yushi Han <yushi.han2000@gmail.com>
+#' @author Haiding Wang <wanghaiding442@gmail.com>
 #' @examples
 #' codon2aa(data = "ATC", display = TRUE)
 #' @importFrom saferDev arg_check
