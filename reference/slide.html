@@ -152,7 +152,7 @@
 <p>- $center : the center of each window (in the unit of data argument).</p>
 
 
-<p>- $value : the computed value by the FUN argument in each window).</p>
+<p>- $value : the computed value by the fun argument in each window).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -160,6 +160,12 @@
 <p>The function uses two strategies, depending on the amout of memory required which depends on the data, window.size and step arguments. The first one uses lapply(), is generally fast but requires lots of memory. The second one uses a parallelized loop. The choice between the two strategies is automatic if parall argument is FALSE, and is forced toward parallelization if parall argument is TRUE.</p>
 <p>The parall argument forces the parallelization, which is convenient when the data argument is big, because the lapply() function is sometimes slower than the parallelization.</p>
 <p>Always use the env argument when slide() is used inside functions.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
+    <p>Gael Millot &lt;gael.millot@pasteur.fr&gt;</p>
+<p>Yushi Han &lt;yushi.han2000@gmail.com&gt;</p>
+<p>Haiding Wang &lt;wanghaiding442@gmail.com&gt;</p>
     </div>
 
     <div class="section level2">
@@ -170,7 +176,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> slide JOB END</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TIME: 2024-05-03 14:21:49.270091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TIME: 2024-05-03 14:21:52.3061</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> TOTAL TIME LAPSE: 0.034</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -432,9 +438,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> slide JOB END</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TIME: 2024-05-03 14:21:49.358883</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TIME: 2024-05-03 14:21:52.395764</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> TOTAL TIME LAPSE: 0.0076</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> TOTAL TIME LAPSE: 0.0077</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     left right center value</span>
