@@ -17,7 +17,7 @@ library(saferTool2)
 ### Simple example
 
 ```{r}
-permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e5, cor.limit = 0.5)
+permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e5, cor.limit = 0.5, safer_check = TRUE)
 ```
 <br>
 
@@ -44,9 +44,9 @@ tempo.time <- as.numeric(Sys.time()) ;
 tempo.lapse <- saferTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ; 
 tempo.lapse
 
-permut(data1 = LETTERS[1:5], data2 = NULL, n = 10, seed = 1, print.count = 10, text.print = "CPU NB 4")
+permut(data1 = LETTERS[1:5], data2 = NULL, n = 10, seed = 1, print.count = 10, text.print = "CPU NB 4", safer_check = TRUE)
 
-permut(data1 = 101:110, data2 = 21:30, seed = 1, print.count = 1e4, text.print = "", cor.method = "spearman", cor.limit = 0.2)
+permut(data1 = 101:110, data2 = 21:30, seed = 1, print.count = 1e4, text.print = "", cor.method = "spearman", cor.limit = 0.2, safer_check = TRUE)
 ```
 <br>
 
