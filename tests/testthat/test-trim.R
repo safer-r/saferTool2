@@ -125,14 +125,41 @@ test_that("trim() handles displayed.nb argument without error", {
   data <- 1:10
   expect_no_error(trim(data = data, trim.return = FALSE))
 
+# Unit test for the argument "safer_check = TRUE"
+  # Create a test case
+  data <- 1:10
+  expect_no_error(trim(data = data, safer_check = TRUE))
+
 # Unit test for all arguments in the function
   # Create a test case
   data <- 1:10
-  expect_no_error(trim(data = data, displayed.nb = 5, single.value.display = TRUE, trim.method = "mean.sd",
-                       trim.cutoffs = c(0.05, 0.975), interval.scale.disp = TRUE, down.space = 0.2,
-                       left.space = 0.2, up.space = 0.2, right.space = 0.2, orient = 1, dist.legend = 0.5,
-                       amplif.label = 1.5, amplif.axis = 1.5, std.x.range = FALSE, std.y.range = FALSE,
-                       cex.pt = 0.5, col.box = "red", x.nb.inter.tick = 6, y.nb.inter.tick = 6,
-                       tick.length = 0.5, sec.tick.length = 0.5, corner.text = "Test corner text",
-                       amplif.legend = 1.5, corner.text.size = 1.5, trim.return = FALSE, box.type = "l", safer_check = TRUE))
+  expect_no_error(trim(
+    data = data, 
+    displayed.nb = 5, 
+    single.value.display = TRUE, 
+    trim.method = "mean.sd",
+    trim.cutoffs = c(0.05, 0.975), 
+    interval.scale.disp = TRUE, 
+    down.space = 0.2,
+    left.space = 0.2, 
+    up.space = 0.2, 
+    right.space = 0.2, 
+    orient = 1, 
+    dist.legend = 0.5,
+    amplif.label = 1.5,
+    amplif.axis = 1.5, 
+    std.x.range = FALSE, 
+    std.y.range = FALSE,
+    cex.pt = 0.5, 
+    col.box = "red", 
+    x.nb.inter.tick = 6, 
+    y.nb.inter.tick = 6,
+    tick.length = 0.5, 
+    sec.tick.length = 0.5, 
+    corner.text = "Test corner text",
+    amplif.legend = 1.5, 
+    corner.text.size = 1.5, 
+    trim.return = FALSE, 
+    box.type = "l", 
+    safer_check = TRUE))
 })
