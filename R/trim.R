@@ -49,6 +49,7 @@
 #' - $trimmed.values: the values outside of the trimming interval as defined in the trim.cutoffs argument.
 #' 
 #' - $kept.values: the values inside the trimming interval as defined in the trim.cutoffs argument.
+#' @seealso \code{\link{head}}, \code{\link{tail}}
 #' @author Gael Millot <gael.millot@pasteur.fr>
 #' @author Yushi Han <yushi.han2000@gmail.com>
 #' @author Haiding Wang <wanghaiding442@gmail.com>
