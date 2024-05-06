@@ -82,6 +82,9 @@
 #' @param external.function.name Name of the function using the .pack_and_function_check() function.
 #' @param external.package.name Name of the package of the function using the .pack_and_function_check() function.
 #' @returns An error message if at least one of the checked operator is present in the R scope, nothing otherwise.
+#' @author Gael Millot <gael.millot@pasteur.fr>
+#' @author Yushi Han <yushi.han2000@gmail.com>
+#' @author Haiding Wang <wanghaiding442@gmail.com>
 #' @examples
 #' \dontrun{
 #' # Example that shouldn't be run because this is an internal function
