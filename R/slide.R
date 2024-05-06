@@ -34,6 +34,7 @@
 #' The parall argument forces the parallelization, which is convenient when the data argument is big, because the lapply() function is sometimes slower than the parallelization.
 #' 
 #' Always use the env argument when slide() is used inside functions.
+#' @seealso \code{\link[slider]{slide}}
 #' @author Gael Millot <gael.millot@pasteur.fr>
 #' @author Yushi Han <yushi.han2000@gmail.com>
 #' @author Haiding Wang <wanghaiding442@gmail.com>
