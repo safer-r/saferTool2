@@ -43,7 +43,7 @@ test_that("codon2aa returns correct amino acid", {
   expect_equal(codon2aa(data = codon8, display = FALSE), "R")
   expect_no_error(codon2aa(data = codon9, display = TRUE))
   expect_equal(codon2aa(data = codon10, display = FALSE), "K")
-    expect_no_error(codon2aa(data = codon11, display = TRUE))
+  expect_no_error(codon2aa(data = codon11, display = TRUE))
   expect_equal(codon2aa(data = codon12, display = FALSE), "P")
   expect_no_error(codon2aa(data = codon13, display = TRUE))
   expect_equal(codon2aa(data = codon14, display = FALSE), "stop")
