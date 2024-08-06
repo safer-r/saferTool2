@@ -77,3 +77,10 @@ permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e4, text.print = "",
 
 permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print.count = 1e4, cor.limit = 0.5)
 }
+\author{
+Gael Millot <gael.millot@pasteur.fr>
+
+Yushi Han <yushi.han2000@gmail.com>
+
+Haiding Wang <wanghaiding442@gmail.com>
+}

@@ -43,15 +43,18 @@ test_that("permut works correctly", {
     
     expect_error(permut(data1 = data1, warn.print = "not_a_logical"))
     expect_error(permut(data1 = data1, lib.path = 123))
+    expect_error(permut(data1 = data1, safer_check = TRUE))
     
-    expect_error(permut(data1 = data1,
-                           data2 = data2,
-                           n = n,
-                           seed = seed,
-                           print.count = print.count,
-                           text.print = text.print,
-                           cor.method = cor.method,
-                           cor.limit = cor.limit,
-                           warn.print = warn.print,
-                           lib.path = lib.path))
+    expect_error(permut(
+                        data1 = data1,
+                        data2 = data2,
+                        n = n,
+                        seed = seed,
+                        print.count = print.count,
+                        text.print = text.print,
+                        cor.method = cor.method,
+                        cor.limit = cor.limit,
+                        warn.print = warn.print,
+                        lib.path = lib.path,
+                        safer_check = TRUE))
 })

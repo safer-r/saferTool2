@@ -46,4 +46,11 @@ Others functions of the R scope can be overwritten because safer functions alway
 assign("!", 1) ; .base_op_check(external.function.name = "fun1") # commented because this example returns an error
 }
 }
+\author{
+Gael Millot <gael.millot@pasteur.fr>
+
+Yushi Han <yushi.han2000@gmail.com>
+
+Haiding Wang <wanghaiding442@gmail.com>
+}
 \keyword{internal}

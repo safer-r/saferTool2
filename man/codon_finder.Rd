@@ -43,3 +43,10 @@ codon_finder(c(5, 6, 8, 10), begin = 5, end = 10)
 
 codon_finder(c(0, 5, 6, 8, 10), begin = -2, end = 12)
 }
+\author{
+Gael Millot <gael.millot@pasteur.fr>
+
+Yushi Han <yushi.han2000@gmail.com>
+
+Haiding Wang <wanghaiding442@gmail.com>
+}

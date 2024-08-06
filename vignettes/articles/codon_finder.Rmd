@@ -46,14 +46,14 @@ end_value2
 
 ### All the arguments
 ```{r}
-codon_finder(pos = pos_set1, begin = begin_value, end = end_value)
-codon_finder(pos = pos_set2, begin = begin_value, end = end_value)
-codon_finder(pos = pos_set3, begin = begin_value, end = end_value)
-codon_finder(pos = pos_set4, begin = begin_value, end = end_value)
-codon_finder(pos = pos_set5, begin = begin_value, end = end_value)
-codon_finder(pos = pos_set1, begin = begin_value2, end = end_value2)
-codon_finder(pos = pos_set2, begin = begin_value2, end = end_value2)
-codon_finder(pos = pos_set3, begin = begin_value2, end = end_value2)
-codon_finder(pos = pos_set4, begin = begin_value2, end = end_value2)
-codon_finder(pos = pos_set5, begin = begin_value2, end = end_value2)
+codon_finder(pos = pos_set1, begin = begin_value, end = end_value, safer_check = TRUE)
+codon_finder(pos = pos_set2, begin = begin_value, end = end_value, safer_check = TRUE)
+codon_finder(pos = pos_set3, begin = begin_value, end = end_value, safer_check = TRUE)
+codon_finder(pos = pos_set4, begin = begin_value, end = end_value, safer_check = TRUE)
+codon_finder(pos = pos_set5, begin = begin_value, end = end_value, safer_check = TRUE)
+codon_finder(pos = pos_set1, begin = begin_value2, end = end_value2, safer_check = TRUE)
+codon_finder(pos = pos_set2, begin = begin_value2, end = end_value2, safer_check = TRUE)
+codon_finder(pos = pos_set3, begin = begin_value2, end = end_value2, safer_check = TRUE)
+codon_finder(pos = pos_set4, begin = begin_value2, end = end_value2, safer_check = TRUE)
+codon_finder(pos = pos_set5, begin = begin_value2, end = end_value2, safer_check = TRUE)
 ```
