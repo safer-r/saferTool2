@@ -62,7 +62,7 @@ The different *saferTool2* releases are tagged [here](https://github.com/safer-r
 
 ```r
 install.packages("remotes")
-remotes::install_github("https://github.com/safer-r/saferTool2")
+remotes::install_github("https://github.com/safer-r/saferTool2") # or open R as admin and remotes::install_github("https://github.com/safer-r/saferTool2", lib = "C:/Program Files/R/R-4.3.1/library")
 ```
 
 Older versions can be installed like this:

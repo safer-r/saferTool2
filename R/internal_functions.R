@@ -39,7 +39,7 @@
     # main code
     tempo.log <- base::grepl(x = fun, pattern = "^.+::.+$")
     if( ! base::all(tempo.log)){
-        tempo.cat <- base::paste0("ERROR IN THE CODE OF THE ", external.function.name, " OF THE saferTool2 PACKAGE.\nTHE STRING IN fun ARGUMENT MUST CONTAIN \"::\":\n", base::paste(fun[ ! tempo.log], collapse = "\n"))
+        tempo.cat <- base::paste0("ERROR IN THE CODE OF THE ", external.function.name, " OF THE ", external.package.name, " PACKAGE\nTHE STRING IN fun ARGUMENT MUST CONTAIN \"::\":\n", base::paste(fun[ ! tempo.log], collapse = "\n"))
         base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
     }
     pkg.fun.name.list <- base::strsplit(fun, "::") # package in 1 and function in 2
@@ -50,7 +50,7 @@
         tempo.cat <- base::paste0(
             "ERROR IN ", 
             external.function.name, 
-            " OF THE saferTool2 PACKAGE. REQUIRED PACKAGE", 
+            " OF THE ", external.package.name, " PACKAGE\nREQUIRED PACKAGE", 
             base::ifelse(base::length(tempo) == 1L, base::paste0(":\n", tempo), base::paste0("S:\n", base::paste(tempo, collapse = "\n"))), 
             "\nMUST BE INSTALLED IN", 
             base::ifelse(base::length(lib.path) == 1L, "", " ONE OF THESE FOLDERS"), 
@@ -65,7 +65,7 @@
         tempo.cat <- base::paste0(
             "ERROR IN ", 
             external.function.name, 
-            " OF THE saferTool2 PACKAGE. REQUIRED FUNCTION",
+            " OF THE ", external.package.name, " PACKAGE\nREQUIRED FUNCTION",
             base::ifelse(base::length(tempo) == 1L, " IS ", "S ARE "), 
             "MISSING IN THE INSTALLED PACKAGE", 
             base::ifelse(base::length(tempo) == 1L, base::paste0(":\n", tempo), base::paste0("S:\n", base::paste(tempo, collapse = "\n")))
@@ -156,7 +156,7 @@
         tempo.cat <- base::paste0(
             "ERROR IN ", 
             external.function.name, 
-            " OF THE ", external.package.name, " PACKAGE.\nCRITICAL R OBJECT",
+            " OF THE ", external.package.name, " PACKAGE\nCRITICAL R OBJECT",
             base::ifelse(base::length(tempo.log) == 1L, " ", "S "), 
             "CANNOT BE PRESENT SOMEWHERE ELSE IN THE R SCOPE THAN IN \"package::base\":\n", 
             base::paste(base::paste(tempo.name, tempo.pos, sep = "\t"), collapse = "\n")
