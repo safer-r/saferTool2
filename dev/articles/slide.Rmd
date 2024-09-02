@@ -98,6 +98,12 @@ slide(data = data, window.size = 5, step = 2, FUN  = length, verbose = TRUE)
 ```
 <br>
 
+### Argument safer_check
+```{r}
+slide(data = data, window.size = 5, step = 2, FUN  = length, safer_check = TRUE)
+```
+<br>
+
 ### All the arguments
 ```{r}
 slide(
@@ -114,7 +120,8 @@ slide(
       print.count = 100,
       res.path = NULL,
       lib.path = NULL,
-      verbose = TRUE
+      verbose = TRUE,
+      safer_check = TRUE
     )
 ```
 

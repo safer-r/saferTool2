@@ -63,24 +63,32 @@ codon2aa(data = codon10)
 ```
 <br>
 
+### Argument safer_check
+```{r}
+codon2aa(data = codon1, safer_check = TRUE)
+codon2aa(data = codon2, safer_check = TRUE)
+codon2aa(data = codon3, safer_check = TRUE)
+```
+<br>
+
 ### All the arguments
 ```{r}
-codon2aa(data = codon1, display = TRUE)
-codon2aa(data = codon2, display = FALSE)
-codon2aa(data = codon3, display = TRUE)
-codon2aa(data = codon4, display = FALSE)
-codon2aa(data = codon5, display = TRUE)
-codon2aa(data = codon6, display = FALSE)
-codon2aa(data = codon7, display = TRUE)
-codon2aa(data = codon8, display = FALSE)
-codon2aa(data = codon9, display = TRUE)
-codon2aa(data = codon10, display = FALSE)
+codon2aa(data = codon1, display = TRUE, safer_check = TRUE)
+codon2aa(data = codon2, display = FALSE, safer_check = TRUE)
+codon2aa(data = codon3, display = TRUE, safer_check = TRUE)
+codon2aa(data = codon4, display = FALSE, safer_check = TRUE)
+codon2aa(data = codon5, display = TRUE, safer_check = TRUE)
+codon2aa(data = codon6, display = FALSE, safer_check = TRUE)
+codon2aa(data = codon7, display = TRUE, safer_check = TRUE)
+codon2aa(data = codon8, display = FALSE, safer_check = TRUE)
+codon2aa(data = codon9, display = TRUE, safer_check = TRUE)
+codon2aa(data = codon10, display = FALSE, safer_check = TRUE)
 ```
 <br>
 
 ### Error example
 ```{r, echo = TRUE, error = TRUE}
-codon2aa(data = codon11, display = FALSE)
-codon2aa(data = codon11, display = TRUE)
+codon2aa(data = codon11, display = FALSE, safer_check = TRUE)
+codon2aa(data = codon11, display = TRUE, safer_check = TRUE)
 ```
 <br>

@@ -14,117 +14,48 @@ library(saferTool2)
 ```
 <br>
 
-### Datasets
+### Simple example
 
 ```{r}
-vec1 <- 1:3 # vector of integers
-vec2 <- 1:3 / 3 # vector of proportions
-vec3 <- c(4, 5, 6) # vector of integers
-vec4 <- 101:103 # vector of integers
-vec5 <- c("a", "b","c") # vector of characters
+permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e5, cor.limit = 0.5, safer_check = TRUE)
 ```
 <br>
 
-### Datasets info
+### Example showing that for loop, used in permut(), is faster than while loop
 
 ```{r}
-vec1 # vector of integers
-vec2 # vector of proportions
-vec3 # vector of integers
-vec4 # vector of integers
-vec5 # vector of characters
+ini.time <- as.numeric(Sys.time()) ; 
+count <- 0 ; 
+for(i0 in 1:1e6){count <- count + 1} ; 
+tempo.time <- as.numeric(Sys.time()) ; 
+tempo.lapse <- saferTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ;
+tempo.lapse
 ```
 <br>
 
 
-### Argument data2
+### example showing that for loop, used in permut(), is faster than while loop
+
 ```{r}
-permut(data1 = vec4, data2 = vec1)
-permut(data1 = vec3, data2 = vec2)
-permut(data1 = vec2, data2 = vec3)
-permut(data1 = vec1, data2 = vec4)
-permut(data1 = vec1, data2 = vec5)
-permut(data1 = vec2, data2 = vec5)
-permut(data1 = vec3, data2 = vec5)
-permut(data1 = vec4, data2 = vec5)
-permut(data1 = vec5, data2 = vec5)
+ini.time <- as.numeric(Sys.time()) ; 
+count <- 0 ; 
+while (count < 100) {count <- count + 1} ; 
+tempo.time <- as.numeric(Sys.time()) ; 
+tempo.lapse <- saferTool::round2(as.numeric(lubridate::seconds_to_period(tempo.time - ini.time))) ; 
+tempo.lapse
+
+permut(data1 = LETTERS[1:5], data2 = NULL, n = 10, seed = 1, print.count = 10, text.print = "CPU NB 4", safer_check = TRUE)
+
+permut(data1 = 101:110, data2 = 21:30, seed = 1, print.count = 1e4, text.print = "", cor.method = "spearman", cor.limit = 0.2, safer_check = TRUE)
 ```
 <br>
 
-### Argument n
+
+
+### A way to use the cor.limit argument just considering data1
 ```{r}
-permut(data1 = vec1, n = 5)
-permut(data1 = vec1, n = 10)
-permut(data1 = vec2, n = 5)
-permut(data1 = vec2, n = 10)
-permut(data1 = vec3, n = 5)
-permut(data1 = vec3, n = 10)
-permut(data1 = vec4, n = 5)
-permut(data1 = vec4, n = 10)
-permut(data1 = vec5, n = 5)
-permut(data1 = vec5, n = 10)
+obs1 <- 101:110 ; 
+permut(data1 = obs1, data2 = obs1, seed = 1, print.count = 1e6, cor.method = "spearman", cor.limit = 0.2)
 ```
 <br>
 
-### Argument seed
-```{r}
-arg_check(data = mat2, 
-    prop = TRUE # Check for values between 0 and 1 only
-)
-```
-<br>
-
-### Argument print.count
-```{r}
-arg_check(data = mat2, 
-    prop = TRUE # Check for values between 0 and 1 only
-)
-```
-<br>
-
-### Argument text.print
-```{r}
-arg_check(data = mat2, 
-    prop = TRUE # Check for values between 0 and 1 only
-)
-```
-<br>
-
-### Argument cor.method
-```{r}
-arg_check(data = mat2, 
-    prop = TRUE # Check for values between 0 and 1 only
-)
-```
-<br>
-
-### Argument cor.limit
-```{r}
-arg_check(data = mat2, 
-    prop = TRUE # Check for values between 0 and 1 only
-)
-```
-<br>
-
-### Argument warn.print
-```{r}
-arg_check(data = mat2, 
-    prop = TRUE # Check for values between 0 and 1 only
-)
-```
-<br>
-
-### Argument lib.path
-```{r}
-arg_check(data = mat2, 
-    prop = TRUE # Check for values between 0 and 1 only
-)
-```
-<br>
-
-### All the arguments
-```{r}
-arg_check(data = mat2, 
-    prop = TRUE # Check for values between 0 and 1 only
-)
-```
