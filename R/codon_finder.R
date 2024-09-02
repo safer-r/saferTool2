@@ -4,7 +4,7 @@
 #' @param pos Vector of integers indicating the positions of nucleotids in a sequence. Must be between begin and end arguments.
 #' @param begin Single integer indicating the position of the first base of the coding sequence.
 #' @param end Single indicating the position of the last base of the coding sequence.
-#' @param safer_check Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.
+#' @param safer_check Single logical value. Perform some "safer" checks (see https://github.com/safer-r)? If TRUE, checkings are performed before main code running: 1) R classical operators (like "<-") not overwritten by another package because of the R scope and 2) required functions and related packages effectively present in local R lybraries. Must be set to FALSE if this fonction is used inside another "safer" function to avoid pointless multiple checkings.
 #' @returns
 #' A data frame with column names:
 #' 
