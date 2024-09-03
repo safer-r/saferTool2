@@ -34,7 +34,7 @@ codon2aa <- function(
     # end function name
     # critical operator checking
     if(safer_check == TRUE){
-        .base_op_check(
+        saferTool2:::.base_op_check(
             external.function.name = function.name, 
             external.package.name = package.name
         )
@@ -47,14 +47,15 @@ codon2aa <- function(
     # end check of lib.path
     
     # check of the required function from the required packages
-    if(safer_check == TRUE){.pack_and_function_check(
-        fun = base::c(
-            "saferDev::arg_check"
-        ),
-        lib.path = NULL,
-        external.function.name = function.name,
-        external.package.name = package.name
-    )
+    if(safer_check == TRUE){
+        saferTool2:::.pack_and_function_check(
+            fun = base::c(
+                "saferDev::arg_check"
+            ),
+            lib.path = NULL,
+            external.function.name = function.name,
+            external.package.name = package.name
+        )
     }
     # end check of the required function from the required packages
     # end package checking
