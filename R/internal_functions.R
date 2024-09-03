@@ -26,12 +26,21 @@
         external.function.name,
         external.package.name
 ){
+    # AIM
+    # Check for the presence of required package::functions in the system  
     # WARNING
     # arguments of the .pack_and_function_check() function are not checked, so use carefully inside other functions
+    # ARGUMENTS
+    # fun: vector of string of the package::function names to check
+    # lib.path: path of the library folder in the system
+    # external.function.name: function name
+    # external.package.name: package name
+    # RETURN
+    # An error message or nothing 
     # DEBUGGING
-    # fun = "ggplot2::geom_point" ; lib.path = "C:/Program Files/R/R-4.3.1/library" ; external.function.name = "fun1"
+    # fun = "ggplot2::geom_point" ; lib.path = "C:/Program Files/R/R-4.3.1/library" ; external.function.name = "fun1" ; external.package.name = "1"
     # check of lib.path
-    # already done in the main function
+    # full check already done in the main function
     if(base::is.null(lib.path)){
         lib.path <- base::.libPaths() # base::.libPaths(new = lib.path) # or base::.libPaths(new = base::c(base::.libPaths(), lib.path))
     }
@@ -96,10 +105,17 @@
     external.function.name,
     external.package.name
 ){
+    # AIM
+    # Check if basic operator names have been used in the scope of the opened environement
     # WARNING
     # arguments of the .base_op_check() function are not checked, so use carefully inside other functions
+    # ARGUMENTS
+    # external.function.name: function name
+    # external.package.name: package name
+    # RETURN
+    # An error message or nothing 
     # DEBUGGING
-    # external.function.name = "test"
+    # external.function.name = "test" ; external.package.name = "p1"
     # main code
     reserved.objects <- base::c(
         "-", 
