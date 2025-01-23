@@ -231,16 +231,21 @@ permut <- function(
     # end second round of checking and data preparation
     
     # main code
-    # code that protects set.seed() in the global environment
+
+
+
+    ######## code that protects set.seed() in the global environment
     # see also Protocol 100-rev0 Parallelization in R.docx
-    if(base::exists(".Random.seed", envir = .GlobalEnv)){ # if .Random.seed does not exists, it means that no random operation has been performed yet in any R environment
+    if (base::exists(x = ".Random.seed", where = -1, envir = .GlobalEnv, frame = , mode = "any", inherits = TRUE)) {
+        # if .Random.seed does not exists, it means that no random operation has been performed yet in any R environment
         tempo.random.seed <- .Random.seed
-        base::on.exit(base::assign(".Random.seed", tempo.random.seed, envir = .GlobalEnv))
+        base::on.exit(expr = base::assign(x = ".Random.seed", value = tempo.random.seed, pos = -1, envir = .GlobalEnv, inherits = FALSE, immediate = TRUE), add = FALSE, after = TRUE)
     }else{
-        base::on.exit(base::set.seed(NULL)) # inactivate seeding -> return to complete randomness
+        base::on.exit(expr = base::set.seed(seed = NULL, kind = NULL, normal.kind = NULL, sample.kind = NULL), add = FALSE, after = TRUE) # inactivate seeding -> return to complete randomness
     }
-    base::set.seed(seed)
-    # end code that protects set.seed() in the global environment
+    base::set.seed(seed = seed, kind = NULL, normal.kind = NULL, sample.kind = NULL)
+    ######## end code that protects set.seed() in the global environment
+
     ini.date <- base::Sys.time() # time of process begin, converted into seconds
     ini.time <- base::as.numeric(ini.date) # time of process begin, converted into seconds
     ini.pos <- 1:base::length(data1) # positions of data1 before permutation loops
