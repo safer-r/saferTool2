@@ -1,30 +1,25 @@
 Package: saferTool2
 Type: Package
-Title: Sophisticated tools
+Title: R functions
 Version: 1.0
-Date: 2023-12-20
+Date: 2024-09-02
 Authors@R: c(
     person(given = "Haiding", family = "Wang", email = "wanghaiding442@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0009-0008-4831-2022")),
-    person(given = "Yushi", family = "Han",  email = "yushi.han2000@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0009-0009-9908-1958")),
     person(given = "Gael", family = "Millot",  email = "gael.millot@pasteur.fr", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-0591-3509"))
   )
 Author: Haiding Wang [aut, ctb], Yushi Han [aut, ctb], Gael Millot [cre, aut, ctb]
 Encoding: UTF-8
 Maintainer: Gael Millot <gael.millot@pasteur.fr>
-Description: Sophisticated tools for modification of object.
+Description: R function and pipeline development.
 License: GPL-3
-RoxygenNote: 7.3.1
+RoxygenNote: 7.2.3
 Imports: 
     lubridate,
     parallel,
-    saferDev (>= 1.0),
-    saferTool (>= 1.0)
-Remotes: 
-    safer-r/saferDev,
-    safer-r/saferTool
+    saferDev,
+    saferTool
 Suggests: 
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
-Config/testthat/edition: 3

@@ -760,8 +760,4 @@ trim <- function(
 
     #### warning output
     #### end warning output
-
-
-
-
 }
