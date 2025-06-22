@@ -1,5 +1,5 @@
 
-# saferTool2 <a href="">[<img src="man/figures/saferTool2.png" align="right" height="140" />](https://safer-r.github.io/saferTool2)</a>
+# saferTool2 <a href="">[<img src="man/figures/new_saferTool2.png" align="right" height="140" />](https://safer-r.github.io/saferTool2)</a>
 
 <br />
 
