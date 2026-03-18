@@ -10,6 +10,7 @@
 [![downloads](https://cranlogs.r-pkg.org/badges/saferTool2)](https://www.rdocumentation.org/trends)
 [![](https://img.shields.io/badge/license-GPL3.0-green.svg)](https://opensource.org/licenses/MITgpl-3-0)
 [![rworkflows](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml/badge.svg)](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml)
+[![Safer-R Status](https://img.shields.io/badge/Safer--R%20status-backbone%20v19.0-crimson)](https://github.com/safer-r/.github/blob/main/profile/backbone.R)
 <!-- badges: end -->
 
 <br />
@@ -96,6 +97,8 @@ If you are using functions of *saferTool2*, please cite:
 [Haiding Wang](https://github.com/Tintin2710), Bioinformatics and Biostatistics Hub, Institut Pasteur, Paris, France
 
 [Yushi Han](https://github.com/yushiHn/), Bioinformatics and Biostatistics Hub, Institut Pasteur, Paris, France
+
+[Mia Legras](https://github.com/mialgrs), Bioinformatics and Biostatistics Hub, Institut Pasteur, Paris, France
 
 [Jacques Serizay](https://github.com/js2264), Spatial Regulation of Genomes team, Institut Pasteur, Paris, France
 
