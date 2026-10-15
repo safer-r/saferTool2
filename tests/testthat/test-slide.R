@@ -51,4 +51,101 @@ test_that("slide() works correctly", {
 
 # Comprehensive test for all arguments
   expect_error(slide(data = NULL, window.size = "5", step = "2", FUN  = 123, args = 123, boundary = "invalid", parall = "not_logical", thread.nb = "not_numeric", print.count = "not_numeric", res.path = "invalid_directory", lib.path = "invalid_directory", verbose = "not_logical", safer_check = TRUE))
+
+# No-error tests for each argument (expected value(s) of each argument tested with no error as result)
+  # function name block: pkg:: and bare zero-arg calls (function_name[3] and arg_user_setting_eval <- NULL lines)
+  expect_no_error(saferTool2::slide(data = 1:10, window.size = 5, step = 2, FUN = length, verbose = FALSE, safer_check = FALSE))
+  expect_error(slide()) # zero-arg call still covered up to the no-default-values block
+  # data argument: numeric vector
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, verbose = FALSE, safer_check = FALSE))
+  # window.size argument: single positive numeric value
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, verbose = FALSE, safer_check = FALSE))
+  # step argument: single positive numeric value <= window.size
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, verbose = FALSE, safer_check = FALSE))
+  # from argument: single numeric value or NULL
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, from = 2, FUN = length, verbose = FALSE, safer_check = FALSE))
+  # to argument: single numeric value or NULL
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, to = 9, FUN = length, verbose = FALSE, safer_check = FALSE))
+  # FUN argument: function or single character string of a function name
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, verbose = FALSE, safer_check = FALSE))
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = "length", verbose = FALSE, safer_check = FALSE))
+  # args argument: single character string or NULL
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = mean, args = "na.rm = TRUE", verbose = FALSE, safer_check = FALSE))
+  # boundary argument: "left" or "right"
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, boundary = "right", verbose = FALSE, safer_check = FALSE))
+  # parall argument: single logical
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, parall = FALSE, verbose = FALSE, safer_check = FALSE))
+  # thread.nb argument: single positive integer (only used if parall = TRUE)
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, parall = TRUE, thread.nb = 2, verbose = FALSE, safer_check = FALSE))
+  # print.count argument: single positive integer (Inf allowed)
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, print.count = 100, verbose = FALSE, safer_check = FALSE))
+  # res.path argument: existing directory or NULL
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, res.path = tempdir(), verbose = FALSE, safer_check = FALSE))
+  # verbose argument: single logical
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, verbose = TRUE, safer_check = FALSE))
+  # lib_path argument: NULL or vector of characters
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, lib_path = NULL, verbose = FALSE, safer_check = FALSE))
+  # error_text argument: single character string
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, error_text = " IN TEST.", verbose = FALSE, safer_check = FALSE))
+  # safer_check argument: single logical
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, safer_check = TRUE))
+})
+
+test_that("slide() secondary checking blocks", {
+  # primary checking blocks of the backbone: NULL, empty non NULL, NA-only arguments
+  expect_error(slide(data = 1:10, window.size = NULL, step = 2, FUN = length)) # window.size cannot be NULL
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, boundary = NULL)) # boundary cannot be NULL
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, parall = NULL)) # parall cannot be NULL
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, print.count = NULL)) # print.count cannot be NULL
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, verbose = NULL)) # verbose cannot be NULL
+  # empty non NULL arguments (character(0) or numeric(0) provided by the user)
+  expect_error(slide(data = numeric(0), window.size = 5, step = 2, FUN = length)) # data empty non NULL
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, res.path = character(0))) # res.path empty non NULL
+  # NA-only arguments
+  expect_error(slide(data = NA, window.size = 5, step = 2, FUN = length)) # data made of NA only
+  expect_error(slide(data = 1:10, window.size = NA_real_, step = 2, FUN = length)) # window.size made of NA only
+  # safer_check argument checking
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, safer_check = "TRUE"))
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, safer_check = c(TRUE, FALSE)))
+  # lib_path checking
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, lib_path = 123))
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, lib_path = "path/that/does/not/exist"))
+  # data checks of the second round of checking
+  expect_error(slide(data = c(1, Inf), window.size = 5, step = 2, FUN = length)) # Inf values
+  expect_error(slide(data = c(1, NA), window.size = 5, step = 2, FUN = length)) # NA not allowed either (is.finite() guard)
+  # management of "" in character arguments (res.path, boundary)
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, res.path = ""))
+  # res.path not existing directory
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, res.path = "path/that/does/not/exist"))
+  # arg_check error combinations
+  expect_error(slide(data = 1:10, window.size = -5, step = 2, FUN = length)) # window.size negative
+  expect_error(slide(data = 1:10, window.size = 5, step = -2, FUN = length)) # step negative
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, from = "a")) # from not numeric
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, to = "a")) # to not numeric
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, args = 123)) # args not character
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, print.count = -1)) # print.count negative
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, thread.nb = "not_numeric", parall = TRUE)) # thread.nb not numeric
+})
+
+test_that("slide() values of the returned data frame", {
+  # boundary = "left": windows are [left, right[ ; boundary = "right": windows are ]left, right]
+  res_left <- slide(data = 1:10, window.size = 5, step = 2, FUN = length, verbose = FALSE, safer_check = FALSE)
+  testthat::expect_equal(object = base::names(x = res_left), expected = base::c("left", "right", "center", "value"))
+  testthat::expect_equal(object = res_left$value, expected = base::c(5, 5, 5, 4))
+  testthat::expect_equal(object = res_left$left, expected = base::c(1, 3, 5, 7))
+  testthat::expect_equal(object = res_left$right, expected = base::c(6, 8, 10, 12))
+  res_right <- slide(data = 1:10, window.size = 5, step = 2, FUN = length, boundary = "right", verbose = FALSE, safer_check = FALSE)
+  testthat::expect_equal(object = res_right$value, expected = base::c(5, 5, 5))
+  testthat::expect_equal(object = res_right$left, expected = base::c(1, 3, 5))
+  testthat::expect_equal(object = res_right$right, expected = base::c(6, 8, 10))
+  # from/to arguments: window over the sub range [2, 9]
+  res_ft <- slide(data = 1:10, window.size = 5, step = 2, from = 2, to = 9, FUN = length, verbose = FALSE, safer_check = FALSE)
+  testthat::expect_equal(object = res_ft$left, expected = base::c(2, 4, 6))
+  testthat::expect_equal(object = res_ft$right, expected = base::c(7, 9, 11))
+  # FUN as a character string of a function name
+  res_char <- slide(data = 1:10, window.size = 5, step = 2, FUN = "mean", verbose = FALSE, safer_check = FALSE)
+  testthat::expect_equal(object = res_char$value, expected = base::c(3, 5, 7, 8.5))
+  # args argument: extra argument passed to FUN
+  res_args <- slide(data = 1:10, window.size = 5, step = 2, FUN = mean, args = "trim = 0.2", verbose = FALSE, safer_check = FALSE)
+  testthat::expect_equal(object = res_args$value, expected = base::c(3, 5, 7, 8.5))
 })

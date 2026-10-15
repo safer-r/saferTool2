@@ -59,4 +59,33 @@ test_that("codon2aa returns correct amino acid", {
   expect_no_error(codon2aa(data = codon2, display = TRUE, safer_check = TRUE))
   expect_error(codon2aa(data = codon15, display = TRUE, safer_check = TRUE))
   expect_error(codon2aa(data = codon16, display = TRUE, safer_check = TRUE))
+
+  # lib_path argument
+  expect_no_error(codon2aa(data = codon1, display = FALSE, lib_path = NULL))
+  # error_text argument
+  expect_no_error(codon2aa(data = codon1, display = FALSE, error_text = " IN TEST."))
+})
+
+test_that("codon2aa primary checking and other checkings", {
+  # function name block: pkg:: call and bare zero-arg call
+  expect_no_error(saferTool2::codon2aa(data = "atg")) # function_name[3] line of the pkg:: call
+  expect_error(codon2aa()) # zero-arg call still covered up to the no-default-values block
+  # primary checking: NULL arguments
+  expect_error(codon2aa(data = "atg", display = NULL)) # display cannot be NULL
+  # primary checking: NA-only arguments
+  expect_error(codon2aa(data = NA_character_)) # data made of NA only
+  # safer_check argument checking
+  expect_error(codon2aa(data = "atg", safer_check = "TRUE"))
+  expect_error(codon2aa(data = "atg", safer_check = c(TRUE, FALSE)))
+  # lib_path checking
+  expect_error(codon2aa(data = "atg", lib_path = 123)) # not a character vector
+  expect_error(codon2aa(data = "atg", lib_path = "path/that/does/not/exist")) # not an existing directory
+  # arg_check combinations: data and display
+  expect_error(codon2aa(data = 123)) # data not character
+  expect_error(codon2aa(data = "atg", display = "TRUE")) # display not logical
+  # other checkings of the second round of checking
+  expect_error(codon2aa(data = "at")) # wrong length
+  expect_error(codon2aa(data = c("a", "t", "g", "c"))) # wrong length (4)
+  expect_error(codon2aa(data = "aXg")) # wrong letters
+  expect_error(codon2aa(data = c("a", "X", "g"))) # wrong letters in vector form
 })

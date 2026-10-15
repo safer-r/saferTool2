@@ -130,6 +130,22 @@ test_that("trim() handles displayed.nb argument without error", {
   data <- 1:10
   expect_no_error(trim(data = data, safer_check = TRUE))
 
+# Unit test for the argument "seed"
+  # Create a test case
+  data <- 1:10
+  expect_no_error(trim(data = data, seed = 22))
+  expect_no_error(trim(data = data, seed = NULL))
+
+# Unit test for the argument "lib_path"
+  # Create a test case
+  data <- 1:10
+  expect_no_error(trim(data = data, lib_path = NULL))
+
+# Unit test for the argument "error_text"
+  # Create a test case
+  data <- 1:10
+  expect_no_error(trim(data = data, error_text = " IN TEST."))
+
 # Unit test for all arguments in the function
   # Create a test case
   data <- 1:10
@@ -162,4 +178,84 @@ test_that("trim() handles displayed.nb argument without error", {
     trim.return = FALSE, 
     box.type = "l", 
     safer_check = TRUE))
+})
+
+test_that("trim primary checking and other checkings", {
+  # function name block: pkg:: call and bare zero-arg call
+  expect_no_error(saferTool2::trim(data = 1:10)) # function_name[3] line of the pkg:: call
+  expect_error(trim()) # zero-arg call still covered up to the no-default-values block
+  # primary checking: NULL arguments
+  expect_error(trim(data = 1:10, single.value.display = NULL)) # single.value.display cannot be NULL
+  expect_error(trim(data = 1:10, trim.method = NULL)) # trim.method cannot be NULL
+  expect_error(trim(data = 1:10, safer_check = NULL)) # safer_check cannot be NULL
+  # primary checking: NA-only arguments
+  expect_error(trim(data = NA_real_)) # data made of NA only
+  expect_error(trim(data = 1:10, trim.method = NA_character_)) # trim.method made of NA only
+  # safer_check argument checking
+  expect_error(trim(data = 1:10, safer_check = "TRUE"))
+  expect_error(trim(data = 1:10, safer_check = c(TRUE, FALSE)))
+  # lib_path checking
+  expect_error(trim(data = 1:10, lib_path = 123)) # not a character vector
+  expect_error(trim(data = 1:10, lib_path = "path/that/does/not/exist")) # not an existing directory
+  # arg_check combinations
+  expect_error(trim(data = 1:10, displayed.nb = 5.5)) # displayed.nb not integer-like
+  expect_error(trim(data = 1:10, single.value.display = "TRUE")) # not logical
+  expect_error(trim(data = 1:10, trim.method = "invalid")) # trim.method not among options
+  expect_error(trim(data = 1:10, trim.cutoffs = c(0.05, 0.975, 0.999))) # trim.cutoffs length must be 2
+  expect_error(trim(data = 1:10, trim.cutoffs = 0.05)) # trim.cutoffs length must be 2
+  expect_error(trim(data = 1:10, down.space = -1)) # down.space negative not allowed
+  expect_error(trim(data = 1:10, orient = -1)) # orient negative not allowed
+  expect_error(trim(data = 1:10, box.type = "invalid")) # box.type not among options
+  expect_error(trim(data = 1:10, box.type = "")) # box.type cannot be ""
+  expect_error(trim(data = 1:10, col.box = 123)) # col.box not character
+  expect_error(trim(data = 1:10, x.nb.inter.tick = -1)) # x.nb.inter.tick negative not allowed
+  expect_error(trim(data = 1:10, x.nb.inter.tick = 4.5)) # x.nb.inter.tick not integer-like
+  expect_error(trim(data = 1:10, y.nb.inter.tick = -1)) # y.nb.inter.tick negative not allowed
+  expect_error(trim(data = 1:10, corner.text = 123)) # corner.text not character
+  expect_error(trim(data = 1:10, trim.return = "TRUE")) # trim.return not logical
+  expect_error(trim(data = 1:10, seed = 22.5)) # seed not integer-like
+  expect_error(trim(data = 1:10, seed = -1)) # seed negative not allowed
+  # other checkings of the second round of checking
+  expect_error(trim(data = c(NA, Inf))) # data cannot be made of NA and Inf only
+  expect_error(trim(data = c("a", "b"))) # data must be numeric
+  expect_error(trim(data = factor(c("a", "b")))) # data must be numeric
+  expect_error(trim(data = matrix(c("a", "b"), nrow = 2))) # data must be numeric (matrix branch)
+  expect_error(trim(data = 1:10, displayed.nb = 1)) # displayed.nb must be > 1
+})
+
+test_that("trim main code branches", {
+  # matrix input converted to vector
+  res_matrix <- trim(data = matrix(data = 1:10, nrow = 2), trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_matrix))
+  # NA values in data: warning text written (na.nb > 0 branch) + trim.return = TRUE returns the output
+  res_na <- trim(data = c(1:10, NA), trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_na))
+  # NA in data with a corner text already present: corner.text concatenation branch
+  res_na2 <- trim(data = c(1:10, NA), corner.text = "Test corner text", trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_na2))
+  # single value in data: "No graphic displayed" branch
+  res_single <- trim(data = base::rep(x = 5, times = 10), single.value.display = FALSE, trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = base::is.null(x = res_single$trim.method)) # the single-value output
+  # displayed.nb above the number of values: warning text written (both corner.text == "" and not "")
+  res_above <- trim(data = 1:10, displayed.nb = 20, trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_above))
+  res_above2 <- trim(data = 1:10, displayed.nb = 20, corner.text = "Test corner text", trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_above2))
+  # displayed.nb set: sampling branch (displayed.nb < number of values)
+  res_samp <- trim(data = c(1:100, 1:10), displayed.nb = 50, trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_samp))
+  # interval.scale.disp = TRUE and trim.method != "": quantile branch of fun.add.cut() and legend with interval
+  res_quant <- trim(data = c(1:100, 1:10), trim.method = "quantile", trim.cutoffs = c(0.05, 0.975), interval.scale.disp = TRUE, trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_quant$real.trim.cutoffs))
+  # trim.method != "" and interval.scale.disp = FALSE: legend without interval.scale
+  res_noleg <- trim(data = 1:10, trim.method = "mean.sd", interval.scale.disp = FALSE, trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_noleg))
+  # trim.method == "": mean.sd legend branch (interval.scale.disp = FALSE) and no real.trim.cutoffs
+  res_nometh <- trim(data = 1:10, trim.method = "", interval.scale.disp = FALSE, trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = base::is.null(x = res_nometh$real.trim.cutoffs))
+  # trim.method == "" and interval.scale.disp = TRUE: mean.sd legend with interval.scale
+  res_nometh2 <- trim(data = 1:10, trim.method = "", interval.scale.disp = TRUE, trim.return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = base::is.null(x = res_nometh2$real.trim.cutoffs))
+  # trim.return = FALSE: no output returned
+  testthat::expect_null(object = trim(data = 1:10, trim.return = FALSE, safer_check = FALSE))
 })

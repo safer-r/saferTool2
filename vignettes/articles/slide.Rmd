@@ -85,9 +85,9 @@ slide(data = data, window.size = 5, step = 2, FUN  = length, res.path = NULL)
 <br>
 
 
-### Argument lib.path
+### Argument lib_path
 ```{r}
-slide(data = data, window.size = 5, step = 2, FUN  = length, lib.path = NULL)
+slide(data = data, window.size = 5, step = 2, FUN  = length, lib_path = NULL)
 ```
 <br>
 
@@ -119,7 +119,7 @@ slide(
       thread.nb = NULL,
       print.count = 100,
       res.path = NULL,
-      lib.path = NULL,
+      lib_path = NULL,
       verbose = TRUE,
       safer_check = TRUE
     )
