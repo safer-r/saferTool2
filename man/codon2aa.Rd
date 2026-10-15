@@ -13,7 +13,7 @@ codon2aa(
 )
 }
 \arguments{
-\item{data}{Single caracter string of three characters, or vector of three characters, indicating the DNA codon (only "A", "T", "G" and "C" allowed). Case insensitive. Omitted if display argument is TRUE.}
+\item{data}{Single caracter string of three characters, or vector of three characters, indicating the DNA codon (only "A", "T", "G" and "C" allowed). Case insensitive. Mandatory in all cases (even when display argument is TRUE).}
 
 \item{display}{Single logical value. Display the whole genetic table? If TRUE, override data.}
 

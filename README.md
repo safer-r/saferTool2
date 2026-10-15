@@ -7,6 +7,7 @@
 
 [![Codecov test coverage](https://codecov.io/github/safer-r/saferTool2/coverage.svg?branch=master)](https://app.codecov.io/github/safer-r/saferTool2?branch=master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/saferTool2)](https://cran.r-project.org/package=saferTool2)
+[![R Version](https://img.shields.io/badge/R-%3E%3D%204.5.0-blue?logo=R)](https://cran.r-project.org/)
 [![downloads](https://cranlogs.r-pkg.org/badges/saferTool2)](https://www.rdocumentation.org/trends)
 [![](https://img.shields.io/badge/license-GPL3.0-green.svg)](https://opensource.org/licenses/MITgpl-3-0)
 [![rworkflows](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml/badge.svg)](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml)
@@ -63,7 +64,7 @@ The different *saferTool2* releases are tagged [here](https://github.com/safer-r
 
 ```r
 install.packages("remotes")
-remotes::install_github("https://github.com/safer-r/saferTool2") # or open R as admin and remotes::install_github("https://github.com/safer-r/saferTool2", lib = "C:/Program Files/R/R-4.4.2/library")
+remotes::install_github("https://github.com/safer-r/saferTool2") # or open R as admin and remotes::install_github("https://github.com/safer-r/saferTool2", lib = "C:/Program Files/R/R-4.6.0/library")
 ```
 
 Older versions can be installed like this:

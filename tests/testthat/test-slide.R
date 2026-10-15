@@ -38,9 +38,9 @@ test_that("slide() works correctly", {
   expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, res.path = "invalid_directory"))
   expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, res.path = "/some/path"))
 
-# Test case 11: Test 'lib.path' argument
-  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, lib.path = "invalid_directory"))
-  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, lib.path = "/some/path"))
+# Test case 11: Test 'lib_path' argument
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, lib_path = "invalid_directory"))
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, lib_path = "/some/path"))
 
 # Test case 12: Test 'verbose' argument
   expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, verbose = "not_logical"))
@@ -50,7 +50,7 @@ test_that("slide() works correctly", {
   expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN  = length, verbose = "not_logical", safer_check = TRUE))
 
 # Comprehensive test for all arguments
-  expect_error(slide(data = NULL, window.size = "5", step = "2", FUN  = 123, args = 123, boundary = "invalid", parall = "not_logical", thread.nb = "not_numeric", print.count = "not_numeric", res.path = "invalid_directory", lib.path = "invalid_directory", verbose = "not_logical", safer_check = TRUE))
+  expect_error(slide(data = NULL, window.size = "5", step = "2", FUN  = 123, args = 123, boundary = "invalid", parall = "not_logical", thread.nb = "not_numeric", print.count = "not_numeric", res.path = "invalid_directory", lib_path = "invalid_directory", verbose = "not_logical", safer_check = TRUE))
 
 # No-error tests for each argument (expected value(s) of each argument tested with no error as result)
   # function name block: pkg:: and bare zero-arg calls (function_name[3] and arg_user_setting_eval <- NULL lines)
@@ -125,6 +125,33 @@ test_that("slide() secondary checking blocks", {
   expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, args = 123)) # args not character
   expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, print.count = -1)) # print.count negative
   expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, thread.nb = "not_numeric", parall = TRUE)) # thread.nb not numeric
+  # safer_check given as a function: deparse1 branch of the safer_check argument checking
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, safer_check = mean))
+  # lib_path given as a function: deparse1 branch of the lib_path checking
+  expect_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, lib_path = mean))
+  # lib_path with an existing directory: .libPaths() branch
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = length, lib_path = tempdir()))
+  # print.count = Inf: allowed (no loop message desired), with parall = FALSE
+  expect_no_error(slide(data = 1:10, window.size = 5, step = 2, FUN = mean, print.count = Inf, verbose = FALSE))
+})
+
+test_that("slide() parallelization branches with verbose output", {
+  # parallel run with verbose = TRUE: PARALLELIZATION INITIATED / NUMBER OF THREADS / SPLIT OF TEST NUMBERS messages
+  res_par <- slide(data = 1:10, window.size = 5, step = 2, FUN = length, parall = TRUE, thread.nb = 2, print.count = 1, verbose = TRUE)
+  testthat::expect_equal(object = base::names(x = res_par), expected = base::c("left", "right", "center", "value"))
+  testthat::expect_equal(object = res_par$value, expected = base::c(5, 5, 5, 4)) # same result as the non parallel run
+  # parallel run with res.path set: the parallel log file is written in res.path
+  res_dir <- base::tempdir()
+  res_par2 <- slide(data = 1:10, window.size = 5, step = 2, FUN = length, parall = TRUE, thread.nb = 2, print.count = 1, res.path = res_dir, verbose = FALSE)
+  testthat::expect_equal(object = res_par2$value, expected = base::c(5, 5, 5, 4))
+  testthat::expect_true(object = base::file.exists(base::paste0(res_dir, "/fun_slide_parall_log.txt")))
+  # thread.nb above the number of available threads: capped at detectCores() with the ONLY: message (verbose = TRUE)
+  # data long enough (996 windows) so that clusterSplit() gives no empty chunk to any worker (an empty chunk triggers the pre-existing 1:length(x) loop bug of the worker on empty input, see CODE INCONSISTENCY 4)
+  res_par3 <- slide(data = 1:1000, window.size = 5, step = 1, FUN = length, parall = TRUE, thread.nb = 10000, print.count = 1, verbose = TRUE)
+  testthat::expect_equal(object = base::nrow(x = res_par3), expected = 996)
+  # thread.nb = NULL with parall = TRUE: thread.nb set to the number of detected threads (verbose = FALSE to limit output)
+  res_par4 <- slide(data = 1:1000, window.size = 5, step = 1, FUN = length, parall = TRUE, thread.nb = NULL, print.count = 1, verbose = FALSE)
+  testthat::expect_equal(object = base::nrow(x = res_par4), expected = 996)
 })
 
 test_that("slide() values of the returned data frame", {

@@ -18,7 +18,7 @@ codon_finder(
 
 \item{begin}{Single integer indicating the position of the first base of the coding sequence.}
 
-\item{end}{Single indicating the position of the last base of the coding sequence.}
+\item{end}{Single integer-like number indicating the position of the last base of the coding sequence.}
 
 \item{safer_check}{Single logical value. Perform some "safer" checks? If \code{TRUE}, checkings are performed before main code running (see the \href{https://github.com/safer-r}{safer-r project}): 1) correct \code{lib_path} argument value 2) required functions and related packages effectively present in local R libraries and 3) R classical operators (like \code{"<-"}) not overwritten by another package because of the R scope. Must be set to \code{FALSE} if this function is used inside another "safer" function to avoid pointless multiple checkings.}
 

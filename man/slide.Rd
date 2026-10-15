@@ -24,7 +24,7 @@ slide(
 )
 }
 \arguments{
-\item{data}{Vector, matrix, table or array of numeric values (mode must be numeric). Inf not allowed. NA will be removed before computation.}
+\item{data}{Vector, matrix, table or array of numeric values (mode must be numeric). Inf and NA not allowed.}
 
 \item{window.size}{Single numeric value indicating the width of the window sliding across data (in the same unit as data value).}
 
@@ -44,7 +44,7 @@ slide(
 
 \item{thread.nb}{Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.}
 
-\item{print.count}{Single integer value. Print a working progress message every print.count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.}
+\item{print.count}{Single numeric value (integers expected in practice). Print a working progress message every print.count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.}
 
 \item{res.path}{Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.}
 

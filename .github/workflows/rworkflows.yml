@@ -23,9 +23,9 @@ jobs:
       matrix:
         config:
         - os: ubuntu-latest
-          bioc: RELEASE_3_18
+          bioc: RELEASE_3_23
           r: auto
-          cont: ghcr.io/bioconductor/bioconductor_docker:RELEASE_3_18
+          cont: ghcr.io/bioconductor/bioconductor_docker:RELEASE_3_23-R-4.6.1
           rspm: ~
         - os: macOS-latest
           bioc: release
@@ -46,6 +46,7 @@ jobs:
         run_vignettes: ${{ true }}
         has_testthat: ${{ true }}
         run_covr: ${{ true }}
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run_pkgdown: ${{ true }}
         has_runit: ${{ false }}
         has_latex: ${{ false }}

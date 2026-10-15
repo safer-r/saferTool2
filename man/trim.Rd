@@ -41,7 +41,7 @@ trim(
 \arguments{
 \item{data}{Values to plot (either a numeric vector or a numeric matrix).}
 
-\item{displayed.nb}{Single numeric value indicating the number of values displayed. If NULL, all the values are displayed. Otherwise, if the number of values is over displayed.nb, then displayed.nb values are displayed after random selection.}
+\item{displayed.nb}{Single integer-like numeric value, greater than 1, indicating the number of values displayed. If NULL, all the values are displayed. Otherwise, if the number of values is over displayed.nb, then displayed.nb values are displayed after random selection.}
 
 \item{single.value.display}{Single logical value. Provide the 4 graphs if data is made of a single (potentially repeated value)? If FALSE, an empty graph is displayed if data is made of a single (potentially repeated value). And the return list is made of NULL compartments.}
 
@@ -93,7 +93,7 @@ trim(
 
 \item{trim.return}{Single logical value. Return the trimmed and non trimmed values? NULL returned for trimmed and non trimmed values if trim.method == "".}
 
-\item{seed}{Single integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL,the function will systematically return the same result when the other parameters keep the same settings.}
+\item{seed}{Single positive or null integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL,the function will systematically return the same result when the other parameters keep the same settings.}
 
 \item{safer_check}{Single logical value. Perform some "safer" checks? If \code{TRUE}, checkings are performed before main code running (see the \href{https://github.com/safer-r}{safer-r project}): 1) correct \code{lib_path} argument value 2) required functions and related packages effectively present in local R libraries and 3) R classical operators (like \code{"<-"}) not overwritten by another package because of the R scope. Must be set to \code{FALSE} if this function is used inside another "safer" function to avoid pointless multiple checkings.}
 

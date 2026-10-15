@@ -215,12 +215,37 @@ test_that("trim primary checking and other checkings", {
   expect_error(trim(data = 1:10, trim.return = "TRUE")) # trim.return not logical
   expect_error(trim(data = 1:10, seed = 22.5)) # seed not integer-like
   expect_error(trim(data = 1:10, seed = -1)) # seed negative not allowed
+  # remaining arg_check invalid-value tests
+  expect_error(trim(data = 1:10, interval.scale.disp = "TRUE")) # interval.scale.disp not logical
+  expect_error(trim(data = 1:10, left.space = -1)) # left.space negative not allowed
+  expect_error(trim(data = 1:10, up.space = -1)) # up.space negative not allowed
+  expect_error(trim(data = 1:10, right.space = -1)) # right.space negative not allowed
+  expect_error(trim(data = 1:10, dist.legend = -1)) # dist.legend negative not allowed
+  expect_error(trim(data = 1:10, amplif.label = -1)) # amplif.label negative not allowed
+  expect_error(trim(data = 1:10, amplif.axis = -1)) # amplif.axis negative not allowed
+  expect_error(trim(data = 1:10, std.x.range = "TRUE")) # std.x.range not logical
+  expect_error(trim(data = 1:10, std.y.range = "TRUE")) # std.y.range not logical
+  expect_error(trim(data = 1:10, cex.pt = -1)) # cex.pt negative not allowed
+  expect_error(trim(data = 1:10, tick.length = 1.5)) # tick.length not a proportion
+  expect_error(trim(data = 1:10, sec.tick.length = 1.5)) # sec.tick.length not a proportion
+  expect_error(trim(data = 1:10, trim.cutoffs = c(1.5, 0.975))) # trim.cutoffs values not between 0 and 1
+  expect_error(trim(data = 1:10, amplif.legend = -1)) # amplif.legend negative not allowed
+  expect_error(trim(data = 1:10, corner.text.size = -1)) # corner.text.size negative not allowed
   # other checkings of the second round of checking
   expect_error(trim(data = c(NA, Inf))) # data cannot be made of NA and Inf only
   expect_error(trim(data = c("a", "b"))) # data must be numeric
   expect_error(trim(data = factor(c("a", "b")))) # data must be numeric
   expect_error(trim(data = matrix(c("a", "b"), nrow = 2))) # data must be numeric (matrix branch)
   expect_error(trim(data = 1:10, displayed.nb = 1)) # displayed.nb must be > 1
+  # empty non NULL argument management
+  expect_error(trim(data = integer(0))) # data empty non NULL
+  expect_error(trim(data = 1:10, displayed.nb = integer(0))) # displayed.nb empty non NULL
+  # safer_check given as a function: deparse1 branch of the safer_check argument checking
+  expect_error(trim(data = 1:10, safer_check = mean))
+  # lib_path given as a function: deparse1 branch of the lib_path checking
+  expect_error(trim(data = 1:10, lib_path = mean))
+  # lib_path with an existing directory: .libPaths() branch
+  expect_no_error(trim(data = 1:10, lib_path = tempdir(), trim.return = FALSE))
 })
 
 test_that("trim main code branches", {
@@ -258,4 +283,22 @@ test_that("trim main code branches", {
   testthat::expect_true(object = base::is.null(x = res_nometh2$real.trim.cutoffs))
   # trim.return = FALSE: no output returned
   testthat::expect_null(object = trim(data = 1:10, trim.return = FALSE, safer_check = FALSE))
+})
+
+test_that("trim corner.text branches", {
+  # NA in data with corner.text == "": the "WARNING: NUMBER OF NA REMOVED IS" branch
+  res_na <- trim(data = c(1:10, NA), trim.return = FALSE, safer_check = FALSE)
+  testthat::expect_null(object = res_na) # runs the graphics and NA corner text branch
+  # interval.scale.disp = TRUE with corner.text == "" and not "": the MULTIPLYING FACTOR branches
+  res_is1 <- trim(data = 1:10, interval.scale.disp = TRUE, trim.return = FALSE, safer_check = FALSE)
+  testthat::expect_null(object = res_is1)
+  res_is2 <- trim(data = 1:10, interval.scale.disp = TRUE, corner.text = "Test corner text", trim.return = FALSE, safer_check = FALSE)
+  testthat::expect_null(object = res_is2)
+  # trim.method != "" with corner.text == "" and not "": the SELECTED CUT-OFFS branches
+  res_tm1 <- trim(data = 1:10, trim.method = "mean.sd", trim.return = FALSE, safer_check = FALSE)
+  testthat::expect_null(object = res_tm1)
+  res_tm2 <- trim(data = 1:10, trim.method = "mean.sd", corner.text = "Test corner text", trim.return = FALSE, safer_check = FALSE)
+  testthat::expect_null(object = res_tm2)
+  # data given as a non numeric non matrix object: the combined arg_check error of the data argument
+  expect_error(trim(data = "abc"))
 })

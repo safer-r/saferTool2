@@ -11,9 +11,9 @@
 #' Designed for discrete values, but works also for continuous values.
 #' @param data1 A vector of at least 2 elements. Must be numeric if data2 is specified.
 #' @param data2 A numeric vector of same length as data1.
-#' @param n Single integer value of times "flipping 2 randomly selected consecutive positions". Ignored if data2 is specified.
-#' @param seed Single integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL, permut() will systematically return the same result when the other parameters keep the same settings.
-#' @param print.count Single positive integer value. Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
+#' @param n Single numeric value of times "flipping 2 randomly selected consecutive positions" (integers expected in practice). Ignored if data2 is specified.
+#' @param seed Single numeric number used by set.seed() (integers expected in practice). Write NULL if random result is required, a number otherwise. BEWARE: if not NULL, permut() will systematically return the same result when the other parameters keep the same settings.
+#' @param print.count Single positive numeric value (integers expected in practice). Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired (Inf only allowed when data2 is NULL).
 #' @param text.print Single character string indicating the optional message to add to the working progress message every print.count loop.
 #' @param cor.method Correlation method. Either "pearson", "kendall" or "spearman". Ignored if data2 is not specified.
 #' @param cor.limit Single positive numeric proportion fixing the correlation limit. Ignored if data2 is not specified. Compute the correlation between data1 and data2, permute the data1 values, and stop the permutation process when the correlation between data1 and data2 decreases down below the cor limit value (0.2 by default). If cor(data1, data2) is negative, then -cor.limit is used and the process stops until the correlation between data1 and data2 increases up over cor.limit (-0.2 by default). BEWARE: write a positive cor.limit even if cor(data1, data2) is known to be negative. The function will automatically uses -cor.limit. If the initial correlation is already below cor.limit (positive correlation) or over -cor.limit (negative correlation), then the data1 value positions are completely randomized (correlation between data1 and data2 is expected to be 0).
@@ -504,6 +504,8 @@ permut <- function(
     }else{
         tempo_log <- base::sapply(X = base::lapply(X = tempo_arg, FUN = function(x){base::get(x = x, pos = -1L, envir = base::parent.frame(n = 2), mode = "any", inherits = FALSE)}), FUN = function(x){base::any(x == "", na.rm = TRUE)}, simplify = TRUE, USE.NAMES = TRUE) # parent.frame(n = 2) because get() is evaluated inside the FUN closure of the inner lapply: parent.frame(n = 1) is lapply's frame, parent.frame(n = 2) is permut's frame. # for character argument that can also be NULL, if NULL -> returns FALSE. Thus no need to test is.null()
         if(base::any(tempo_log, na.rm = TRUE)){
+            # nocov start
+            # codecov inactivated because cor.method is the only argument of tempo_arg and it is already checked by arg_check() options ("" cannot reach this block).
             tempo_cat <- base::paste0(
                 error_text_start,
                 base::ifelse(test = base::sum(tempo_log, na.rm = TRUE) > 1, yes = "THESE ARGUMENTS\n", no = "THIS ARGUMENT\n"),
@@ -513,6 +515,7 @@ permut <- function(
                 recycle0 = FALSE
             )
             base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
+            # nocov end
         }
     }
     ######## end management of "" in arguments of mode character
@@ -531,7 +534,10 @@ permut <- function(
         tempo.random.seed <- .Random.seed
         base::on.exit(expr = base::assign(x = ".Random.seed", value = tempo.random.seed, pos = -1, envir = .GlobalEnv, inherits = FALSE, immediate = TRUE), add = TRUE, after = TRUE)
     }else{
+        # nocov start
+        # codecov inactivated because .Random.seed always exists in the testing environment (testthat sets it): this branch can only be reached in a fresh R session before any random operation.
         base::on.exit(expr = base::set.seed(seed = NULL, kind = NULL, normal.kind = NULL, sample.kind = NULL), add = TRUE, after = TRUE) # inactivate seeding -> return to complete randomness
+        # nocov end
     }
     base::set.seed(seed = seed, kind = NULL, normal.kind = NULL, sample.kind = NULL) # seed value is the seed argument of the function
     ######## end code that protects set.seed() in the global environment
@@ -725,6 +731,8 @@ permut <- function(
                             cor.est[i6] <- tempo.cor.est
                             tempo.cor.dec.per.loop <- (cor.est.ini - tempo.cor.est) / count.est # correlation decrease per loop
                             if(base::is.na(tempo.cor.dec.per.loop) | ! base::is.finite(tempo.cor.dec.per.loop)){
+                                # nocov start
+                                # codecov inactivated because it is an internal error, impossible to cover with argument values.
                                 tempo.cat <- base::paste0(
                                     "INTERNAL ERROR IN THE MAIN CODE OF ",
                                     intern_error_text_start,
@@ -736,8 +744,6 @@ permut <- function(
                                     collapse = NULL,
                                     recycle0 = FALSE
                                 )
-                                # nocov start
-                                # codecov inactivated because it is an internal error, impossible to cover with argument values.
                                 base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
                                 # nocov end
                             }
@@ -757,6 +763,8 @@ permut <- function(
                     # end estimation step
                     # loop step
                     if(base::is.na(loop.nb.est) | ! base::is.finite(loop.nb.est)){
+                        # nocov start
+                        # codecov inactivated because it is an internal error, impossible to cover with argument values.
                         tempo.cat <- base::paste0(
                             "INTERNAL ERROR IN THE MAIN CODE OF ",
                             intern_error_text_start,
@@ -774,9 +782,7 @@ permut <- function(
                             collapse = NULL,
                             recycle0 = FALSE
                         )
-                        # nocov start
-                        # codecov inactivated because it is an internal error, impossible to cover with argument values.
-                        base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
+                        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
                         # nocov end
                     }else if(loop.nb.est > 1e4){ # below -> leave the while loop
                         tempo.pos.secu <- tempo.pos

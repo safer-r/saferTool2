@@ -78,4 +78,10 @@ test_that("codon_finder primary checking and other checkings", {
   expect_error(codon_finder(pos = c(5, 6), begin = 10, end = 5)) # begin >= end
   expect_error(codon_finder(pos = c(5, 6), begin = 5, end = 6)) # (end - begin + 1) not a multiple of 3
   expect_error(codon_finder(pos = c(5, 6), begin = 5, end = 20)) # pos values not between begin and end
+  # safer_check given as a function: deparse1 branch of the safer_check argument checking
+  expect_error(codon_finder(pos = c(5, 6), begin = 5, end = 10, safer_check = mean))
+  # lib_path given as a function: deparse1 branch of the lib_path checking
+  expect_error(codon_finder(pos = c(5, 6), begin = 5, end = 10, lib_path = mean))
+  # lib_path with an existing directory: .libPaths() branch
+  expect_no_error(codon_finder(pos = c(5, 6), begin = 5, end = 10, lib_path = tempdir()))
 })

@@ -43,7 +43,7 @@ test_that("permut works correctly", {
 
     expect_error(permut(data1 = data1, warn.print = "not_a_logical"))
     expect_error(permut(data1 = data1, lib_path = 123))
-    expect_error(permut(data1 = data1, safer_check = TRUE))
+    # expect_error(permut(data1 = data1, safer_check = TRUE)) # removed: safer_check = TRUE is a VALID value (the error came from the missing n argument below)
 
     expect_error(permut(
                         data1 = data1,
@@ -123,7 +123,7 @@ test_that("permut primary checking and other checkings", {
     expect_error(permut(data1 = data1, print.count = 10, text.print = 123, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE)) # text.print not character
     expect_error(permut(data1 = data1, print.count = 10, cor.method = "spearman", cor.limit = 1.5, warn.print = FALSE)) # cor.limit not a proportion
     expect_error(permut(data1 = data1, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = "not_a_logical")) # warn.print not logical
-    expect_error(permut(data1 = data1, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE, error_text = 123)) # error_text not character
+    expect_error(permut(data1 = data1, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE, error_text = 123)) # error_text not character (the real error comes from the missing n argument, since error_text is unconditionally converted to a string)
     # other checkings of the second round of checking
     expect_error(permut(data1 = 1, n = 10, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE)) # data1 length < 2
     expect_error(permut(data1 = data1, data2 = 1:3, n = 10, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE)) # data1 and data2 not same length
@@ -171,4 +171,36 @@ test_that("permut correlated permutation loops (for/while rounds and GOBACK)", {
     testthat::expect_true(object = res$count >= 15) # at least the first while loop step, the for loop round and the final while loop step
     # count as numeric with decimals: the for loop path adds fractional counts (verified against the local run)
     testthat::expect_true(object = base::is.numeric(x = res$count))
+})
+
+test_that("permut GOBACK estimation branches", {
+    # config where the estimation step is entered several times with GOBACK == FALSE (else branch of the estimation step)
+    res_gbf <- suppressWarnings(permut(data1 = c(1,1,1,2,3), data2 = 1:5, n = 10, seed = 2, print.count = 5000, text.print = "", cor.method = "pearson", cor.limit = 0.5, warn.print = FALSE))
+    testthat::expect_true(object = base::is.numeric(x = res_gbf$count))
+    # config with several rounds, including GOBACK TRUE and FALSE rounds
+    res_gbm <- suppressWarnings(permut(data1 = c(1,1,1,2,3), data2 = 1:5, n = 10, seed = 1, print.count = 5000, text.print = "", cor.method = "pearson", cor.limit = 0.5, warn.print = FALSE))
+    testthat::expect_true(object = base::is.numeric(x = res_gbm$count))
+})
+
+test_that("permut progress print blocks of the while loops (print.count = 1)", {
+    # print.count = 1 makes the progress message of the first while loop (equality escape) print at each iteration
+    res_first <- suppressWarnings(permut(data1 = c(1,1,3), data2 = 1:3, n = 10, seed = 1, print.count = 1, text.print = "", cor.method = "pearson", cor.limit = 0.5, warn.print = FALSE))
+    testthat::expect_true(object = base::is.numeric(x = res_first$count))
+    # print.count = 1 with a config where the final while loop also prints its progress message (loop runs more than 1 iteration)
+    res_final <- suppressWarnings(permut(data1 = c(1,1,3,4,5,6,7,8,9,10), data2 = 1:10, n = 10, seed = 2, print.count = 1, text.print = "", cor.method = "pearson", cor.limit = 0.9, warn.print = FALSE))
+    testthat::expect_true(object = base::is.numeric(x = res_final$count))
+})
+
+test_that("permut environment checking branches", {
+    data1 <- c(1, 2, 3, 4, 5)
+    # safer_check given as a function: deparse1 branch of the safer_check argument checking
+    expect_error(permut(data1 = data1, n = 10, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE, safer_check = mean))
+    # lib_path given as a function: deparse1 branch of the lib_path checking
+    expect_error(permut(data1 = data1, n = 10, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE, lib_path = mean))
+    # lib_path with an existing directory: .libPaths() branch
+    expect_no_error(suppressWarnings(permut(data1 = data1, n = 10, seed = 1, print.count = 10, text.print = "", cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE, lib_path = tempdir())))
+    # arg_check data1: value failing all the possible types (list) -> combined error block
+    expect_error(permut(data1 = base::list(1, 2, 3, 4, 5), n = 10, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE))
+    # arg_check data1 with data2 specified: data1 must be numeric in this case
+    expect_error(permut(data1 = c("a", "b", "c", "d", "e"), data2 = 1:5, n = 10, print.count = 10, cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE))
 })

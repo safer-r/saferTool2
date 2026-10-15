@@ -1,7 +1,7 @@
 #' @title slide
 #' @description
 #' Return a computation made on a vector using a sliding window.
-#' @param data Vector, matrix, table or array of numeric values (mode must be numeric). Inf not allowed. NA will be removed before computation.
+#' @param data Vector, matrix, table or array of numeric values (mode must be numeric). Inf and NA not allowed.
 #' @param window.size Single numeric value indicating the width of the window sliding across data (in the same unit as data value).
 #' @param step Single numeric value indicating the step between each window (in the same unit as data value). Cannot be larger than window.size.
 #' @param from Single numeric value of the left boundary of the first sliding window. If NULL, min(data) is used. The first window will strictly have from or min(data) as left boundary.
@@ -11,7 +11,7 @@
 #' @param boundary Either "left" or "right". Indicates if the sliding window includes values equal to left boundary and exclude values equal to right boundary ("left") or the opposite ("right").
 #' @param parall Single logical value. Force parallelization ?
 #' @param thread.nb Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.
-#' @param print.count Single integer value. Print a working progress message every print.count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
+#' @param print.count Single numeric value (integers expected in practice). Print a working progress message every print.count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
 #' @param res.path Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.
 #' @param verbose Single logical value. Display messages?
 #' @param safer_check Single logical value. Perform some "safer" checks? If \code{TRUE}, checkings are performed before main code running (see the \href{https://github.com/safer-r}{safer-r project}): 1) correct \code{lib_path} argument value 2) required functions and related packages effectively present in local R libraries and 3) R classical operators (like \code{"<-"}) not overwritten by another package because of the R scope. Must be set to \code{FALSE} if this function is used inside another "safer" function to avoid pointless multiple checkings.
@@ -452,7 +452,7 @@ slide <- function(
     if(base::is.null(x = to) == FALSE){
         tempo <- saferDev::arg_check(data = to, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     }
-    tempo1 <- saferDev::arg_check(data = FUN, class = "character", typeof = "character", mode = NULL, length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
+    tempo1 <- saferDev::arg_check(data = FUN, class = NULL, typeof = "character", mode = NULL, length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     tempo2 <- saferDev::arg_check(data = FUN, class = "function", typeof = NULL, mode = NULL, length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     if(tempo1$problem == TRUE & tempo2$problem == TRUE){
         tempo.cat <- base::paste0(
@@ -475,7 +475,7 @@ slide <- function(
             tempo <- saferDev::arg_check(data = thread.nb, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
         }
     }
-    tempo <- saferDev::arg_check(data = print.count, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = FALSE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
+    tempo <- saferDev::arg_check(data = print.count, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     if(base::is.null(x = res.path) == FALSE){
         tempo <- saferDev::arg_check(data = res.path, class = NULL, typeof = "character", mode = NULL, length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     }
@@ -554,6 +554,8 @@ slide <- function(
 
     ######## other checkings
     if(base::length(x = data) == 0){
+        # nocov start
+        # codecov inactivated because data length 0 cannot reach this block: empty non NULL arguments are rejected by the primary checking above.
         tempo_cat <- base::paste0(
             error_text_start,
             "data ARGUMENT CANNOT BE LENGTH 0",
@@ -561,6 +563,7 @@ slide <- function(
             recycle0 = FALSE
         )
         base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
+        # nocov end
     }
     if(base::any( ! base::is.finite(data), na.rm = TRUE)){
         tempo_cat <- base::paste0(
@@ -624,6 +627,8 @@ slide <- function(
         right <- "<="
         right.last.wind <- ">="
     }else{
+        # nocov start
+        # codecov inactivated because it is an internal error, impossible to cover with argument values (boundary already checked by arg_check() options above).
         tempo.cat <- base::paste0(
             "INTERNAL ERROR IN THE MAIN CODE OF ",
             intern_error_text_start,
@@ -632,8 +637,6 @@ slide <- function(
             collapse = NULL,
             recycle0 = FALSE
         )
-        # nocov start
-        # codecov inactivated because it is an internal error, impossible to cover with argument values.
         base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
         # nocov end
     }
@@ -643,6 +646,8 @@ slide <- function(
     wind <- base::data.frame(wind, right = wind$left + window.size, stringsAsFactors = FALSE)
     wind <- base::data.frame(wind, center = (wind$left + wind$right) / 2, stringsAsFactors = FALSE)
     if(base::all(wind$right < if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to})){
+        # nocov start
+        # codecov inactivated because it is an internal error, impossible to cover with argument values.
         tempo.cat <- base::paste0(
             "INTERNAL ERROR IN THE MAIN CODE OF ",
             intern_error_text_start,
@@ -651,8 +656,6 @@ slide <- function(
             collapse = NULL,
             recycle0 = FALSE
         )
-        # nocov start
-        # codecov inactivated because it is an internal error, impossible to cover with argument values.
         base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
         # nocov end
     }
@@ -670,6 +673,8 @@ slide <- function(
     if(parall == FALSE){
         env.name <- base::paste0("env", base::as.numeric(base::Sys.time())) # new environment for the get_message() test
         if(base::exists(x = env.name, where = -1)){ # verify if still ok when info() is inside a function
+            # nocov start
+            # codecov inactivated because env.name is randomly generated, so it cannot already exist (internal error, impossible to cover with argument values).
             tempo.cat <- base::paste0(
                 error_text_start,
                 "ENVIRONMENT env.name ALREADY EXISTS. PLEASE RERUN ONCE",
@@ -677,6 +682,7 @@ slide <- function(
                 recycle0 = FALSE
             )
             base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
+            # nocov end
         }else{
             base::assign(x = env.name, value = base::new.env())
         }
@@ -701,6 +707,8 @@ slide <- function(
         log <-base::mapply(FUN = "&", left.log, right.log, SIMPLIFY = FALSE)
         output <- base::eval(base::parse(text = base::paste0("base::sapply(base::lapply(log, FUN = function(X){(data[X])}), FUN = FUN", if( ! base::is.null(args)){base::paste0(", ", args)}, ")")))
         if(base::length(output) != base::nrow(wind)){
+            # nocov start
+            # codecov inactivated because it is an internal error, impossible to cover with argument values.
             tempo.cat <- base::paste0(
                 "INTERNAL ERROR IN THE MAIN CODE OF ",
                 intern_error_text_start,
@@ -709,8 +717,6 @@ slide <- function(
                 collapse = NULL,
                 recycle0 = FALSE
             )
-            # nocov start
-            # codecov inactivated because it is an internal error, impossible to cover with argument values.
             base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }else{
@@ -778,6 +784,8 @@ slide <- function(
                 base::cat(base::paste0("\nPROCESS ID ", process.id, " -> TESTS ", x[1], " TO ", x[base::length(x)], "\n"))
                 # fun_pack(req.package = "lubridate", lib.path = lib.path, load = TRUE) # load = TRUE to be sure that functions are present in the environment. And this prevent to use R.lib.path argument of python_pack()
                 # end check again: very important because another R
+                # nocov start
+                # codecov inactivated because this function is executed in child processes launched by parallel::clusterApply(), which are not tracked by covr.
                 ini.date <- base::Sys.time()
                 ini.time <- base::as.numeric(ini.date) # time of process begin, converted into
                 output <- NULL
@@ -802,17 +810,18 @@ slide <- function(
                         }
                     }
                 }
+                # nocov end
                 wind <- wind[x, ]
+                # nocov start
+                # codecov inactivated because this is executed in child processes launched by parallel::clusterApply(), which are not tracked by covr (internal error, impossible to cover with argument values).
                 if(base::length(output) != base::nrow(wind)){
                     tempo.cat <- base::paste0("INTERNAL CODE ERROR IN ", function.name, "\nCODE INCONSISTENCY 4")
-                    # nocov start
-                    # codecov inactivated because it is an internal error, impossible to cover with argument values.
                     base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
-                    # nocov end
                 }else{
                     output <- base::data.frame(wind, value = output, stringsAsFactors = FALSE)
                     base::return(output)
                 }
+                # nocov end
             }
         )
         parallel::stopCluster(cl = Clust)
@@ -823,6 +832,8 @@ slide <- function(
         }
         # end result assembly
         if(base::nrow(output) != base::nrow(wind)){
+            # nocov start
+            # codecov inactivated because it is an internal error, impossible to cover with argument values.
             tempo.cat <- base::paste0(
                 "INTERNAL ERROR IN THE MAIN CODE OF ",
                 intern_error_text_start,
@@ -834,8 +845,6 @@ slide <- function(
                 collapse = NULL,
                 recycle0 = FALSE
             )
-            # nocov start
-            # codecov inactivated because it is an internal error, impossible to cover with argument values.
             base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }else{

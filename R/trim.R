@@ -10,7 +10,7 @@
 #' 
 #' Both trimmed and not trimmed values are returned in a list.
 #' @param data Values to plot (either a numeric vector or a numeric matrix).
-#' @param displayed.nb Single numeric value indicating the number of values displayed. If NULL, all the values are displayed. Otherwise, if the number of values is over displayed.nb, then displayed.nb values are displayed after random selection.
+#' @param displayed.nb Single integer-like numeric value, greater than 1, indicating the number of values displayed. If NULL, all the values are displayed. Otherwise, if the number of values is over displayed.nb, then displayed.nb values are displayed after random selection.
 #' @param single.value.display Single logical value. Provide the 4 graphs if data is made of a single (potentially repeated value)? If FALSE, an empty graph is displayed if data is made of a single (potentially repeated value). And the return list is made of NULL compartments.
 #' @param trim.method Write "" if not required. write "mean.sd" if mean +/- sd has to be displayed as a trimming interval (only recommanded for normal distribution). Write "quantile" to display a trimming interval based on quantile cut-offs. No other possibility allowed. See trim.cutoffs below.
 #' @param trim.cutoffs 2 values cutoff for the trimming interval displayed, each value between 0 and 1. Not used if trim.method == "".The couple of values c(lower, upper) represents the lower and upper boundaries of the trimming interval (in proportion), which represent the interval of distribution kept (between 0 and 1). Example: trim.cutoffs = c(0.05, 0.975). What is strictly kept for the display is ]lower , upper[, boundaries excluded. Using the "mean.sd" method, 0.025 and 0.975 represent 95\% CI which is mean +/- 1.96 * sd.
@@ -36,7 +36,7 @@
 #' @param amplif.legend Single positive numeric value to increase or decrease the size of the text of legend.
 #' @param corner.text.size Single positive numeric value to increase or decrease the size of the text. Value 1 does not change it, 0.5 decreases by half, 2 increases by 2.
 #' @param trim.return Single logical value. Return the trimmed and non trimmed values? NULL returned for trimmed and non trimmed values if trim.method == "".
-#' @param seed Single integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL,the function will systematically return the same result when the other parameters keep the same settings.
+#' @param seed Single positive or null integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL,the function will systematically return the same result when the other parameters keep the same settings.
 #' @param safer_check Single logical value. Perform some "safer" checks? If \code{TRUE}, checkings are performed before main code running (see the \href{https://github.com/safer-r}{safer-r project}): 1) correct \code{lib_path} argument value 2) required functions and related packages effectively present in local R libraries and 3) R classical operators (like \code{"<-"}) not overwritten by another package because of the R scope. Must be set to \code{FALSE} if this function is used inside another "safer" function to avoid pointless multiple checkings.
 #' @param lib_path Vector of characters specifying the absolute pathways of the directories containing the required packages for the function, if not in the default directories. Useful when R packages are not installed in the default directories because of lack of admin rights. More precisely, \code{lib_path} is passed through the \code{new} argument of \code{.libPaths()} so that the new library paths are \code{unique(c(new, .Library.site, .Library))}. Warning: \code{.libPaths()} is restored to the initial paths, after function execution. Ignored if \code{NULL} (default) or if the \code{safer_check} argument is \code{FALSE}: only the pathways specified by the current \code{.libPaths()} are used for package calling.
 #' @param error_text Single character string used to add information in error messages returned by the function, notably if the function is inside other functions, which is practical for debugging. Example: \code{error_text = " INSIDE <PACKAGE_1>::<FUNCTION_1> INSIDE <PACKAGE_2>::<FUNCTION_2>."}. If \code{NULL}, converted into \code{""}.
@@ -562,15 +562,18 @@ trim <- function(
     }else{
         tempo_log <- base::sapply(X = base::lapply(X = tempo_arg, FUN = function(x){base::get(x = x, pos = -1L, envir = base::parent.frame(n = 2), mode = "any", inherits = FALSE)}), FUN = function(x){base::any(x == "", na.rm = TRUE)}, simplify = TRUE, USE.NAMES = TRUE) # parent.frame(n = 2) because sapply(lapply()).  # for character argument that can also be NULL, if NULL -> returns FALSE. Thus no need to test is.null()
         if(base::any(tempo_log, na.rm = TRUE)){
+            # nocov start
+            # codecov inactivated because box.type is the only argument of tempo_arg and it is already checked by arg_check() options ("" cannot reach this block).
             tempo_cat <- base::paste0(
-                error_text_start, 
-                base::ifelse(test = base::sum(tempo_log, na.rm = TRUE) > 1, yes = "THESE ARGUMENTS\n", no = "THIS ARGUMENT\n"), 
+                error_text_start,
+                base::ifelse(test = base::sum(tempo_log, na.rm = TRUE) > 1, yes = "THESE ARGUMENTS\n", no = "THIS ARGUMENT\n"),
                 base::paste0(tempo_arg[tempo_log], collapse = "\n", recycle0 = FALSE),
-                "\nCANNOT CONTAIN EMPTY STRING \"\".", 
-                collapse = NULL, 
+                "\nCANNOT CONTAIN EMPTY STRING \"\".",
+                collapse = NULL,
                 recycle0 = FALSE
             )
             base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in stop() to be able to add several messages between ==
+            # nocov end
         }
     }
     ######## end management of "" in arguments of mode character
@@ -618,13 +621,19 @@ trim <- function(
         tempo1 <- base::is.numeric(data)
         tempo2 <- base::is.integer(data)
         if( ! (tempo1 | tempo2)){
+            # nocov start
+            # codecov inactivated because non numeric objects are already rejected by the arg_check() calls of the data argument above (this block is a redundant second-round checking).
             tempo.cat <- base::paste0(error_text_start, "data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX.")
             base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
+            # nocov end
         }
     }else{
         if( ! base::is.numeric(data)){
+            # nocov start
+            # codecov inactivated because non numeric matrices are already rejected by the arg_check() calls of the data argument above (this block is a redundant second-round checking).
             tempo.cat <- base::paste0(error_text_start, "data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX.")
             base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
+            # nocov end
         }
     }
     if( ! base::is.null(displayed.nb)){
@@ -754,11 +763,14 @@ trim <- function(
             }
         }
         if( ! base::is.null(na.nb)){
+            # nocov start
+            # codecov inactivated because corner.text is always non empty here: the displayed.nb management block above always sets it (either "ALL VALUES OF THE DATASET DISPLAYED" when displayed.nb is NULL, or a sampling/warning message).
             if(corner.text == ""){
                 corner.text <- base::paste0("WARNING: NUMBER OF NA REMOVED IS ", na.nb)
             }else{
                 corner.text <- base::paste0("WARNING: NUMBER OF NA REMOVED IS ", na.nb)
             }
+            # nocov end
         }
         graphics::stripchart(sampled.data, method="jitter", jitter=0.4, vertical=FALSE, ylim= base::c(0.5, 1.5), group.names = "", xlab = "Value", ylab="", pch=1, cex = cex.pt / 0.2)
         fun.rug(y.nb.inter.tick.f = 0)
@@ -770,11 +782,14 @@ trim <- function(
         graph.xlim <- graphics::par()$usr[1:2] # for graphics::hist() and stats::qqnorm() below
         if(interval.scale.disp == TRUE){
             fun.interval.scale.display(data.f = data)
+            # nocov start
+            # codecov inactivated because corner.text is always non empty here: the displayed.nb management block above always sets it (either "ALL VALUES OF THE DATASET DISPLAYED" when displayed.nb is NULL, or a sampling/warning message).
             if(corner.text == ""){
                 corner.text <- base::paste0("MULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", base::paste(base::formatC(base::round(stats::qnorm(quantiles.selection), 2))[-(1:(base::length(quantiles.selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", base::paste(quantiles.selection, collapse = ", "))
             }else{
                 corner.text <- base::paste0(corner.text, "\nMULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", base::paste(base::formatC(base::round(stats::qnorm(quantiles.selection), 2))[-(1:(base::length(quantiles.selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", base::paste(quantiles.selection, collapse = ", "))
             }
+            # nocov end
         }
         output.tempo <- fun.add.cut(data.f = data, return.f = TRUE) # to recover real.trim.cutoffs
         if(trim.return == TRUE){
@@ -782,11 +797,14 @@ trim <- function(
         }
         graphics::par(xpd = NA)
         if(trim.method != ""){
+            # nocov start
+            # codecov inactivated because corner.text is always non empty here: the displayed.nb management block above always sets it (either "ALL VALUES OF THE DATASET DISPLAYED" when displayed.nb is NULL, or a sampling/warning message).
             if(corner.text == ""){
                 corner.text <- base::paste0("SELECTED CUT-OFFS (PROPORTION): ", base::paste(trim.cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", base::paste(output.tempo$real.trim.cutoffs, collapse = ", "))
             }else{
                 corner.text <- base::paste0(corner.text, "\nSELECTED CUT-OFFS (PROPORTION): ", base::paste(trim.cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", base::paste(output.tempo$real.trim.cutoffs, collapse = ", "))
             }
+            # nocov end
             if(interval.scale.disp == TRUE){
                 graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", base::paste0("Trimming interval: ", base::paste0(trim.cutoffs, collapse = " , ")), "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=base::c(col.box, "red", color.cut, col.mean, col.quantile), bty="n", cex = amplif.legend)
             }else{

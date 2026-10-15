@@ -12,6 +12,8 @@ Encoding: UTF-8
 Maintainer: Gael Millot <gael.millot@pasteur.fr>
 Description: R function and pipeline development.
 License: GPL-3
+Depends: 
+    R (>= 4.5.0)
 Config/roxygen2/version: 8.0.0
 Imports: 
     grDevices,

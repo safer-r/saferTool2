@@ -88,4 +88,12 @@ test_that("codon2aa primary checking and other checkings", {
   expect_error(codon2aa(data = c("a", "t", "g", "c"))) # wrong length (4)
   expect_error(codon2aa(data = "aXg")) # wrong letters
   expect_error(codon2aa(data = c("a", "X", "g"))) # wrong letters in vector form
+  # empty non NULL argument management
+  expect_error(codon2aa(data = character(0))) # empty non NULL object
+  # safer_check given as a function: deparse1 branch of the safer_check argument checking
+  expect_error(codon2aa(data = "atg", safer_check = mean))
+  # lib_path given as a function: deparse1 branch of the lib_path checking
+  expect_error(codon2aa(data = "atg", lib_path = mean))
+  # lib_path with an existing directory: .libPaths() branch
+  expect_no_error(codon2aa(data = "atg", display = FALSE, lib_path = tempdir()))
 })

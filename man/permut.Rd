@@ -24,11 +24,11 @@ permut(
 
 \item{data2}{A numeric vector of same length as data1.}
 
-\item{n}{Single integer value of times "flipping 2 randomly selected consecutive positions". Ignored if data2 is specified.}
+\item{n}{Single numeric value of times "flipping 2 randomly selected consecutive positions" (integers expected in practice). Ignored if data2 is specified.}
 
-\item{seed}{Single integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL, permut() will systematically return the same result when the other parameters keep the same settings.}
+\item{seed}{Single numeric number used by set.seed() (integers expected in practice). Write NULL if random result is required, a number otherwise. BEWARE: if not NULL, permut() will systematically return the same result when the other parameters keep the same settings.}
 
-\item{print.count}{Single positive integer value. Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.}
+\item{print.count}{Single positive numeric value (integers expected in practice). Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired (Inf only allowed when data2 is NULL).}
 
 \item{text.print}{Single character string indicating the optional message to add to the working progress message every print.count loop.}
 
