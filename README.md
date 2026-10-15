@@ -30,7 +30,7 @@
 
 ## Description
 
-Set of R functions for the development of R functions, written according to the [safer project](https://github.com/safer-r) specifications.
+Set of R functions for the development of R functions, written according to the [safer-R project](https://github.com/safer-r) specifications.
 
 <br />
 
