@@ -1,17 +1,17 @@
 
-# saferTool2 <a href="">[<img src="man/figures/new_saferTool2.png" align="right" height="140" />](https://safer-r.github.io/saferTool2)</a>
+# saferTool2 <a href="https://safer-r.github.io/saferTool2">[<img src="man/figures/new_saferTool2.png" align="right" height="140" />](https://safer-r.github.io/saferTool2/)</a>
 
 <br />
 
 <!-- badges: start -->
 
-[![Codecov test coverage](https://codecov.io/github/safer-r/saferTool2/coverage.svg?branch=master)](https://app.codecov.io/github/safer-r/saferTool2?branch=master)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/saferTool2)](https://cran.r-project.org/package=saferTool2)
+[![CRAN status](https://img.shields.io/cran/v/saferTool2.svg)](https://cran.r-project.org/package=saferTool2)
 [![R Version](https://img.shields.io/badge/R-%3E%3D%204.5.0-blue?logo=R)](https://cran.r-project.org/)
-[![downloads](https://cranlogs.r-pkg.org/badges/saferTool2)](https://www.rdocumentation.org/trends)
-[![](https://img.shields.io/badge/license-GPL3.0-green.svg)](https://opensource.org/licenses/MITgpl-3-0)
-[![rworkflows](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml/badge.svg)](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml)
-[![Safer-R Status](https://img.shields.io/badge/Safer--R%20status-backbone%20v20.0-crimson)](https://github.com/safer-r/.github/blob/main/profile/backbone.R)
+[![Downloads](https://cranlogs.r-pkg.org/badges/saferTool2)](https://r-pkg.org/pkg/saferTool2)<br />
+[![Rworkflows](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml/badge.svg)](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml)
+[![Codecov](https://codecov.io/github/safer-r/saferTool2/coverage.svg?branch=master)](https://app.codecov.io/github/safer-r/saferTool2?branch=master)
+[![safer-R Status](https://img.shields.io/badge/Safer--R%20status-backbone%20v20.0-brightgreen)](https://github.com/safer-r/.github/blob/main/profile/backbone.R)<br />
+[![](https://img.shields.io/badge/license-GPL3.0-lightgrey.svg)](https://opensource.org/license/gpl-3.0)
 <!-- badges: end -->
 
 <br />
@@ -25,9 +25,10 @@
    - [Licence](#licence)
    - [Citations](#citations)
    - [Credits](#credits)
-   - [Acknowledgements](#acknowledgements)
+   - [acknowledgments](#acknowledgments)
 
 <br />
+
 
 ## Description
 
@@ -88,7 +89,7 @@ See the GNU General Public License for more details at https://www.gnu.org/licen
 
 If you are using functions of *saferTool2*, please cite: 
 
-> Wang H, Han Y, Serizay J, Millot GA (2023). _The R saferTool2 package_.
+> Wang H, Han Y, Serizay J, Millot GA (2026). _The R saferTool2 package_.
 > <https://github.com/safer-r/saferTool2/>.
 
 <br />
@@ -116,4 +117,4 @@ The developers & maintainers of the mentioned softwares and packages, including:
 - [Github](https://github.com/)
 
 
-
+<br />
