@@ -1,8 +1,8 @@
 Package: saferTool2
 Type: Package
 Title: R functions
-Version: 1.0
-Date: 2024-09-02
+Version: 1.0.0
+Date: 2026-10-15
 Authors@R: c(
     person(given = "Haiding", family = "Wang", email = "wanghaiding442@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0009-0008-4831-2022")),
     person(given = "Gael", family = "Millot",  email = "gael.millot@pasteur.fr", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-0591-3509"))
@@ -12,12 +12,16 @@ Encoding: UTF-8
 Maintainer: Gael Millot <gael.millot@pasteur.fr>
 Description: R function and pipeline development.
 License: GPL-3
-RoxygenNote: 7.2.3
+Config/roxygen2/version: 8.0.0
 Imports: 
+    grDevices,
+    graphics,
     lubridate,
     parallel,
     saferDev,
-    saferTool
+    saferTool,
+    stats,
+    utils
 Suggests: 
     knitr,
     rmarkdown,
