@@ -73,7 +73,7 @@ see # https://www.r-bloggers.com/strategies-to-speedup-r-code/ for code speedup
 
 The random switch of non consecutive positions (ABCD -> DBCA for instance) does not work very well as the correlation is quickly obtained but the initial vector structure is mainly kept (no much order).
 
-Ths code would be: pos <- ini.pos[1:2] ; pos <- sample.int(n = n , size = 2, replace = FALSE) ; tempo.pos[pos] <- tempo.pos[rev(pos)]
+Ths code would be: pos <- ini_pos[1:2] ; pos <- sample.int(n = n , size = 2, replace = FALSE) ; tempo_pos[pos] <- tempo_pos[rev(pos)]
 }
 \examples{
 permut(data1 = 1:10, data2 = 10:1, seed = 1, print_count = 1e4, text_print = "", cor_method = "spearman", cor_limit = 0.7)

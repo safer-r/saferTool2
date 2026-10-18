@@ -589,8 +589,8 @@ trim <- function(
     # Warning: seeding is always at the .GlobalEnv level, whenever the seeding is applied inside a function, another envir, etc.
     if (base::exists(x = ".Random.seed", where = -1, envir = .GlobalEnv, frame = , mode = "any", inherits = TRUE)) {
         # if .Random.seed does not exists, it means that no random operation has been performed yet in any R environment
-        tempo.random.seed <- .Random.seed
-        base::on.exit(expr = base::assign(x = ".Random.seed", value = tempo.random.seed, pos = -1, envir = .GlobalEnv, inherits = FALSE, immediate = TRUE), add = TRUE, after = TRUE)
+        tempo_random_seed <- .Random.seed
+        base::on.exit(expr = base::assign(x = ".Random.seed", value = tempo_random_seed, pos = -1, envir = .GlobalEnv, inherits = FALSE, immediate = TRUE), add = TRUE, after = TRUE)
     }else{
         base::on.exit(expr = base::set.seed(seed = NULL, kind = NULL, normal.kind = NULL, sample.kind = NULL), add = TRUE, after = TRUE) # inactivate seeding -> return to complete randomness
     }
@@ -650,15 +650,15 @@ trim <- function(
     if(base::all(base::class(data)%in% base::c("matrix", "array"))){
         data <- base::as.vector(data)
     }
-    na.nb <- NULL
+    na_nb <- NULL
     if(base::any(base::is.na(data))){
-        na.nb <- base::sum(base::c(base::is.na(data)))
+        na_nb <- base::sum(base::c(base::is.na(data)))
         data <- data[ ! base::is.na(data)]
     }
-    color.cut <- grDevices::hsv(0.75, 1, 1) # color of interval selected
-    col.mean <- grDevices::hsv(0.25, 1, 0.8) # color of interval using mean+/-sd
-    col.quantile <- "orange" # color of interval using quantiles
-    quantiles.selection <- base::c(0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.975, 0.99) # quantiles used in axis to help for choosing trimming cutoffs
+    color_cut <- grDevices::hsv(0.75, 1, 1) # color of interval selected
+    col_mean <- grDevices::hsv(0.25, 1, 0.8) # color of interval using mean+/-sd
+    col_quantile <- "orange" # color of interval using quantiles
+    quantiles_selection <- base::c(0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.975, 0.99) # quantiles used in axis to help for choosing trimming cutoffs
     if(single_value_display == FALSE & base::length(base::unique(data)) == 1L){
         graphics::par(bty = "n", xaxt = "n", yaxt = "n", xpd = TRUE)
         base::plot(1, pch = 16, col = "white", xlab = "", ylab = "")
@@ -668,27 +668,27 @@ trim <- function(
         output <- base::list(trim_method = trim_method, trim_cutoffs = trim_cutoffs, real.trim.cutoffs = NULL, trimmed.values = NULL, kept.values = NULL)
         fun_rug <- function(sec_tick_length_f = sec_tick_length, x_nb_inter_tick_f = x_nb_inter_tick, y_nb_inter_tick_f = y_nb_inter_tick){
             if(x_nb_inter_tick_f > 0){
-                inter.tick.unit <- (graphics::par("xaxp")[2] - graphics::par("xaxp")[1]) / graphics::par("xaxp")[3]
+                inter_tick_unit <- (graphics::par("xaxp")[2] - graphics::par("xaxp")[1]) / graphics::par("xaxp")[3]
                 par.ini <- graphics::par()[base::c("xpd", "tcl")]
                 graphics::par(xpd = FALSE)
                 graphics::par(tcl = -graphics::par()$mgp[2] * sec_tick_length_f) # tcl gives the length of the ticks as proportion of line text, knowing that mgp is in text lines. So the main ticks are a 0.5 of the distance of the axis numbers by default. The sign provides the side of the tick (negative for outside of the plot region)
-                base::suppressWarnings(graphics::rug(base::seq(graphics::par("xaxp")[1] - 10 * inter.tick.unit, graphics::par("xaxp")[2] + 10 * inter.tick.unit, by = inter.tick.unit / (1 + x_nb_inter_tick_f)), ticksize = NA, side = 1)) # ticksize = NA to allow the use of graphics::par()$tcl value
+                base::suppressWarnings(graphics::rug(base::seq(graphics::par("xaxp")[1] - 10 * inter_tick_unit, graphics::par("xaxp")[2] + 10 * inter_tick_unit, by = inter_tick_unit / (1 + x_nb_inter_tick_f)), ticksize = NA, side = 1)) # ticksize = NA to allow the use of graphics::par()$tcl value
                 graphics::par(par.ini)
                 base::rm(par.ini)
             }
             if(y_nb_inter_tick_f > 0){
-                inter.tick.unit <- (graphics::par("yaxp")[2] - graphics::par("yaxp")[1]) / graphics::par("yaxp")[3]
+                inter_tick_unit <- (graphics::par("yaxp")[2] - graphics::par("yaxp")[1]) / graphics::par("yaxp")[3]
                 par.ini <- graphics::par()[base::c("xpd", "tcl")]
                 graphics::par(xpd = FALSE)
                 graphics::par(tcl = -graphics::par()$mgp[2] * sec_tick_length_f) # tcl gives the length of the ticks as proportion of line text, knowing that mgp is in text lines. So the main ticks are a 0.5 of the distance of the axis numbers by default. The sign provides the side of the tick (negative for outside of the plot region)
-                base::suppressWarnings(graphics::rug(base::seq(graphics::par("yaxp")[1] - 10 * inter.tick.unit, graphics::par("yaxp")[2] + 10 * inter.tick.unit, by = inter.tick.unit / (1 + y_nb_inter_tick_f)), ticksize = NA, side = 2)) # ticksize = NA to allow the use of graphics::par()$tcl value
+                base::suppressWarnings(graphics::rug(base::seq(graphics::par("yaxp")[1] - 10 * inter_tick_unit, graphics::par("yaxp")[2] + 10 * inter_tick_unit, by = inter_tick_unit / (1 + y_nb_inter_tick_f)), ticksize = NA, side = 2)) # ticksize = NA to allow the use of graphics::par()$tcl value
                 graphics::par(par.ini)
                 base::rm(par.ini)
             }
         }
-        fun_add_cut <- function(data_f, trim_method_f = trim_method, trim_cutoffs_f = trim_cutoffs, color_cut_f = color.cut, return_f = FALSE){
+        fun_add_cut <- function(data_f, trim_method_f = trim_method, trim_cutoffs_f = trim_cutoffs, color_cut_f = color_cut, return_f = FALSE){
             # DEBUGGING
-            # data_f = data ; trim_method_f = "mean.sd"; trim_cutoffs_f = trim_cutoffs ; color_cut_f = color.cut ; return_f = TRUE
+            # data_f = data ; trim_method_f = "mean.sd"; trim_cutoffs_f = trim_cutoffs ; color_cut_f = color_cut ; return_f = TRUE
             real_trim_cutoffs_f <- NULL
             if(trim_method_f != ""){
                 data_f <- base::sort(data_f)
@@ -722,7 +722,7 @@ trim <- function(
                 base::return(output)
             }
         }
-        fun_interval_scale_display <- function(data_f, col_quantile_f = col.quantile, quantiles_selection_f = quantiles.selection, col_mean_f = col.mean){ # intervals on top of graphs
+        fun_interval_scale_display <- function(data_f, col_quantile_f = col_quantile, quantiles_selection_f = quantiles_selection, col_mean_f = col_mean){ # intervals on top of graphs
             par.ini <- graphics::par()[base::c("mgp", "xpd")]
             graphics::par(mgp = base::c(0.25, 0.25, 0), xpd = NA)
             graphics::axis(side = 3, at = base::c(graphics::par()$usr[1], graphics::par()$usr[2]), labels = base::rep("", 2), col = col_quantile_f, lwd.ticks = 0)
@@ -739,7 +739,7 @@ trim <- function(
         graphics::par(omi = base::c(0, 0, 1.5, 0), mai = base::c(down_space, left_space, up_space, right_space), las = orient, mgp = base::c(dist_legend / 0.2, 0.5, 0), xpd = FALSE, bty= box_type, cex.lab = amplif_label, cex.axis = amplif_axis, xaxs = base::ifelse(std_x_range, "i", "r"), yaxs = base::ifelse(std_y_range, "i", "r"))
         graphics::par(tcl = -graphics::par()$mgp[2] * tick_length) # tcl gives the length of the ticks as proportion of line text, knowing that mgp is in text lines. So the main ticks are a 0.5 of the distance of the axis numbers by default. The sign provides the side of the tick (negative for outside of the plot region)
         if(base::is.null(displayed_nb)){
-            sampled.data <- base::as.vector(data)
+            sampled_data <- base::as.vector(data)
             if(corner_text == ""){
                 corner_text <- base::paste0("ALL VALUES OF THE DATASET DISPLAYED")
             }else{
@@ -747,14 +747,14 @@ trim <- function(
             }
         }else{
             if(base::length(base::as.vector(data)) > displayed_nb){
-                sampled.data <- base::sample(base::as.vector(data), displayed_nb, replace = FALSE)
+                sampled_data <- base::sample(base::as.vector(data), displayed_nb, replace = FALSE)
                 if(corner_text == ""){
                     corner_text <- base::paste0("WARNING: ONLY ", displayed_nb, " VALUES ARE DISPLAYED AMONG THE ", base::length(base::as.vector(data)), " VALUES OF THE DATASET ANALYZED")
                 }else{
                     corner_text <- base::paste0(corner_text, "\nWARNING: ONLY ", displayed_nb, " VALUES ARE DISPLAYED AMONG THE ", base::length(base::as.vector(data)), " VALUES OF THE DATASET ANALYZED")
                 }
             }else{
-                sampled.data <- base::as.vector(data)
+                sampled_data <- base::as.vector(data)
                 if(corner_text == ""){
                     corner_text <- base::paste0("WARNING: THE DISPLAYED NUMBER OF VALUES PARAMETER ", base::deparse(base::substitute(displayed_nb)), " HAS BEEN SET TO ", displayed_nb, " WHICH IS ABOVE THE NUMBER OF VALUES OF THE DATASET ANALYZED -> ALL VALUES DISPLAYED")
                 }else{
@@ -762,63 +762,63 @@ trim <- function(
                 }
             }
         }
-        if( ! base::is.null(na.nb)){
+        if( ! base::is.null(na_nb)){
             # nocov start
             # codecov inactivated because corner_text is always non empty here: the displayed_nb management block above always sets it (either "ALL VALUES OF THE DATASET DISPLAYED" when displayed_nb is NULL, or a sampling/warning message).
             if(corner_text == ""){
-                corner_text <- base::paste0("WARNING: NUMBER OF NA REMOVED IS ", na.nb)
+                corner_text <- base::paste0("WARNING: NUMBER OF NA REMOVED IS ", na_nb)
             }else{
-                corner_text <- base::paste0("WARNING: NUMBER OF NA REMOVED IS ", na.nb)
+                corner_text <- base::paste0("WARNING: NUMBER OF NA REMOVED IS ", na_nb)
             }
             # nocov end
         }
-        graphics::stripchart(sampled.data, method="jitter", jitter=0.4, vertical=FALSE, ylim= base::c(0.5, 1.5), group.names = "", xlab = "Value", ylab="", pch=1, cex = cex_pt / 0.2)
+        graphics::stripchart(sampled_data, method="jitter", jitter=0.4, vertical=FALSE, ylim= base::c(0.5, 1.5), group.names = "", xlab = "Value", ylab="", pch=1, cex = cex_pt / 0.2)
         fun_rug(y_nb_inter_tick_f = 0)
         graphics::boxplot(base::as.vector(data), horizontal=TRUE, add=TRUE, boxwex = 0.4, staplecol = col_box, whiskcol = col_box, medcol = col_box, boxcol = col_box, range = 0, whisklty = 1)
         m <- base::mean(base::as.vector(data), na.rm = TRUE)
         s <- stats::sd(base::as.vector(data), na.rm = TRUE)
         graphics::segments(m, 0.8, m, 1, lwd=2, col="red") # mean 
         graphics::segments(m -1.96 * s, 0.9, m + 1.96 * s, 0.9, lwd=1, col="red") # mean 
-        graph.xlim <- graphics::par()$usr[1:2] # for graphics::hist() and stats::qqnorm() below
+        graph_xlim <- graphics::par()$usr[1:2] # for graphics::hist() and stats::qqnorm() below
         if(interval_scale_disp == TRUE){
             fun_interval_scale_display(data_f = data)
             # nocov start
             # codecov inactivated because corner_text is always non empty here: the displayed_nb management block above always sets it (either "ALL VALUES OF THE DATASET DISPLAYED" when displayed_nb is NULL, or a sampling/warning message).
             if(corner_text == ""){
-                corner_text <- base::paste0("MULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", base::paste(base::formatC(base::round(stats::qnorm(quantiles.selection), 2))[-(1:(base::length(quantiles.selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", base::paste(quantiles.selection, collapse = ", "))
+                corner_text <- base::paste0("MULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", base::paste(base::formatC(base::round(stats::qnorm(quantiles_selection), 2))[-(1:(base::length(quantiles_selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", base::paste(quantiles_selection, collapse = ", "))
             }else{
-                corner_text <- base::paste0(corner_text, "\nMULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", base::paste(base::formatC(base::round(stats::qnorm(quantiles.selection), 2))[-(1:(base::length(quantiles.selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", base::paste(quantiles.selection, collapse = ", "))
+                corner_text <- base::paste0(corner_text, "\nMULTIPLYING FACTOR DISPLAYED (MEAN +/- SD) ON SCALES: ", base::paste(base::formatC(base::round(stats::qnorm(quantiles_selection), 2))[-(1:(base::length(quantiles_selection) - 1) / 2)], collapse = ", "), "\nQUANTILES DISPLAYED ON SCALES: ", base::paste(quantiles_selection, collapse = ", "))
             }
             # nocov end
         }
-        output.tempo <- fun_add_cut(data_f = data, return_f = TRUE) # to recover real.trim.cutoffs
+        output_tempo <- fun_add_cut(data_f = data, return_f = TRUE) # to recover real.trim.cutoffs
         if(trim_return == TRUE){
-            output <- output.tempo
+            output <- output_tempo
         }
         graphics::par(xpd = NA)
         if(trim_method != ""){
             # nocov start
             # codecov inactivated because corner_text is always non empty here: the displayed_nb management block above always sets it (either "ALL VALUES OF THE DATASET DISPLAYED" when displayed_nb is NULL, or a sampling/warning message).
             if(corner_text == ""){
-                corner_text <- base::paste0("SELECTED CUT-OFFS (PROPORTION): ", base::paste(trim_cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", base::paste(output.tempo$real.trim.cutoffs, collapse = ", "))
+                corner_text <- base::paste0("SELECTED CUT-OFFS (PROPORTION): ", base::paste(trim_cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", base::paste(output_tempo$real.trim.cutoffs, collapse = ", "))
             }else{
-                corner_text <- base::paste0(corner_text, "\nSELECTED CUT-OFFS (PROPORTION): ", base::paste(trim_cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", base::paste(output.tempo$real.trim.cutoffs, collapse = ", "))
+                corner_text <- base::paste0(corner_text, "\nSELECTED CUT-OFFS (PROPORTION): ", base::paste(trim_cutoffs, collapse = ", "), "\nSELECTED CUT-OFFS: ", base::paste(output_tempo$real.trim.cutoffs, collapse = ", "))
             }
             # nocov end
             if(interval_scale_disp == TRUE){
-                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", base::paste0("Trimming interval: ", base::paste0(trim_cutoffs, collapse = " , ")), "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=base::c(col_box, "red", color.cut, col.mean, col.quantile), bty="n", cex = amplif_legend)
+                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", base::paste0("Trimming interval: ", base::paste0(trim_cutoffs, collapse = " , ")), "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=base::c(col_box, "red", color_cut, col_mean, col_quantile), bty="n", cex = amplif_legend)
             }else{
-                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", base::paste0("Trimming interval: ", base::paste0(trim_cutoffs, collapse = " , "))), yjust = 0, lty=1, col=base::c(col_box, "red", color.cut), bty="n", cex = amplif_legend, y.intersp=1.25)
+                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- 1.96sd", base::paste0("Trimming interval: ", base::paste0(trim_cutoffs, collapse = " , "))), yjust = 0, lty=1, col=base::c(col_box, "red", color_cut), bty="n", cex = amplif_legend, y.intersp=1.25)
             }
         }else{
             if(interval_scale_disp == TRUE){
-                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- sd", "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=base::c(col_box, "red", col.mean, col.quantile), bty="n", cex = amplif_legend)
+                graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- sd", "Mean +/- sd multiplying factor", "Quantile"), yjust = 0, lty=1, col=base::c(col_box, "red", col_mean, col_quantile), bty="n", cex = amplif_legend)
             }else{
                 graphics::legend(x = (graphics::par("usr")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1])) * graphics::par("plt")[1] - ((graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("omd")[2] - graphics::par("omd")[1])) * graphics::par("omd")[1]), y = (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("omd")[4] - graphics::par("omd")[3])) * (1 - graphics::par("omd")[4]) / 2), legend = base::c(base::c("min, Q1, Median, Q3, max"), "mean +/- sd"), yjust = 0, lty=1, col=base::c(col_box, "red"), bty="n", cex = amplif_legend, y.intersp=1.25)
             }
         }
         graphics::par(xpd = FALSE, xaxs = base::ifelse(std_x_range, "i", "r"), yaxs = base::ifelse(std_y_range, "i", "r"))
-        graphics::hist(base::as.vector(data), main = "", xlim = graph.xlim, xlab = "Value", ylab="Density", col = grDevices::grey(0.25)) # removed: breaks = base::seq(base::min(base::as.vector(data), na.rm = TRUE), base::max(base::as.vector(data), na.rm = TRUE), length.out = base::length(base::as.vector(data)) / 10)
+        graphics::hist(base::as.vector(data), main = "", xlim = graph_xlim, xlab = "Value", ylab="Density", col = grDevices::grey(0.25)) # removed: breaks = base::seq(base::min(base::as.vector(data), na.rm = TRUE), base::max(base::as.vector(data), na.rm = TRUE), length.out = base::length(base::as.vector(data)) / 10)
         graphics::abline(h = graphics::par()$usr[3])
         fun_rug()
         if(interval_scale_disp == TRUE){
@@ -826,15 +826,15 @@ trim <- function(
         }
         fun_add_cut(data_f = data)
         graphics::par(xaxs = base::ifelse(std_x_range, "i", "r"))
-        graphics::stripchart(base::rank(sampled.data), method="stack", vertical=FALSE, ylim=base::c(0.99, 1.3), group.names = "", xlab = "Rank of values", ylab="", pch=1, cex = cex_pt / 0.2)
+        graphics::stripchart(base::rank(sampled_data), method="stack", vertical=FALSE, ylim=base::c(0.99, 1.3), group.names = "", xlab = "Rank of values", ylab="", pch=1, cex = cex_pt / 0.2)
         fun_rug(y_nb_inter_tick_f = 0)
-        x.text <- graphics::par("usr")[2] + (graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1]) * (1 - graphics::par("plt")[2]) / 2
-        y.text <- (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / ((graphics::par()$omd[4] / 2) * ((graphics::par("plt")[4] - graphics::par("plt")[3])))) * (1 - graphics::par("omd")[4])) # BEWARE. Here in "(graphics::par()$omd[4] / 2", division by two because there are 2 graphs staked on the y axis, and not one
+        x_text <- graphics::par("usr")[2] + (graphics::par("usr")[2] - graphics::par("usr")[1]) / (graphics::par("plt")[2] - graphics::par("plt")[1]) * (1 - graphics::par("plt")[2]) / 2
+        y_text <- (graphics::par("usr")[4] + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / (graphics::par("plt")[4] - graphics::par("plt")[3])) * (1 - graphics::par("plt")[4]) + ((graphics::par("usr")[4] - graphics::par("usr")[3]) / ((graphics::par()$omd[4] / 2) * ((graphics::par("plt")[4] - graphics::par("plt")[3])))) * (1 - graphics::par("omd")[4])) # BEWARE. Here in "(graphics::par()$omd[4] / 2", division by two because there are 2 graphs staked on the y axis, and not one
         graphics::par(xpd=NA)
-        graphics::text(x = x.text, y = y.text, base::paste0(corner_text), adj=base::c(1, 1.1), cex = corner_text_size) # text at the topright corner
+        graphics::text(x = x_text, y = y_text, base::paste0(corner_text), adj=base::c(1, 1.1), cex = corner_text_size) # text at the topright corner
         graphics::par(xpd=FALSE)
         graphics::par(xaxs = base::ifelse(std_x_range, "i", "r"), yaxs = base::ifelse(std_y_range, "i", "r"))
-        stats::qqnorm(base::as.vector(sampled.data), main = "", datax = TRUE, ylab = "Value", pch = 1, col = "red", cex = cex_pt / 0.2)
+        stats::qqnorm(base::as.vector(sampled_data), main = "", datax = TRUE, ylab = "Value", pch = 1, col = "red", cex = cex_pt / 0.2)
         fun_rug()
         if(base::diff(stats::quantile(base::as.vector(data), probs = base::c(0.25, 0.75), na.rm = TRUE)) != 0){ # otherwise, error generated
             stats::qqline(base::as.vector(data), datax = TRUE)
