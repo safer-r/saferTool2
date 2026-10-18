@@ -269,7 +269,7 @@ test_that("trim main code branches", {
   # displayed_nb set: sampling branch (displayed_nb < number of values)
   res_samp <- trim(data = c(1:100, 1:10), displayed_nb = 50, trim_return = TRUE, safer_check = FALSE)
   testthat::expect_true(object = ! base::is.null(x = res_samp))
-  # interval_scale_disp = TRUE and trim_method != "": quantile branch of fun.add.cut() and legend with interval
+  # interval_scale_disp = TRUE and trim_method != "": quantile branch of fun_add_cut() and legend with interval
   res_quant <- trim(data = c(1:100, 1:10), trim_method = "quantile", trim_cutoffs = c(0.05, 0.975), interval_scale_disp = TRUE, trim_return = TRUE, safer_check = FALSE)
   testthat::expect_true(object = ! base::is.null(x = res_quant$real.trim.cutoffs))
   # trim_method != "" and interval_scale_disp = FALSE: legend without interval.scale
