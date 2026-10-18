@@ -6,7 +6,7 @@
 \usage{
 slide(
   data,
-  window.size,
+  window_size,
   step,
   from = NULL,
   to = NULL,
@@ -14,9 +14,9 @@ slide(
   args = NULL,
   boundary = "left",
   parall = FALSE,
-  thread.nb = NULL,
-  print.count = 100,
-  res.path = NULL,
+  thread_nb = NULL,
+  print_count = 100,
+  res_path = NULL,
   verbose = TRUE,
   safer_check = TRUE,
   lib_path = NULL,
@@ -26,13 +26,13 @@ slide(
 \arguments{
 \item{data}{Vector, matrix, table or array of numeric values (mode must be numeric). Inf and NA not allowed.}
 
-\item{window.size}{Single numeric value indicating the width of the window sliding across data (in the same unit as data value).}
+\item{window_size}{Single numeric value indicating the width of the window sliding across data (in the same unit as data value).}
 
-\item{step}{Single numeric value indicating the step between each window (in the same unit as data value). Cannot be larger than window.size.}
+\item{step}{Single numeric value indicating the step between each window (in the same unit as data value). Cannot be larger than window_size.}
 
 \item{from}{Single numeric value of the left boundary of the first sliding window. If NULL, min(data) is used. The first window will strictly have from or min(data) as left boundary.}
 
-\item{to}{Single numeric value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window.size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window.size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window.size / 2.}
+\item{to}{Single numeric value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window_size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window_size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window_size / 2.}
 
 \item{FUN}{Function or single character string indicating the name of the function to apply in each window. Example of function: FUN = mean. Example of character string: FUN = "mean".}
 
@@ -42,11 +42,11 @@ slide(
 
 \item{parall}{Single logical value. Force parallelization ?}
 
-\item{thread.nb}{Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.}
+\item{thread_nb}{Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.}
 
-\item{print.count}{Single numeric value (integers expected in practice). Print a working progress message every print.count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.}
+\item{print_count}{Single numeric value (integers expected in practice). Print a working progress message every print_count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.}
 
-\item{res.path}{Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.}
+\item{res_path}{Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.}
 
 \item{verbose}{Single logical value. Display messages?}
 
@@ -73,19 +73,19 @@ Return a computation made on a vector using a sliding window.
 \details{
 WARNINGS
 
-The function uses two strategies, depending on the amout of memory required which depends on the data, window.size and step arguments. The first one uses lapply(), is generally fast but requires lots of memory. The second one uses a parallelized loop. The choice between the two strategies is automatic if parall argument is FALSE, and is forced toward parallelization if parall argument is TRUE.
+The function uses two strategies, depending on the amout of memory required which depends on the data, window_size and step arguments. The first one uses lapply(), is generally fast but requires lots of memory. The second one uses a parallelized loop. The choice between the two strategies is automatic if parall argument is FALSE, and is forced toward parallelization if parall argument is TRUE.
 
 The parall argument forces the parallelization, which is convenient when the data argument is big, because the lapply() function is sometimes slower than the parallelization.
 
 Always use the env argument when slide() is used inside functions.
 }
 \examples{
-slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left")
+slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "left")
 
-slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "right") # effect of boundary argument
+slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "right") # effect of boundary argument
 
 \dontrun{
-slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left", parall = TRUE, thread.nb = 2) # effect of parall argument
+slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "left", parall = TRUE, thread_nb = 2) # effect of parall argument
 }
 }
 \seealso{

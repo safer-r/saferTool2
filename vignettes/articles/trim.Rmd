@@ -28,57 +28,57 @@ data
 ```
 <br>
 
-### Argument displayed.nb
+### Argument displayed_nb
 ```{r}
-trim(data = data, displayed.nb = 5)
+trim(data = data, displayed_nb = 5)
 ```
 <br>
 
-### Argument single.value.display
+### Argument single_value_display
 ```{r}
-trim(data = data, single.value.display = TRUE)
+trim(data = data, single_value_display = TRUE)
 ```
 <br>
 
-### Argument trim.method
+### Argument trim_method
 ```{r}
-trim(data = data, trim.method = "mean.sd")
+trim(data = data, trim_method = "mean.sd")
 ```
 <br>
 
-### Argument trim.cutoffs
+### Argument trim_cutoffs
 ```{r}
-trim(data = data, trim.cutoffs = c(0.05, 0.975))
+trim(data = data, trim_cutoffs = c(0.05, 0.975))
 ```
 <br>
 
-### Argument interval.scale.disp
+### Argument interval_scale_disp
 ```{r}
-trim(data = data, interval.scale.disp = FALSE)
+trim(data = data, interval_scale_disp = FALSE)
 ```
 <br>
 
-### Argument down.space
+### Argument down_space
 ```{r}
-trim(data = data, down.space = 0.2)
+trim(data = data, down_space = 0.2)
 ```
 <br>
 
-### Argument left.space
+### Argument left_space
 ```{r}
-trim(data = data, left.space = 0.2)
+trim(data = data, left_space = 0.2)
 ```
 <br>
 
-### Argument up.space
+### Argument up_space
 ```{r}
-trim(data = data, up.space = 0.2)
+trim(data = data, up_space = 0.2)
 ```
 <br>
 
-### Argument right.space
+### Argument right_space
 ```{r}
-trim(data = data, right.space = 0.2)
+trim(data = data, right_space = 0.2)
 ```
 <br>
 
@@ -88,94 +88,94 @@ trim(data = data, orient = 1)
 ```
 <br>
 
-### Argument dist.legend
+### Argument dist_legend
 ```{r}
-trim(data = data, dist.legend = 0.5)
+trim(data = data, dist_legend = 0.5)
 ```
 <br>
 
-### Argument amplif.label
+### Argument amplif_label
 ```{r}
-trim(data = data, amplif.label = 0.7)
+trim(data = data, amplif_label = 0.7)
 ```
 <br>
 
-### Argument amplif.axis
+### Argument amplif_axis
 ```{r}
-trim(data = data, amplif.axis = 0.8)
+trim(data = data, amplif_axis = 0.8)
 ```
 <br>
 
-### Argument std.x.range
+### Argument std_x_range
 ```{r}
-trim(data = data, std.x.range = FALSE)
+trim(data = data, std_x_range = FALSE)
 ```
 <br>
 
-### Argument std.y.range
+### Argument std_y_range
 ```{r}
-trim(data = data, std.y.range = FALSE)
+trim(data = data, std_y_range = FALSE)
 ```
 <br>
 
-### Argument cex.pt
+### Argument cex_pt
 ```{r}
-trim(data = data, cex.pt = 0.5)
+trim(data = data, cex_pt = 0.5)
 ```
 <br>
 
-### Argument col.box
+### Argument col_box
 ```{r}
-trim(data = data, col.box = "red")
+trim(data = data, col_box = "red")
 ```
 <br>
 
-### Argument x.nb.inter.tick
+### Argument x_nb_inter_tick
 ```{r}
-trim(data = data, x.nb.inter.tick = 6)
+trim(data = data, x_nb_inter_tick = 6)
 ```
 <br>
 
-### Argument y.nb.inter.tick
+### Argument y_nb_inter_tick
 ```{r}
-trim(data = data, y.nb.inter.tick = 6)
+trim(data = data, y_nb_inter_tick = 6)
 ```
 <br>
 
-### Argument tick.length
+### Argument tick_length
 ```{r}
-trim(data = data, tick.length = 0.5)
+trim(data = data, tick_length = 0.5)
 ```
 <br>
 
 
-### Argument sec.tick.length
+### Argument sec_tick_length
 ```{r}
-trim(data = data, sec.tick.length = 0.2)
+trim(data = data, sec_tick_length = 0.2)
 ```
 <br>
 
-### Argument corner.text
+### Argument corner_text
 ```{r}
-trim(data = data, corner.text = "Example corner text")
+trim(data = data, corner_text = "Example corner text")
 ```
 <br>
 
-### Argument amplif.legend
+### Argument amplif_legend
 ```{r}
-trim(data = data, amplif.legend = 0.8)
+trim(data = data, amplif_legend = 0.8)
 ```
 <br>
 
-### Argument corner.text.size
+### Argument corner_text_size
 ```{r}
-trim(data = data, corner.text.size = 0.8)
+trim(data = data, corner_text_size = 0.8)
 ```
 <br>
 
-### Argument trim.return
+### Argument trim_return
 ```{r}
-trim(data = data, trim.return = FALSE)
+trim(data = data, trim_return = FALSE)
 ```
 <br>
 
@@ -187,5 +187,5 @@ trim(data = data, safer_check = TRUE)
 
 ### All the arguments
 ```{r}
-trim(data = data, displayed.nb = 5, single.value.display = TRUE, trim.method = "mean.sd", trim.cutoffs = c(0.05, 0.975), interval.scale.disp = TRUE, down.space = 0.2, left.space = 0.2, up.space = 0.2, right.space = 0.2, orient = 1, dist.legend = 0.5, amplif.label = 0.7, amplif.axis = 0.8, std.x.range = FALSE, std.y.range = FALSE, cex.pt = 0.5, col.box = "red", x.nb.inter.tick = 6, y.nb.inter.tick = 6, tick.length = 0.2, sec.tick.length = 0.2, corner.text = "Test corner text", amplif.legend = 0.8, corner.text.size = 0.8, trim.return = FALSE, box.type = "l", safer_check = TRUE)
+trim(data = data, displayed_nb = 5, single_value_display = TRUE, trim_method = "mean.sd", trim_cutoffs = c(0.05, 0.975), interval_scale_disp = TRUE, down_space = 0.2, left_space = 0.2, up_space = 0.2, right_space = 0.2, orient = 1, dist_legend = 0.5, amplif_label = 0.7, amplif_axis = 0.8, std_x_range = FALSE, std_y_range = FALSE, cex_pt = 0.5, col_box = "red", x_nb_inter_tick = 6, y_nb_inter_tick = 6, tick_length = 0.2, sec_tick_length = 0.2, corner_text = "Test corner text", amplif_legend = 0.8, corner_text_size = 0.8, trim_return = FALSE, box_type = "l", safer_check = TRUE)
 ```

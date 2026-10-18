@@ -9,11 +9,11 @@ permut(
   data2 = NULL,
   n = NULL,
   seed = NULL,
-  print.count = 10,
-  text.print = "",
-  cor.method = "spearman",
-  cor.limit = 0.2,
-  warn.print = FALSE,
+  print_count = 10,
+  text_print = "",
+  cor_method = "spearman",
+  cor_limit = 0.2,
+  warn_print = FALSE,
   safer_check = TRUE,
   lib_path = NULL,
   error_text = ""
@@ -28,15 +28,15 @@ permut(
 
 \item{seed}{Single numeric number used by set.seed() (integers expected in practice). Write NULL if random result is required, a number otherwise. BEWARE: if not NULL, permut() will systematically return the same result when the other parameters keep the same settings.}
 
-\item{print.count}{Single positive numeric value (integers expected in practice). Print a working progress message every print.count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired (Inf only allowed when data2 is NULL).}
+\item{print_count}{Single positive numeric value (integers expected in practice). Print a working progress message every print_count during loops. BEWARE: can increase substentially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired (Inf only allowed when data2 is NULL).}
 
-\item{text.print}{Single character string indicating the optional message to add to the working progress message every print.count loop.}
+\item{text_print}{Single character string indicating the optional message to add to the working progress message every print_count loop.}
 
-\item{cor.method}{Correlation method. Either "pearson", "kendall" or "spearman". Ignored if data2 is not specified.}
+\item{cor_method}{Correlation method. Either "pearson", "kendall" or "spearman". Ignored if data2 is not specified.}
 
-\item{cor.limit}{Single positive numeric proportion fixing the correlation limit. Ignored if data2 is not specified. Compute the correlation between data1 and data2, permute the data1 values, and stop the permutation process when the correlation between data1 and data2 decreases down below the cor limit value (0.2 by default). If cor(data1, data2) is negative, then -cor.limit is used and the process stops until the correlation between data1 and data2 increases up over cor.limit (-0.2 by default). BEWARE: write a positive cor.limit even if cor(data1, data2) is known to be negative. The function will automatically uses -cor.limit. If the initial correlation is already below cor.limit (positive correlation) or over -cor.limit (negative correlation), then the data1 value positions are completely randomized (correlation between data1 and data2 is expected to be 0).}
+\item{cor_limit}{Single positive numeric proportion fixing the correlation limit. Ignored if data2 is not specified. Compute the correlation between data1 and data2, permute the data1 values, and stop the permutation process when the correlation between data1 and data2 decreases down below the cor limit value (0.2 by default). If cor(data1, data2) is negative, then -cor_limit is used and the process stops until the correlation between data1 and data2 increases up over cor_limit (-0.2 by default). BEWARE: write a positive cor_limit even if cor(data1, data2) is known to be negative. The function will automatically uses -cor_limit. If the initial correlation is already below cor_limit (positive correlation) or over -cor_limit (negative correlation), then the data1 value positions are completely randomized (correlation between data1 and data2 is expected to be 0).}
 
-\item{warn.print}{Single logical value. Print warnings at the end of the execution? No print if no warning messages}
+\item{warn_print}{Single logical value. Print warnings at the end of the execution? No print if no warning messages}
 
 \item{safer_check}{Single logical value. Perform some "safer" checks? If \code{TRUE}, checkings are performed before main code running (see the \href{https://github.com/safer-r}{safer-r project}): 1) correct \code{lib_path} argument value 2) required functions and related packages effectively present in local R libraries and 3) R classical operators (like \code{"<-"}) not overwritten by another package because of the R scope. Must be set to \code{FALSE} if this function is used inside another "safer" function to avoid pointless multiple checkings.}
 
@@ -51,7 +51,7 @@ A list containing:
 
 - $warn: potential warning messages (in case of negative correlation when data2 is specified). NULL if non warning message.
 
-- $cor: a spearman correlation between the initial positions (1:length(data1) and the final positions if data2 is not specified and the final correlation between data1 and data2 otherwise, according to cor.method.
+- $cor: a spearman correlation between the initial positions (1:length(data1) and the final positions if data2 is not specified and the final correlation between data1 and data2 otherwise, according to cor_method.
 
 - $count: the number of loops used.
 }
@@ -60,7 +60,7 @@ Reorder the elements of the data1 vector by flipping 2 randomly selected consecu
 
 - n times (when n is precised) or.
 
-- until the correlation between data1 and data2 decreases down to the cor.limit (0.2 by default). See cor.limit below to deal with negative correlations.
+- until the correlation between data1 and data2 decreases down to the cor_limit (0.2 by default). See cor_limit below to deal with negative correlations.
 
 Example of consecutive position flipping: ABCD -> BACD -> BADC, etc.
 
@@ -76,9 +76,9 @@ The random switch of non consecutive positions (ABCD -> DBCA for instance) does 
 Ths code would be: pos <- ini.pos[1:2] ; pos <- sample.int(n = n , size = 2, replace = FALSE) ; tempo.pos[pos] <- tempo.pos[rev(pos)]
 }
 \examples{
-permut(data1 = 1:10, data2 = 10:1, seed = 1, print.count = 1e4, text.print = "", cor.method = "spearman", cor.limit = 0.7)
+permut(data1 = 1:10, data2 = 10:1, seed = 1, print_count = 1e4, text_print = "", cor_method = "spearman", cor_limit = 0.7)
 
-permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print.count = 1e4, cor.limit = 0.5)
+permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print_count = 1e4, cor_limit = 0.5)
 }
 \author{
 Gael Millot <gael.millot@pasteur.fr>

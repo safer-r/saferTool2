@@ -43,7 +43,7 @@ Set of R functions for the development of R functions, written according to the 
 | :--- | :--- |
 | **codon2aa()** | Convert codon to amino acid using standard genetic code indicated in the [DNA and RNA codon tables](https://en.wikipedia.org/wiki/DNA_and_RNA_codon_tables). |
 | **codon_finder()** | Gives the codon number and position in the codon of nucleotid positions. |
-| **permut()** | Reorder the elements of the data1 vector by flipping 2 randomly selected  consecutive positions either: times (when n is precised) or: until the correlation between data1 and data2 decreases down to the cor.limit (0.2 by default). Example of consecutive position flipping: ABCD -> BACD -> BADC, etc. Designed for discrete values, but works also for continuous values. |
+| **permut()** | Reorder the elements of the data1 vector by flipping 2 randomly selected  consecutive positions either: times (when n is precised) or: until the correlation between data1 and data2 decreases down to the cor_limit (0.2 by default). Example of consecutive position flipping: ABCD -> BACD -> BADC, etc. Designed for discrete values, but works also for continuous values. |
 | **slide()** | Return a computation made on a vector using a sliding window. |
 | **trim()** | Trim and display values from a numeric vector or matrix. Plot 4 graphs: stripchart of values, stripchart of rank of values, histogram and normal QQPlot. Different kinds of intervals are displayed on the top of graphes to facilitate the analysis of the variable and a trimming setting. The trimming interval chosen is displayed on top of graphs.Both trimmed and not trimmed values are returned in a list. |
 

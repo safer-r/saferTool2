@@ -2,17 +2,17 @@
 #' @description
 #' Return a computation made on a vector using a sliding window.
 #' @param data Vector, matrix, table or array of numeric values (mode must be numeric). Inf and NA not allowed.
-#' @param window.size Single numeric value indicating the width of the window sliding across data (in the same unit as data value).
-#' @param step Single numeric value indicating the step between each window (in the same unit as data value). Cannot be larger than window.size.
+#' @param window_size Single numeric value indicating the width of the window sliding across data (in the same unit as data value).
+#' @param step Single numeric value indicating the step between each window (in the same unit as data value). Cannot be larger than window_size.
 #' @param from Single numeric value of the left boundary of the first sliding window. If NULL, min(data) is used. The first window will strictly have from or min(data) as left boundary.
-#' @param to Single numeric value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window.size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window.size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window.size / 2.
+#' @param to Single numeric value of the right boundary of the last sliding window. If NULL, max(data) is used. Warning: (1) the final last window will not necessary have to|max(data) as right boundary. In fact the last window will be the one that contains to|max(data) for the first time, i.e., min[from|min(data) + window_size + n * step >= to|max(data)]; (2) In fact, the >= in min[from|min(data) + window_size + n * step >= to|max(data)] depends on the boundary argument (>= for "right" and > for "left"); (3) to have the rule (1) but for the center of the last window, use to argument as to = to|max(data) + window_size / 2.
 #' @param FUN Function or single character string indicating the name of the function to apply in each window. Example of function: FUN = mean. Example of character string: FUN = "mean".
 #' @param args Single character string of additional arguments of FUN (separated by a comma between the quotes). Example args = "na.rm = TRUE" for FUN = mean. Ignored if NULL.
 #' @param boundary Either "left" or "right". Indicates if the sliding window includes values equal to left boundary and exclude values equal to right boundary ("left") or the opposite ("right").
 #' @param parall Single logical value. Force parallelization ?
-#' @param thread.nb Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.
-#' @param print.count Single numeric value (integers expected in practice). Print a working progress message every print.count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
-#' @param res.path Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.
+#' @param thread_nb Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.
+#' @param print_count Single numeric value (integers expected in practice). Print a working progress message every print_count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
+#' @param res_path Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.
 #' @param verbose Single logical value. Display messages?
 #' @param safer_check Single logical value. Perform some "safer" checks? If \code{TRUE}, checkings are performed before main code running (see the \href{https://github.com/safer-r}{safer-r project}): 1) correct \code{lib_path} argument value 2) required functions and related packages effectively present in local R libraries and 3) R classical operators (like \code{"<-"}) not overwritten by another package because of the R scope. Must be set to \code{FALSE} if this function is used inside another "safer" function to avoid pointless multiple checkings.
 #' @param lib_path Vector of characters specifying the absolute pathways of the directories containing the required packages for the function, if not in the default directories. Useful when R packages are not installed in the default directories because of lack of admin rights. More precisely, \code{lib_path} is passed through the \code{new} argument of \code{.libPaths()} so that the new library paths are \code{unique(c(new, .Library.site, .Library))}. Warning: \code{.libPaths()} is restored to the initial paths, after function execution. Ignored if \code{NULL} (default) or if the \code{safer_check} argument is \code{FALSE}: only the pathways specified by the current \code{.libPaths()} are used for package calling.
@@ -30,7 +30,7 @@
 #' @details
 #' WARNINGS
 #'
-#' The function uses two strategies, depending on the amout of memory required which depends on the data, window.size and step arguments. The first one uses lapply(), is generally fast but requires lots of memory. The second one uses a parallelized loop. The choice between the two strategies is automatic if parall argument is FALSE, and is forced toward parallelization if parall argument is TRUE.
+#' The function uses two strategies, depending on the amout of memory required which depends on the data, window_size and step arguments. The first one uses lapply(), is generally fast but requires lots of memory. The second one uses a parallelized loop. The choice between the two strategies is automatic if parall argument is FALSE, and is forced toward parallelization if parall argument is TRUE.
 #'
 #' The parall argument forces the parallelization, which is convenient when the data argument is big, because the lapply() function is sometimes slower than the parallelization.
 #'
@@ -40,12 +40,12 @@
 #' @author Yushi Han <yushi.han2000@gmail.com>
 #' @author Haiding Wang <wanghaiding442@gmail.com>
 #' @examples
-#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left")
+#' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "left")
 #'
-#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "right") # effect of boundary argument
+#' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "right") # effect of boundary argument
 #'
 #' \dontrun{
-#' slide(data = c(1:10, 100:110, 500), window.size = 5, step = 2, FUN = length, boundary = "left", parall = TRUE, thread.nb = 2) # effect of parall argument
+#' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "left", parall = TRUE, thread_nb = 2) # effect of parall argument
 #' }
 #' @importFrom saferDev arg_check
 #' @importFrom saferDev get_message
@@ -59,7 +59,7 @@
 #' @export
 slide <- function(
     data,
-    window.size,
+    window_size,
     step,
     from = NULL,
     to = NULL,
@@ -67,9 +67,9 @@ slide <- function(
     args = NULL,
     boundary = "left",
     parall = FALSE,
-    thread.nb = NULL,
-    print.count = 100,
-    res.path = NULL,
+    thread_nb = NULL,
+    print_count = 100,
+    res_path = NULL,
     verbose = TRUE,
     safer_check = TRUE,
     lib_path = NULL,
@@ -77,8 +77,8 @@ slide <- function(
 ){
 
     # DEBUGGING
-    # data = c(1:10, 100:110, 500) ; window.size = 5 ; step = 2 ; from = NULL ; to = NULL ; FUN = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread.nb = NULL ; print.count = 100 ; res.path = NULL ; verbose = TRUE ; safer_check = TRUE ; lib_path = NULL ; error_text = ""
-    # data = lag.pos; window.size = window.size; step = step; FUN = length; from = min(a$pos); to = max(a$pos) ; safer_check = TRUE
+    # data = c(1:10, 100:110, 500) ; window_size = 5 ; step = 2 ; from = NULL ; to = NULL ; FUN = length ; args = NULL ; boundary = "left" ; parall = FALSE ; thread_nb = NULL ; print_count = 100 ; res_path = NULL ; verbose = TRUE ; safer_check = TRUE ; lib_path = NULL ; error_text = ""
+    # data = lag.pos; window_size = window_size; step = step; FUN = length; from = min(a$pos); to = max(a$pos) ; safer_check = TRUE
 
     #### package name
     package_name <- "saferTool2" # write NULL if the function developed is not in a package
@@ -195,7 +195,7 @@ slide <- function(
     # optional section: remove the code if none of your arguments has no default value
     no_def_args <- base::c(
         "data",
-        "window.size",
+        "window_size",
         "step",
         "FUN"
     )
@@ -218,7 +218,7 @@ slide <- function(
     # before NA checking because is.na(NULL) return logical(0) and all(logical(0)) is TRUE (but secured with & base::length(x = x) > 0)
     tempo_arg <-base::c(
         "data",
-        "window.size",
+        "window_size",
         "step",
         # "from", # inactivated because can be null
         # "to", # inactivated because can be null
@@ -226,9 +226,9 @@ slide <- function(
         # "args", # inactivated because can be null
         "boundary",
         "parall",
-        # "thread.nb", # inactivated because can be null
-        "print.count",
-        # "res.path", # inactivated because can be null
+        # "thread_nb", # inactivated because can be null
+        "print_count",
+        # "res_path", # inactivated because can be null
         "verbose",
         "safer_check"
         # "lib_path", # inactivated because can be NULL
@@ -252,16 +252,16 @@ slide <- function(
     # # before NA checking because is.na(logical()) is logical(0) (but secured with & base::length(x = x) > 0)
     tempo_arg <-base::c(
         "data",
-        "window.size",
+        "window_size",
         "step",
         "from",
         "to",
         "FUN",
         "args",
         "boundary",
-        "thread.nb",
-        "print.count",
-        "res.path",
+        "thread_nb",
+        "print_count",
+        "res_path",
         "verbose",
         "safer_check",
         "lib_path"
@@ -444,7 +444,7 @@ slide <- function(
     arg_check_error_text <- base::paste0("ERROR ", embed_error_text, "\n\n", collapse = NULL, recycle0 = FALSE) # must be used instead of error_text = embed_error_text when several arg_check are performed on the same argument (tempo1, tempo2, see below)
     ee <- base::expression(argum_check <- base::c(argum_check, tempo$problem) , text_check <- base::c(text_check, tempo$text) , checked_arg_names <- base::c(checked_arg_names, tempo$object.name))
     tempo <- saferDev::arg_check(data = data, class = NULL, typeof = NULL, mode = "numeric", length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
-    tempo <- saferDev::arg_check(data = window.size, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
+    tempo <- saferDev::arg_check(data = window_size, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     tempo <- saferDev::arg_check(data = step, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     if(base::is.null(x = from) == FALSE){
         tempo <- saferDev::arg_check(data = from, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
@@ -471,13 +471,13 @@ slide <- function(
     tempo <- saferDev::arg_check(data = boundary, class = NULL, typeof = NULL, mode = NULL, length = 1, prop = FALSE, options = base::c("left", "right"), double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     tempo <- saferDev::arg_check(data = parall, class = NULL, typeof = "logical", mode = NULL, length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     if(parall == TRUE){
-        if(base::is.null(x = thread.nb) == FALSE){
-            tempo <- saferDev::arg_check(data = thread.nb, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
+        if(base::is.null(x = thread_nb) == FALSE){
+            tempo <- saferDev::arg_check(data = thread_nb, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
         }
     }
-    tempo <- saferDev::arg_check(data = print.count, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
-    if(base::is.null(x = res.path) == FALSE){
-        tempo <- saferDev::arg_check(data = res.path, class = NULL, typeof = "character", mode = NULL, length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
+    tempo <- saferDev::arg_check(data = print_count, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
+    if(base::is.null(x = res_path) == FALSE){
+        tempo <- saferDev::arg_check(data = res_path, class = NULL, typeof = "character", mode = NULL, length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     }
     tempo <- saferDev::arg_check(data = verbose, class = NULL, typeof = "logical", mode = NULL, length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     # lib_path already checked above
@@ -496,7 +496,7 @@ slide <- function(
     ######## management of "" in arguments of mode character
     tempo_arg <- base::c(
         "boundary", # Ok if the argument is NULL, tempo_log will be FALSE
-        "res.path" # Ok if the argument is NULL, tempo_log will be FALSE
+        "res_path" # Ok if the argument is NULL, tempo_log will be FALSE
         # "lib_path" # inactivated because already checked above
         # "error_text" # inactivated because can be ""
     )
@@ -574,28 +574,28 @@ slide <- function(
         )
         base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
     }
-    if(step > window.size){
+    if(step > window_size){
         tempo_cat <- base::paste0(
             error_text_start,
-            "step ARGUMENT MUST BE LOWER THAN window.size ARGUMENT\nstep: ",
+            "step ARGUMENT MUST BE LOWER THAN window_size ARGUMENT\nstep: ",
             base::paste(step, collapse = " ", recycle0 = FALSE),
             "\nwindow.size: ",
-            base::paste(window.size, collapse = " ", recycle0 = FALSE),
+            base::paste(window_size, collapse = " ", recycle0 = FALSE),
             collapse = NULL,
             recycle0 = FALSE
         )
         base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
     }
-    if(base::is.null(x = res.path) == FALSE){
-        if( ! base::all(base::dir.exists(paths = res.path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and res.path == NA
-            tempo_log <- ! base::dir.exists(paths = res.path)
-            tempo_cat_b <- res.path[tempo_log] # here res.path is character string
+    if(base::is.null(x = res_path) == FALSE){
+        if( ! base::all(base::dir.exists(paths = res_path), na.rm = TRUE)){ # separation to avoid the problem of tempo$problem == FALSE and res_path == NA
+            tempo_log <- ! base::dir.exists(paths = res_path)
+            tempo_cat_b <- res_path[tempo_log] # here res_path is character string
             tempo_cat_b[tempo_cat_b == ""] <- "\"\""
             tempo_cat <- base::paste0(
                 error_text_start,
                 "THE DIRECTORY PATH",
                 base::ifelse(test = base::sum(tempo_log, na.rm = TRUE) > 1, yes = "S", no = ""),
-                " INDICATED IN THE res.path ARGUMENT DO",
+                " INDICATED IN THE res_path ARGUMENT DO",
                 base::ifelse(test = base::sum(tempo_log, na.rm = TRUE) > 1, yes = "", no = "ES"),
                 " NOT EXIST:\n",
                 base::paste0(tempo_cat_b, collapse = "\n", recycle0 = FALSE),
@@ -605,7 +605,7 @@ slide <- function(
             base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
         }
     }else{
-        res.path <- base::getwd() # working directory
+        res_path <- base::getwd() # working directory
     }
     ######## end other checkings
 
@@ -643,7 +643,7 @@ slide <- function(
     data <- base::as.vector(data)
     data <- base::sort(data, na.last = NA) # NA removed
     wind <- base::data.frame(left = base::seq(from = if(base::is.null(from)){base::min(data, na.rm = TRUE)}else{from}, to = if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}, by = step), stringsAsFactors = FALSE)
-    wind <- base::data.frame(wind, right = wind$left + window.size, stringsAsFactors = FALSE)
+    wind <- base::data.frame(wind, right = wind$left + window_size, stringsAsFactors = FALSE)
     wind <- base::data.frame(wind, center = (wind$left + wind$right) / 2, stringsAsFactors = FALSE)
     if(base::all(wind$right < if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to})){
         # nocov start
@@ -728,22 +728,22 @@ slide <- function(
             base::cat(base::paste0("\n", tempo.cat, "\n"))
         }
         tempo.thread.nb = parallel::detectCores(all.tests = FALSE, logical = TRUE) # detect the number of threads
-        if( ! base::is.null(thread.nb)){
-            if(tempo.thread.nb < thread.nb){
-                thread.nb <- tempo.thread.nb
+        if( ! base::is.null(thread_nb)){
+            if(tempo.thread.nb < thread_nb){
+                thread_nb <- tempo.thread.nb
                 if(verbose == TRUE){
                     tempo.cat <- base::paste0("ONLY: ", tempo.thread.nb, " THREADS AVAILABLE")
                     base::cat(base::paste0("\n", tempo.cat, "\n"))
                 }
             }
         }else{
-            thread.nb <- tempo.thread.nb
+            thread_nb <- tempo.thread.nb
         }
         if(verbose == TRUE){
-            tempo.cat <- base::paste0("NUMBER OF THREADS USED: ", thread.nb)
+            tempo.cat <- base::paste0("NUMBER OF THREADS USED: ", thread_nb)
             base::cat(base::paste0("\n    ", tempo.cat, "\n"))
         }
-        Clust <- parallel::makeCluster(spec = thread.nb, outfile = base::paste0(res.path, "/fun_slide_parall_log.txt")) # outfile to print or cat during parallelization (only possible in a file, outfile = "" do not work on windows)
+        Clust <- parallel::makeCluster(spec = thread_nb, outfile = base::paste0(res_path, "/fun_slide_parall_log.txt")) # outfile to print or cat during parallelization (only possible in a file, outfile = "" do not work on windows)
         cluster.list <- parallel::clusterSplit(cl = Clust, seq = 1:base::nrow(wind)) # split according to the number of cluster
         if(verbose == TRUE){
             tempo.cat <- base::paste0("SPLIT OF TEST NUMBERS IN PARALLELISATION:")
@@ -758,12 +758,12 @@ slide <- function(
             data = data,
             FUN = FUN,
             args = args,
-            thread.nb = thread.nb,
-            print.count = print.count,
+            thread_nb = thread_nb,
+            print_count = print_count,
             wind = wind,
             left = left,
             right = right,
-            res.path = res.path,
+            res_path = res_path,
             verbose = verbose,
             fun = function(
                 x,
@@ -771,12 +771,12 @@ slide <- function(
                 data,
                 FUN,
                 args,
-                thread.nb,
-                print.count,
+                thread_nb,
+                print_count,
                 wind,
                 left,
                 right,
-                res.path,
+                res_path,
                 verbose
             ){
                 # check again: very important because another R
@@ -795,7 +795,7 @@ slide <- function(
                     log <- base::get(left)(data, wind$left[x[i4]]) & base::get(right)(data, wind$right[x[i4]]) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
                     output <- base::c(output, base::eval(base::parse(text = base::paste0("FUN(data[log]", if( ! base::is.null(args)){base::paste0(", ", args)}, ")"))))
                     if(verbose == TRUE){
-                        if(print.count.loop == print.count){
+                        if(print.count.loop == print_count){
                             print.count.loop <- 0
                             tempo.time <- base::as.numeric(base::Sys.time())
                             tempo.lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo.time - ini.time)), safer_check = FALSE)

@@ -6,32 +6,32 @@
 \usage{
 trim(
   data,
-  displayed.nb = NULL,
-  single.value.display = FALSE,
-  trim.method = "",
-  trim.cutoffs = base::c(0.05, 0.975),
-  interval.scale.disp = TRUE,
-  down.space = 0.75,
-  left.space = 0.75,
-  up.space = 0.3,
-  right.space = 0.25,
+  displayed_nb = NULL,
+  single_value_display = FALSE,
+  trim_method = "",
+  trim_cutoffs = base::c(0.05, 0.975),
+  interval_scale_disp = TRUE,
+  down_space = 0.75,
+  left_space = 0.75,
+  up_space = 0.3,
+  right_space = 0.25,
   orient = 1,
-  dist.legend = 0.37,
-  box.type = "l",
-  amplif.label = 1.25,
-  amplif.axis = 1.25,
-  std.x.range = TRUE,
-  std.y.range = TRUE,
-  cex.pt = 0.2,
-  col.box = grDevices::hsv(0.55, 0.8, 0.8),
-  x.nb.inter.tick = 4,
-  y.nb.inter.tick = 0,
-  tick.length = 1,
-  sec.tick.length = 0.75,
-  corner.text = "",
-  amplif.legend = 1,
-  corner.text.size = 0.75,
-  trim.return = FALSE,
+  dist_legend = 0.37,
+  box_type = "l",
+  amplif_label = 1.25,
+  amplif_axis = 1.25,
+  std_x_range = TRUE,
+  std_y_range = TRUE,
+  cex_pt = 0.2,
+  col_box = grDevices::hsv(0.55, 0.8, 0.8),
+  x_nb_inter_tick = 4,
+  y_nb_inter_tick = 0,
+  tick_length = 1,
+  sec_tick_length = 0.75,
+  corner_text = "",
+  amplif_legend = 1,
+  corner_text_size = 0.75,
+  trim_return = FALSE,
   seed = NULL,
   safer_check = TRUE,
   lib_path = NULL,
@@ -41,57 +41,57 @@ trim(
 \arguments{
 \item{data}{Values to plot (either a numeric vector or a numeric matrix).}
 
-\item{displayed.nb}{Single integer-like numeric value, greater than 1, indicating the number of values displayed. If NULL, all the values are displayed. Otherwise, if the number of values is over displayed.nb, then displayed.nb values are displayed after random selection.}
+\item{displayed_nb}{Single integer-like numeric value, greater than 1, indicating the number of values displayed. If NULL, all the values are displayed. Otherwise, if the number of values is over displayed_nb, then displayed_nb values are displayed after random selection.}
 
-\item{single.value.display}{Single logical value. Provide the 4 graphs if data is made of a single (potentially repeated value)? If FALSE, an empty graph is displayed if data is made of a single (potentially repeated value). And the return list is made of NULL compartments.}
+\item{single_value_display}{Single logical value. Provide the 4 graphs if data is made of a single (potentially repeated value)? If FALSE, an empty graph is displayed if data is made of a single (potentially repeated value). And the return list is made of NULL compartments.}
 
-\item{trim.method}{Write "" if not required. write "mean.sd" if mean +/- sd has to be displayed as a trimming interval (only recommanded for normal distribution). Write "quantile" to display a trimming interval based on quantile cut-offs. No other possibility allowed. See trim.cutoffs below.}
+\item{trim_method}{Write "" if not required. write "mean.sd" if mean +/- sd has to be displayed as a trimming interval (only recommanded for normal distribution). Write "quantile" to display a trimming interval based on quantile cut-offs. No other possibility allowed. See trim_cutoffs below.}
 
-\item{trim.cutoffs}{2 values cutoff for the trimming interval displayed, each value between 0 and 1. Not used if trim.method == "".The couple of values c(lower, upper) represents the lower and upper boundaries of the trimming interval (in proportion), which represent the interval of distribution kept (between 0 and 1). Example: trim.cutoffs = c(0.05, 0.975). What is strictly kept for the display is ]lower , upper[, boundaries excluded. Using the "mean.sd" method, 0.025 and 0.975 represent 95\% CI which is mean +/- 1.96 * sd.}
+\item{trim_cutoffs}{2 values cutoff for the trimming interval displayed, each value between 0 and 1. Not used if trim_method == "".The couple of values c(lower, upper) represents the lower and upper boundaries of the trimming interval (in proportion), which represent the interval of distribution kept (between 0 and 1). Example: trim_cutoffs = c(0.05, 0.975). What is strictly kept for the display is ]lower , upper[, boundaries excluded. Using the "mean.sd" method, 0.025 and 0.975 represent 95\% CI which is mean +/- 1.96 * sd.}
 
-\item{interval.scale.disp}{Single logical value. Display sd and quantiles intervals on top of graphs ?}
+\item{interval_scale_disp}{Single logical value. Display sd and quantiles intervals on top of graphs ?}
 
-\item{down.space}{Single positive numeric value indicating the lower vertical margin (in inches, mai argument of par()).}
+\item{down_space}{Single positive numeric value indicating the lower vertical margin (in inches, mai argument of par()).}
 
-\item{left.space}{Single positive numeric value indicating the left horizontal margin (in inches, mai argument of par()).}
+\item{left_space}{Single positive numeric value indicating the left horizontal margin (in inches, mai argument of par()).}
 
-\item{up.space}{Single positive numeric value indicating the upper vertical margin between plot region and grapical window (in inches, mai argument of par()).}
+\item{up_space}{Single positive numeric value indicating the upper vertical margin between plot region and grapical window (in inches, mai argument of par()).}
 
-\item{right.space}{Single positive numeric value indicating the right horizontal margin (in inches, mai argument of par()).}
+\item{right_space}{Single positive numeric value indicating the right horizontal margin (in inches, mai argument of par()).}
 
 \item{orient}{Single positive numeric value indicating the scale number orientation (las argument of par()). 0, always parallel to the axis; 1, always horizontal; 2, always perpendicular to the axis; 3, always vertical.}
 
-\item{dist.legend}{Single positive numeric value that moves axis legends away in inches (first number of mgp argument of par() but in inches thus / 0.2).}
+\item{dist_legend}{Single positive numeric value that moves axis legends away in inches (first number of mgp argument of par() but in inches thus / 0.2).}
 
-\item{box.type}{The bty argument of par(). Either "o", "l", "7", "c", "u", "]", the resulting box resembles the corresponding upper case letter. A value of "n" suppresses the box.}
+\item{box_type}{The bty argument of par(). Either "o", "l", "7", "c", "u", "]", the resulting box resembles the corresponding upper case letter. A value of "n" suppresses the box.}
 
-\item{amplif.label}{Single positive numeric value to increase or decrease the size of the text in legends.}
+\item{amplif_label}{Single positive numeric value to increase or decrease the size of the text in legends.}
 
-\item{amplif.axis}{Single positive numeric value to increase or decrease the size of the scale numbers in axis.}
+\item{amplif_axis}{Single positive numeric value to increase or decrease the size of the scale numbers in axis.}
 
-\item{std.x.range}{Single logical value. Standard range on the x-axis? TRUE (no range extend) or FALSE (4\% range extend). Controls xaxs argument of par() (TRUE is xaxs = "i", FALSE is xaxs = "r").}
+\item{std_x_range}{Single logical value. Standard range on the x-axis? TRUE (no range extend) or FALSE (4\% range extend). Controls xaxs argument of par() (TRUE is xaxs = "i", FALSE is xaxs = "r").}
 
-\item{std.y.range}{Single logical value. Standard range on the y-axis? TRUE (no range extend) or FALSE (4\% range extend). Controls yaxs argument of par() (TRUE is yaxs = "i", FALSE is yaxs = "r").}
+\item{std_y_range}{Single logical value. Standard range on the y-axis? TRUE (no range extend) or FALSE (4\% range extend). Controls yaxs argument of par() (TRUE is yaxs = "i", FALSE is yaxs = "r").}
 
-\item{cex.pt}{Single positive numeric value indicating the size of points in stripcharts (in inches, thus cex.pt will be thereafter / 0.2).}
+\item{cex_pt}{Single positive numeric value indicating the size of points in stripcharts (in inches, thus cex_pt will be thereafter / 0.2).}
 
-\item{col.box}{Single character string indicating the color of boxplot.}
+\item{col_box}{Single character string indicating the color of boxplot.}
 
-\item{x.nb.inter.tick}{Single positive integer value indicating the number of secondary ticks between main ticks on x-axis (only if not log scale). Zero means non secondary ticks.}
+\item{x_nb_inter_tick}{Single positive integer value indicating the number of secondary ticks between main ticks on x-axis (only if not log scale). Zero means non secondary ticks.}
 
-\item{y.nb.inter.tick}{Single positive integer value indicating the number of secondary ticks between main ticks on y-axis (only if not log scale). Zero means non secondary ticks.}
+\item{y_nb_inter_tick}{Single positive integer value indicating the number of secondary ticks between main ticks on y-axis (only if not log scale). Zero means non secondary ticks.}
 
-\item{tick.length}{Single proportion value indicating the length of the ticks (1 means complete the distance between the plot region and the axis numbers, 0.5 means half the length, etc. 0 means no tick.}
+\item{tick_length}{Single proportion value indicating the length of the ticks (1 means complete the distance between the plot region and the axis numbers, 0.5 means half the length, etc. 0 means no tick.}
 
-\item{sec.tick.length}{Single proportion value indicating the length of the secondary ticks (1 means complete the distance between the plot region and the axis numbers, 0.5 means half the length, etc., 0 for no ticks).}
+\item{sec_tick_length}{Single proportion value indicating the length of the secondary ticks (1 means complete the distance between the plot region and the axis numbers, 0.5 means half the length, etc., 0 for no ticks).}
 
-\item{corner.text}{Single character string. Text to add at the top right corner of the window.}
+\item{corner_text}{Single character string. Text to add at the top right corner of the window.}
 
-\item{amplif.legend}{Single positive numeric value to increase or decrease the size of the text of legend.}
+\item{amplif_legend}{Single positive numeric value to increase or decrease the size of the text of legend.}
 
-\item{corner.text.size}{Single positive numeric value to increase or decrease the size of the text. Value 1 does not change it, 0.5 decreases by half, 2 increases by 2.}
+\item{corner_text_size}{Single positive numeric value to increase or decrease the size of the text. Value 1 does not change it, 0.5 decreases by half, 2 increases by 2.}
 
-\item{trim.return}{Single logical value. Return the trimmed and non trimmed values? NULL returned for trimmed and non trimmed values if trim.method == "".}
+\item{trim_return}{Single logical value. Return the trimmed and non trimmed values? NULL returned for trimmed and non trimmed values if trim_method == "".}
 
 \item{seed}{Single positive or null integer number used by set.seed(). Write NULL if random result is required, an integer otherwise. BEWARE: if not NULL,the function will systematically return the same result when the other parameters keep the same settings.}
 
@@ -105,15 +105,15 @@ trim(
 An error message if at least one of the checked packages is missing in lib_path, or if at least one of the checked functions is missing in the required package,
 A list containing:
 
-- $trim.method: correspond to the trim.method argument.
+- $trim_method: correspond to the trim_method argument.
 
-- $trim.cutoffs: correspond to the trim.cutoffs argument.
+- $trim_cutoffs: correspond to the trim_cutoffs argument.
 
 - $real.trim.cutoffs: the two boundary values in the unit of the numeric vector or numeric matrix analyzed.
 
-- $trimmed.values: the values outside of the trimming interval as defined in the trim.cutoffs argument.
+- $trimmed.values: the values outside of the trimming interval as defined in the trim_cutoffs argument.
 
-- $kept.values: the values inside the trimming interval as defined in the trim.cutoffs argument.
+- $kept.values: the values inside the trimming interval as defined in the trim_cutoffs argument.
 }
 \description{
 Trim and display values from a numeric vector or matrix.
@@ -127,7 +127,7 @@ The trimming interval chosen is displayed on top of graphs.
 Both trimmed and not trimmed values are returned in a list.
 }
 \examples{
-trim(data = c(1:100, 1:10), displayed.nb = NULL, single.value.display = FALSE, trim.method = "mean.sd", trim.cutoffs = c(0.05, 0.975), interval.scale.disp = TRUE, down.space = 0.75, left.space = 0.75, up.space = 0.3, right.space = 0.25, orient = 1, dist.legend = 0.37, box.type = "l", amplif.label = 1.25, amplif.axis = 1.25, std.x.range = TRUE, std.y.range = TRUE, cex.pt = 0.2, col.box = grDevices::hsv(0.55, 0.8, 0.8), x.nb.inter.tick = 4, y.nb.inter.tick = 0, tick.length = 0.5, sec.tick.length = 0.3, corner.text = "", amplif.legend = 1, corner.text.size = 0.75, trim.return = TRUE)
+trim(data = c(1:100, 1:10), displayed_nb = NULL, single_value_display = FALSE, trim_method = "mean.sd", trim_cutoffs = c(0.05, 0.975), interval_scale_disp = TRUE, down_space = 0.75, left_space = 0.75, up_space = 0.3, right_space = 0.25, orient = 1, dist_legend = 0.37, box_type = "l", amplif_label = 1.25, amplif_axis = 1.25, std_x_range = TRUE, std_y_range = TRUE, cex_pt = 0.2, col_box = grDevices::hsv(0.55, 0.8, 0.8), x_nb_inter_tick = 4, y_nb_inter_tick = 0, tick_length = 0.5, sec_tick_length = 0.3, corner_text = "", amplif_legend = 1, corner_text_size = 0.75, trim_return = TRUE)
 }
 \seealso{
 \code{\link{head}}, \code{\link{tail}}

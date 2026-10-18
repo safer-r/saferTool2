@@ -10,9 +10,9 @@ testthat::test_that("mandatory arg block of saferTool2 functions (public functio
     full_calls <- base::list(
         codon2aa = base::quote(codon2aa(data = "atg", display = FALSE, safer_check = FALSE, error_text = "")),
         codon_finder = base::quote(codon_finder(pos = 1:3, begin = 1L, end = 3L, safer_check = FALSE, error_text = "")),
-        permut = base::quote(permut(data1 = c(0,0,0,0,0), data2 = NULL, n = 1, seed = 1, print.count = 1, text.print = "", cor.method = "spearman", cor.limit = 0.5, warn.print = FALSE, safer_check = FALSE, error_text = "")),
-        slide = base::quote(slide(data = 1:10, window.size = 5, step = 2, from = NULL, to = NULL, FUN = length, args = NULL, boundary = "left", parall = FALSE, thread.nb = NULL, print.count = Inf, res.path = NULL, verbose = FALSE, safer_check = FALSE, error_text = "")),
-        trim = base::quote(trim(data = 1:10, displayed.nb = 5, single.value.display = FALSE, trim.method = "mean.sd", trim.cutoffs = c(0.05, 0.95), interval.scale.disp = FALSE, down.space = 1, left.space = 1, up.space = 1, right.space = 1, orient = 1, dist.legend = 0.5, box.type = "n", amplif.label = 1, amplif.axis = 1, std.x.range = TRUE, std.y.range = TRUE, cex.pt = 1, col.box = "grey", x.nb.inter.tick = 1, y.nb.inter.tick = 1, tick.length = 0.5, sec.tick.length = 0.3, corner.text = "", amplif.legend = 1, corner.text.size = 1, trim.return = FALSE, seed = 1, safer_check = FALSE, error_text = ""))
+        permut = base::quote(permut(data1 = c(0,0,0,0,0), data2 = NULL, n = 1, seed = 1, print_count = 1, text_print = "", cor_method = "spearman", cor_limit = 0.5, warn_print = FALSE, safer_check = FALSE, error_text = "")),
+        slide = base::quote(slide(data = 1:10, window_size = 5, step = 2, from = NULL, to = NULL, FUN = length, args = NULL, boundary = "left", parall = FALSE, thread_nb = NULL, print_count = Inf, res_path = NULL, verbose = FALSE, safer_check = FALSE, error_text = "")),
+        trim = base::quote(trim(data = 1:10, displayed_nb = 5, single_value_display = FALSE, trim_method = "mean.sd", trim_cutoffs = c(0.05, 0.95), interval_scale_disp = FALSE, down_space = 1, left_space = 1, up_space = 1, right_space = 1, orient = 1, dist_legend = 0.5, box_type = "n", amplif_label = 1, amplif_axis = 1, std_x_range = TRUE, std_y_range = TRUE, cex_pt = 1, col_box = "grey", x_nb_inter_tick = 1, y_nb_inter_tick = 1, tick_length = 0.5, sec_tick_length = 0.3, corner_text = "", amplif_legend = 1, corner_text_size = 1, trim_return = FALSE, seed = 1, safer_check = FALSE, error_text = ""))
     )
     ## end data argument values
 
@@ -46,7 +46,7 @@ testthat::test_that("mandatory arg block of saferTool2 functions (public functio
     # restore check: with all formals present, the block must NOT fire
     testthat::expect_no_error(object = codon2aa(data = "atg", display = FALSE, safer_check = FALSE, lib_path = NULL, error_text = ""))
     testthat::expect_no_error(object = codon_finder(pos = 1:3, begin = 1L, end = 3L, safer_check = FALSE, lib_path = NULL, error_text = ""))
-    testthat::expect_no_error(object = trim(data = 1:10, trim.return = FALSE, safer_check = FALSE, lib_path = NULL, error_text = ""))
+    testthat::expect_no_error(object = trim(data = 1:10, trim_return = FALSE, safer_check = FALSE, lib_path = NULL, error_text = ""))
     ## end other tests
     base::rm(list = base::ls()) # to avoid a warning that block CRAN tests
 })
