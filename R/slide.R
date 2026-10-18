@@ -455,13 +455,13 @@ slide <- function(
     tempo1 <- saferDev::arg_check(data = FUN, class = NULL, typeof = "character", mode = NULL, length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     tempo2 <- saferDev::arg_check(data = FUN, class = "function", typeof = NULL, mode = NULL, length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     if(tempo1$problem == TRUE & tempo2$problem == TRUE){
-        tempo.cat <- base::paste0(
+        tempo_cat <- base::paste0(
             arg_check_error_text,
             "FUN ARGUMENT MUST BE A FUNCTION OR A CHARACTER STRING OF THE NAME OF A FUNCTION",
             collapse = NULL,
             recycle0 = FALSE
         )
-        text_check <- base::c(text_check, tempo.cat)
+        text_check <- base::c(text_check, tempo_cat)
         argum_check <- base::c(argum_check, TRUE)
         checked_arg_names <- base::c(checked_arg_names, tempo1$object.name)
     }
@@ -629,7 +629,7 @@ slide <- function(
     }else{
         # nocov start
         # codecov inactivated because it is an internal error, impossible to cover with argument values (boundary already checked by arg_check() options above).
-        tempo.cat <- base::paste0(
+        tempo_cat <- base::paste0(
             "INTERNAL ERROR IN THE MAIN CODE OF ",
             intern_error_text_start,
             "CODE INCONSISTENCY 1.",
@@ -637,7 +637,7 @@ slide <- function(
             collapse = NULL,
             recycle0 = FALSE
         )
-        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
+        base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
         # nocov end
     }
     data <- base::as.vector(data)
@@ -648,7 +648,7 @@ slide <- function(
     if(base::all(wind$right < if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to})){
         # nocov start
         # codecov inactivated because it is an internal error, impossible to cover with argument values.
-        tempo.cat <- base::paste0(
+        tempo_cat <- base::paste0(
             "INTERNAL ERROR IN THE MAIN CODE OF ",
             intern_error_text_start,
             "CODE INCONSISTENCY 2.",
@@ -656,7 +656,7 @@ slide <- function(
             collapse = NULL,
             recycle0 = FALSE
         )
-        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
+        base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
         # nocov end
     }
     # The 3 next lines is for the rule of to argument with center (see to argument description)
@@ -675,13 +675,13 @@ slide <- function(
         if(base::exists(x = env_name, where = -1)){ # verify if still ok when info() is inside a function
             # nocov start
             # codecov inactivated because env_name is randomly generated, so it cannot already exist (internal error, impossible to cover with argument values).
-            tempo.cat <- base::paste0(
+            tempo_cat <- base::paste0(
                 error_text_start,
                 "ENVIRONMENT env_name ALREADY EXISTS. PLEASE RERUN ONCE",
                 collapse = NULL,
                 recycle0 = FALSE
             )
-            base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
+            base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }else{
             base::assign(x = env_name, value = base::new.env())
@@ -709,7 +709,7 @@ slide <- function(
         if(base::length(output) != base::nrow(wind)){
             # nocov start
             # codecov inactivated because it is an internal error, impossible to cover with argument values.
-            tempo.cat <- base::paste0(
+            tempo_cat <- base::paste0(
                 "INTERNAL ERROR IN THE MAIN CODE OF ",
                 intern_error_text_start,
                 "CODE INCONSISTENCY 3.",
@@ -717,44 +717,44 @@ slide <- function(
                 collapse = NULL,
                 recycle0 = FALSE
             )
-            base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
+            base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }else{
             output <- base::data.frame(wind, value = output, stringsAsFactors = FALSE)
         }
     }else{
         if(verbose == TRUE){
-            tempo.cat <- base::paste0("PARALLELIZATION INITIATED AT: ", ini_date)
-            base::cat(base::paste0("\n", tempo.cat, "\n"))
+            tempo_cat <- base::paste0("PARALLELIZATION INITIATED AT: ", ini_date)
+            base::cat(base::paste0("\n", tempo_cat, "\n"))
         }
         tempo_thread_nb = parallel::detectCores(all.tests = FALSE, logical = TRUE) # detect the number of threads
         if( ! base::is.null(thread_nb)){
             if(tempo_thread_nb < thread_nb){
                 thread_nb <- tempo_thread_nb
                 if(verbose == TRUE){
-                    tempo.cat <- base::paste0("ONLY: ", tempo_thread_nb, " THREADS AVAILABLE")
-                    base::cat(base::paste0("\n", tempo.cat, "\n"))
+                    tempo_cat <- base::paste0("ONLY: ", tempo_thread_nb, " THREADS AVAILABLE")
+                    base::cat(base::paste0("\n", tempo_cat, "\n"))
                 }
             }
         }else{
             thread_nb <- tempo_thread_nb
         }
         if(verbose == TRUE){
-            tempo.cat <- base::paste0("NUMBER OF THREADS USED: ", thread_nb)
-            base::cat(base::paste0("\n    ", tempo.cat, "\n"))
+            tempo_cat <- base::paste0("NUMBER OF THREADS USED: ", thread_nb)
+            base::cat(base::paste0("\n    ", tempo_cat, "\n"))
         }
         Clust <- parallel::makeCluster(spec = thread_nb, outfile = base::paste0(res_path, "/fun_slide_parall_log.txt")) # outfile to print or cat during parallelization (only possible in a file, outfile = "" do not work on windows)
         cluster_list <- parallel::clusterSplit(cl = Clust, seq = 1:base::nrow(wind)) # split according to the number of cluster
         if(verbose == TRUE){
-            tempo.cat <- base::paste0("SPLIT OF TEST NUMBERS IN PARALLELISATION:")
-            base::cat(base::paste0("\n    ", tempo.cat, "\n"))
+            tempo_cat <- base::paste0("SPLIT OF TEST NUMBERS IN PARALLELISATION:")
+            base::cat(base::paste0("\n    ", tempo_cat, "\n"))
             utils::str(cluster_list) # using base::print(utils::str()) add a NULL below the result
             base::cat("\n")
         }
         paral_output_list <- parallel::clusterApply( #
             cl = Clust,
             x = cluster_list,
-            function.name = function_name,
+            function_name = function_name,
             data = data,
             FUN = FUN,
             args = args,
@@ -767,7 +767,7 @@ slide <- function(
             verbose = verbose,
             fun = function(
                 x,
-                function.name,
+                function_name,
                 data,
                 FUN,
                 args,
@@ -786,8 +786,8 @@ slide <- function(
                 # end check again: very important because another R
                 # nocov start
                 # codecov inactivated because this function is executed in child processes launched by parallel::clusterApply(), which are not tracked by covr.
-                ini.date <- base::Sys.time()
-                ini.time <- base::as.numeric(ini.date) # time of process begin, converted into
+                ini_date <- base::Sys.time()
+                ini_time <- base::as.numeric(ini_date) # time of process begin, converted into
                 output <- NULL
                 print_count_loop <- 0
                 for(i4 in 1:base::length(x)){
@@ -798,14 +798,14 @@ slide <- function(
                         if(print_count_loop == print_count){
                             print_count_loop <- 0
                             tempo_time <- base::as.numeric(base::Sys.time())
-                            tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - ini.time)), safer_check = FALSE)
-                            final_loop <- (tempo_time - ini.time) / i4 * base::length(x) # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
-                            final_exp <- base::as.POSIXct(final_loop, origin = ini.date)
+                            tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE)
+                            final_loop <- (tempo_time - ini_time) / i4 * base::length(x) # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
+                            final_exp <- base::as.POSIXct(final_loop, origin = ini_date)
                             base::cat(base::paste0("\nIN PROCESS ", process_id, " | LOOP ", base::format(i4, big.mark=","), " / ", base::format(base::length(x), big.mark=","), " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp))
                         }
                         if(i4 == base::length(x)){
                             tempo_time <- base::as.numeric(base::Sys.time())
-                            tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - ini.time)), safer_check = FALSE)
+                            tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE)
                             base::cat(base::paste0("\nPROCESS ", process_id, " ENDED | LOOP ", base::format(i4, big.mark=","), " / ", base::format(base::length(x), big.mark=","), " | TIME SPENT: ", tempo_lapse, "\n\n"))
                         }
                     }
@@ -815,8 +815,8 @@ slide <- function(
                 # nocov start
                 # codecov inactivated because this is executed in child processes launched by parallel::clusterApply(), which are not tracked by covr (internal error, impossible to cover with argument values).
                 if(base::length(output) != base::nrow(wind)){
-                    tempo.cat <- base::paste0("INTERNAL CODE ERROR IN ", function.name, "\nCODE INCONSISTENCY 4")
-                    base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
+                    tempo_cat <- base::paste0("INTERNAL CODE ERROR IN ", function_name, "\nCODE INCONSISTENCY 4")
+                    base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
                 }else{
                     output <- base::data.frame(wind, value = output, stringsAsFactors = FALSE)
                     base::return(output)
@@ -834,7 +834,7 @@ slide <- function(
         if(base::nrow(output) != base::nrow(wind)){
             # nocov start
             # codecov inactivated because it is an internal error, impossible to cover with argument values.
-            tempo.cat <- base::paste0(
+            tempo_cat <- base::paste0(
                 "INTERNAL ERROR IN THE MAIN CODE OF ",
                 intern_error_text_start,
                 "CODE INCONSISTENCY 5\nbase::length(output): ",
@@ -845,7 +845,7 @@ slide <- function(
                 collapse = NULL,
                 recycle0 = FALSE
             )
-            base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
+            base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }else{
             output <- output[base::order(output$left), ]
