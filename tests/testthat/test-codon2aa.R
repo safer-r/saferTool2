@@ -60,6 +60,8 @@ test_that("codon2aa returns correct amino acid", {
   expect_error(codon2aa(data = codon15, display = TRUE, safer_check = TRUE))
   expect_error(codon2aa(data = codon16, display = TRUE, safer_check = TRUE))
 
+  # data argument as a single string of three characters (uppercase)
+  expect_no_error(codon2aa(data = "ATC", display = FALSE))
   # lib_path argument
   expect_no_error(codon2aa(data = codon1, display = FALSE, lib_path = NULL))
   # error_text argument
