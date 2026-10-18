@@ -452,11 +452,11 @@ codon_finder <- function(
     first <- base::seq.int(from = begin, to = end, by = 3)
     last <- base::seq.int(from = begin + 2, to = end, by = 3)
     tempo <- base::lapply(X = pos, FUN = function(x){
-        tempo.log <- x >= first & x <= last
-        if(base::sum(tempo.log, na.rm = TRUE) != 1){ # check that 1 possible TRUE
+        tempo_log <- x >= first & x <= last
+        if(base::sum(tempo_log, na.rm = TRUE) != 1){ # check that 1 possible TRUE
             # nocov start
             # codecov inactivated because it is an internal error, impossible to cover with argument values.
-            tempo.cat <- base::paste0(
+            tempo_cat <- base::paste0(
                 "INTERNAL ERROR IN THE MAIN CODE OF ",
                 intern_error_text_start,
                 "CODE HAS TO BE MODIFIED.",
@@ -464,13 +464,13 @@ codon_finder <- function(
                 collapse = NULL,
                 recycle0 = FALSE
             )
-            base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
+            base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
             # nocov end
         }else{
-            codon_nb <- base::which(tempo.log)
+            codon_nb <- base::which(tempo_log)
             codon_pos <- base::as.integer((x - (begin + (codon_nb - 1) * 3) + 1))
-            codon_begin <- base::as.integer(first[tempo.log])
-            codon_end <- base::as.integer(last[tempo.log])
+            codon_begin <- base::as.integer(first[tempo_log])
+            codon_end <- base::as.integer(last[tempo_log])
         }
         base::return(base::data.frame(codon_nb = codon_nb, codon_pos = codon_pos, codon_begin = codon_begin, codon_end = codon_end, stringsAsFactors = FALSE))
     })
