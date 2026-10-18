@@ -423,26 +423,26 @@ permut <- function(
     tempo2 <- saferDev::arg_check(data = data1, class = NULL, typeof = NULL, mode = "numeric", length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     tempo3 <- saferDev::arg_check(data = data1, class = NULL, typeof = "logical", mode = NULL, length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     if(tempo1$problem == TRUE & tempo2$problem == TRUE & tempo3$problem == TRUE){
-        tempo.cat <- base::paste0(
+        tempo_cat <- base::paste0(
             arg_check_error_text,
             "data1 ARGUMENT MUST BE A VECTOR MADE OF CHARACTER OR NUMERIC OR LOGICAL VALUES",
             collapse = NULL,
             recycle0 = FALSE
         )
-        text_check <- base::c(text_check, tempo.cat)
+        text_check <- base::c(text_check, tempo_cat)
         argum_check <- base::c(argum_check, TRUE)
         checked_arg_names <- base::c(checked_arg_names, tempo1$object.name)
     }
     if(base::is.null(x = data2) == FALSE){ # data1 must be numeric if data2 specified
         tempo5 <- saferDev::arg_check(data = data1, class = NULL, typeof = NULL, mode = "numeric", length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
         if(tempo5$problem == TRUE){
-            tempo.cat <- base::paste0(
+            tempo_cat <- base::paste0(
                 arg_check_error_text,
                 "data1 ARGUMENT MUST BE A VECTOR. IF THE data2 ARGUMENT IS SPECIFIED, data1 MUST BE A VECTOR OF NUMERIC VALUES",
                 collapse = NULL,
                 recycle0 = FALSE
             )
-            text_check <- base::c(text_check, tempo.cat)
+            text_check <- base::c(text_check, tempo_cat)
             argum_check <- base::c(argum_check, TRUE)
             checked_arg_names <- base::c(checked_arg_names, tempo1$object.name)
         }
@@ -596,7 +596,7 @@ permut <- function(
     ini_time <- base::as.numeric(ini_date) # time of process begin, converted into seconds
     ini_pos <- 1:base::length(data1) # positions of data1 before permutation loops
     tempo_pos <- ini_pos # positions of data1 that will be modified during loops
-    # pos.selec.seq <- ini_pos[-length(data1)] # selection of 1 position in initial position, without the last because always up permutation (pos -> pos+1 & pos+1 -> pos)
+    # pos_selec_seq <- ini_pos[-length(data1)] # selection of 1 position in initial position, without the last because always up permutation (pos -> pos+1 & pos+1 -> pos)
     pos_selec_seq_max <- base::length(ini_pos) - 1 # max position (used by base::sample.int() function). See  below for - 1
     count <- 0
     round <- 0
@@ -734,7 +734,7 @@ permut <- function(
                             if(base::is.na(tempo_cor_dec_per_loop) | ! base::is.finite(tempo_cor_dec_per_loop)){
                                 # nocov start
                                 # codecov inactivated because it is an internal error, impossible to cover with argument values.
-                                tempo.cat <- base::paste0(
+                                tempo_cat <- base::paste0(
                                     "INTERNAL ERROR IN THE MAIN CODE OF ",
                                     intern_error_text_start,
                                     "CODE INCONSISTENCY 2\ncor_est_ini: ",
@@ -745,7 +745,7 @@ permut <- function(
                                     collapse = NULL,
                                     recycle0 = FALSE
                                 )
-                                base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", base::ifelse(test = base::is.null(x = warn), yes = "", no = base::paste0("IN ADDITION\nWARNING", base::ifelse(test = warn_count > 1, yes = "S", no = ""), ":\n\n", warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
+                                base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", base::ifelse(test = base::is.null(x = warn), yes = "", no = base::paste0("IN ADDITION\nWARNING", base::ifelse(test = warn_count > 1, yes = "S", no = ""), ":\n\n", warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
                                 # nocov end
                             }
                             cor_dec_per_loop[i6] <- tempo_cor_dec_per_loop
@@ -766,7 +766,7 @@ permut <- function(
                     if(base::is.na(loop_nb_est) | ! base::is.finite(loop_nb_est)){
                         # nocov start
                         # codecov inactivated because it is an internal error, impossible to cover with argument values.
-                        tempo.cat <- base::paste0(
+                        tempo_cat <- base::paste0(
                             "INTERNAL ERROR IN THE MAIN CODE OF ",
                             intern_error_text_start,
                             "CODE INCONSISTENCY 1\nloop_nb_est: ",
@@ -783,7 +783,7 @@ permut <- function(
                             collapse = NULL,
                             recycle0 = FALSE
                         )
-                        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n", base::ifelse(test = base::is.null(x = warn), yes = "", no = base::paste0("IN ADDITION\nWARNING", base::ifelse(test = warn_count > 1, yes = "S", no = ""), ":\n\n", warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
+                        base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", base::ifelse(test = base::is.null(x = warn), yes = "", no = base::paste0("IN ADDITION\nWARNING", base::ifelse(test = warn_count > 1, yes = "S", no = ""), ":\n\n", warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
                         # nocov end
                     }else if(loop_nb_est > 1e4){ # below -> leave the while loop
                         tempo_pos_secu <- tempo_pos

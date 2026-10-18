@@ -664,9 +664,9 @@ slide <- function(
     # wind <- wind[ ! wind$center > max(data, na.rm = TRUE),]
     # }
     if(base::sum(base::get(right_last_wind)(wind$right, if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}), na.rm = TRUE) > 1){  # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
-        tempo.log <- base::get(right_last_wind)(wind$right, if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
-        tempo.log[base::min(base::which(tempo.log), na.rm = TRUE)] <- FALSE # convert the first left boundary that goes above base::max(data, na.rm = TRUE) to FALSE to keep it (the next ones will be removed)
-        wind <- wind[ ! tempo.log,]
+        tempo_log <- base::get(right_last_wind)(wind$right, if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
+        tempo_log[base::min(base::which(tempo_log), na.rm = TRUE)] <- FALSE # convert the first left boundary that goes above base::max(data, na.rm = TRUE) to FALSE to keep it (the next ones will be removed)
+        wind <- wind[ ! tempo_log,]
     }
 
     # test if lapply can be used

@@ -479,13 +479,13 @@ trim <- function(
     tempo1 <- saferDev::arg_check(data = data, class = NULL, typeof = NULL, mode = "numeric", length = NULL, prop = FALSE, double_as_integer_allowed = FALSE, options = NULL, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     tempo2 <- saferDev::arg_check(data = data, class = base::c("matrix", "array"), typeof = NULL, mode = NULL, length = NULL, prop = FALSE, double_as_integer_allowed = FALSE, options = NULL, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     if(tempo1$problem == TRUE & tempo2$problem == TRUE){
-        tempo.cat <- base::paste0(
+        tempo_cat <- base::paste0(
             arg_check_error_text,
             "data ARGUMENT MUST BE A NUMERIC VECTOR OR A NUMERIC MATRIX",
             collapse = NULL,
             recycle0 = FALSE
         )
-        text_check <- base::c(text_check, tempo.cat)
+        text_check <- base::c(text_check, tempo_cat)
         argum_check <- base::c(argum_check, TRUE)
         checked_arg_names <- base::c(checked_arg_names, tempo1$object.name)
     }
@@ -614,8 +614,8 @@ trim <- function(
 
     ######## other checkings
     if(base::all( ! base::is.finite(data))){ # base::is.finite() tests if it is not one of the values NA, NaN, Inf or -Inf
-        tempo.cat <- base::paste0(error_text_start, "data ARGUMENT CANNOT CONTAIN NA AND Inf ONLY.")
-        base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
+        tempo_cat <- base::paste0(error_text_start, "data ARGUMENT CANNOT CONTAIN NA AND Inf ONLY.")
+        base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
     }
     if(base::is.null(dim(x = data))){
         tempo1 <- base::is.numeric(data)
@@ -623,23 +623,23 @@ trim <- function(
         if( ! (tempo1 | tempo2)){
             # nocov start
             # codecov inactivated because non numeric objects are already rejected by the arg_check() calls of the data argument above (this block is a redundant second-round checking).
-            tempo.cat <- base::paste0(error_text_start, "data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX.")
-            base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
+            tempo_cat <- base::paste0(error_text_start, "data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX.")
+            base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }
     }else{
         if( ! base::is.numeric(data)){
             # nocov start
             # codecov inactivated because non numeric matrices are already rejected by the arg_check() calls of the data argument above (this block is a redundant second-round checking).
-            tempo.cat <- base::paste0(error_text_start, "data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX.")
-            base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
+            tempo_cat <- base::paste0(error_text_start, "data ARGUMENT MUST BE A NUMERIC VECTOR OR NUMERIC MATRIX.")
+            base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }
     }
     if( ! base::is.null(displayed_nb)){
         if(displayed_nb < 2){
-            tempo.cat <- base::paste0(error_text_start, "displayed_nb ARGUMENT MUST BE A SINGLE INTEGER VALUE GREATER THAN 1 AND NOT:\n", base::paste0(displayed_nb, collapse = " "))
-            base::stop(base::paste0("\n\n================\n\n", tempo.cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
+            tempo_cat <- base::paste0(error_text_start, "displayed_nb ARGUMENT MUST BE A SINGLE INTEGER VALUE GREATER THAN 1 AND NOT:\n", base::paste0(displayed_nb, collapse = " "))
+            base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n"), call. = FALSE) # == in base::stop() to be able to add several messages between ==
         }
     }
     ######## end other checkings
