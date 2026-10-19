@@ -473,7 +473,7 @@ trim <- function(
     text_check <- NULL
     checked_arg_names <- NULL # for function debbuging: used by r_debugging_tools
     arg_check_error_text <- base::paste0("ERROR ", embed_error_text, "\n\n", collapse = NULL, recycle0 = FALSE) # must be used instead of error_text = embed_error_text when several arg_check are performed on the same argument (tempo1, tempo2, see below)
-    ee <- base::expression(argum_check <- base::c(argum_check, tempo$problem) , text_check <- base::c(text_check, tempo$text) , checked_arg_names <- base::c(checked_arg_names, tempo$object.name))
+    ee <- base::expression(argum_check <- base::c(argum_check, tempo$problem) , text_check <- base::c(text_check, tempo$text) , checked_arg_names <- base::c(checked_arg_names, tempo$object_name))
     # add as many lines as below, for each of your arguments of your function in development
     # data can be a numeric vector or a numeric matrix. Since a matrix is class c("matrix", "array"), and "vector" cannot be used as a class/typeof/mode value (see saferDev::arg_check() doc), several arg_check() calls are performed and the error is triggered only if all of them fail
     tempo1 <- saferDev::arg_check(data = data, class = NULL, typeof = NULL, mode = "numeric", length = NULL, prop = FALSE, double_as_integer_allowed = FALSE, options = NULL, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
@@ -487,7 +487,7 @@ trim <- function(
         )
         text_check <- base::c(text_check, tempo_cat)
         argum_check <- base::c(argum_check, TRUE)
-        checked_arg_names <- base::c(checked_arg_names, tempo1$object.name)
+        checked_arg_names <- base::c(checked_arg_names, tempo1$object_name)
     }
     if( ! base::is.null(displayed_nb)){
         tempo <- saferDev::arg_check(data = displayed_nb, class = NULL, typeof = "integer", mode = NULL, length = NULL, prop = FALSE, double_as_integer_allowed = TRUE, options = NULL, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))

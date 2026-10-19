@@ -417,7 +417,7 @@ permut <- function(
     text_check <- NULL
     checked_arg_names <- NULL # for function debbuging: used by r_debugging_tools
     arg_check_error_text <- base::paste0("ERROR ", embed_error_text, "\n\n", collapse = NULL, recycle0 = FALSE) # must be used instead of error_text = embed_error_text when several arg_check are performed on the same argument (tempo1, tempo2, see below)
-    ee <- base::expression(argum_check <- base::c(argum_check, tempo$problem) , text_check <- base::c(text_check, tempo$text) , checked_arg_names <- base::c(checked_arg_names, tempo$object.name))
+    ee <- base::expression(argum_check <- base::c(argum_check, tempo$problem) , text_check <- base::c(text_check, tempo$text) , checked_arg_names <- base::c(checked_arg_names, tempo$object_name))
     # data1 can be a vector of any of the main atomic types (character, numeric, logical). Since "vector" cannot be used as a class/typeof/mode value (see saferDev::arg_check() doc), several arg_check() calls are performed and the error is triggered only if all of them fail
     tempo1 <- saferDev::arg_check(data = data1, class = NULL, typeof = "character", mode = NULL, length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
     tempo2 <- saferDev::arg_check(data = data1, class = NULL, typeof = NULL, mode = "numeric", length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
@@ -431,7 +431,7 @@ permut <- function(
         )
         text_check <- base::c(text_check, tempo_cat)
         argum_check <- base::c(argum_check, TRUE)
-        checked_arg_names <- base::c(checked_arg_names, tempo1$object.name)
+        checked_arg_names <- base::c(checked_arg_names, tempo1$object_name)
     }
     if(base::is.null(x = data2) == FALSE){ # data1 must be numeric if data2 specified
         tempo5 <- saferDev::arg_check(data = data1, class = NULL, typeof = NULL, mode = "numeric", length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text)
@@ -444,7 +444,7 @@ permut <- function(
             )
             text_check <- base::c(text_check, tempo_cat)
             argum_check <- base::c(argum_check, TRUE)
-            checked_arg_names <- base::c(checked_arg_names, tempo1$object.name)
+            checked_arg_names <- base::c(checked_arg_names, tempo1$object_name)
         }
     }
     if(base::is.null(x = data2) == FALSE){
