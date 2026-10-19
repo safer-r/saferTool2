@@ -302,3 +302,24 @@ test_that("trim corner_text branches", {
   # data given as a non numeric non matrix object: the combined arg_check error of the data argument
   expect_error(trim(data = "abc"))
 })
+
+test_that("trim displayed_nb exact-equality and single_value_display = TRUE branches", {
+  # single_value_display = TRUE with single-value data: the normal-graph branch (distinct from the FALSE -> NULL branch)
+  res_single_true <- trim(data = base::rep(x = 5, times = 3), single_value_display = TRUE, trim_method = "mean.sd", trim_return = TRUE, safer_check = FALSE)
+  testthat::expect_true(object = ! base::is.null(x = res_single_true$trim_method)) # normal graph computed
+  testthat::expect_identical(object = res_single_true$trim_method, expected = "mean.sd")
+  testthat::expect_equal(object = res_single_true$real.trim.cutoffs, expected = base::c(5, 5)) # degenerate interval around the single value
+  # displayed_nb exactly equal to the number of values: no sampling (sampling branch only if length > displayed_nb)
+  res_eq <- trim(data = base::c(10, 1, 5, 8, 3, 9, 4, 7, 2, 6), displayed_nb = 10, trim_method = "quantile", trim_cutoffs = c(0.2, 0.8), trim_return = TRUE, safer_check = FALSE)
+  testthat::expect_identical(object = res_eq$kept.values, expected = base::c(3, 4, 5, 6, 7, 8)) # kept in sampled_data order (no sampling: initial order)
+  testthat::expect_identical(object = res_eq$trimmed.values, expected = base::c(1, 2, 9, 10))
+  testthat::expect_equal(object = base::unname(res_eq$real.trim.cutoffs), expected = base::c(2.8, 8.2))
+  # displayed_nb below the number of values: sampling occurs (with seed for determinism)
+  res_samp <- trim(data = base::c(10, 1, 5, 8, 3, 9, 4, 7, 2, 6), displayed_nb = 5, trim_method = "quantile", trim_cutoffs = c(0.2, 0.8), trim_return = TRUE, safer_check = FALSE, seed = 22)
+  testthat::expect_identical(object = res_samp$kept.values, expected = base::c(3, 4, 5, 6, 7, 8)) # sampling of the graph does not change the trim computation (computed on the full data)
+  # trim_return with non-empty kept/trimmed values for a full quantile trim (values assertions)
+  res_q <- trim(data = 1:10, trim_method = "quantile", trim_cutoffs = c(0.2, 0.8), trim_return = TRUE, safer_check = FALSE, seed = 22)
+  testthat::expect_equal(object = res_q$kept.values, expected = 3:8)
+  testthat::expect_equal(object = res_q$trimmed.values, expected = base::c(1, 2, 9, 10))
+  testthat::expect_equal(object = base::unname(res_q$real.trim.cutoffs), expected = base::c(2.8, 8.2))
+})

@@ -166,6 +166,18 @@ test_that("permut identical data warnings and special branches", {
     expect_warning(object = permut(data1 = c(0,0,0,0,0), data2 = NULL, n = 1, seed = 1, print_count = 1, text_print = "", cor_method = "spearman", cor_limit = 0.9, warn_print = TRUE), regexp = "NO PERMUTATION PERFORMED")
 })
 
+test_that("permut non-safer errors of loop counter values and data2 factor case", {
+    data1 <- 1:5
+    # n = 0: passes arg_check (0 is a non-negative number) but crashes in the loop code (sample.int(size = 0) -> empty pos)
+    testthat::expect_error(object = permut(data1 = data1, data2 = NULL, n = 0, seed = 1, print_count = 1, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE), regexp = "NAs are not allowed in subscripted assignments", fixed = TRUE)
+    # n = 0.5: same crash (1:0.5 is an empty sequence), non-safer error documented here
+    testthat::expect_error(object = permut(data1 = data1, data2 = NULL, n = 0.5, seed = 1, print_count = 1, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE), regexp = "NAs are not allowed in subscripted assignments", fixed = TRUE)
+    # print_count = 0: same crash mechanism (loop of 0 iterations)
+    testthat::expect_error(object = permut(data1 = data1, data2 = NULL, n = 5, seed = 1, print_count = 0, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE), regexp = "NAs are not allowed in subscripted assignments", fixed = TRUE)
+    # data2 given as a factor: passes the mode = "numeric" arg_check but crashes in stats::cor (non-safer error path)
+    testthat::expect_error(object = permut(data1 = data1, data2 = base::factor(x = 1:5), n = 10, seed = 1, print_count = 1, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE), regexp = "'y' must be numeric", fixed = TRUE)
+})
+
 test_that("permut correlated permutation loops (for/while rounds and GOBACK)", {
     # round 1 with loop.nb.est > 1e4: for loop path, GOBACK TRUE then FALSE rounds, final while loop
     res <- suppressWarnings(permut(data1 = c(1,1,1,2,3), data2 = 1:5, n = 10, seed = 1, print_count = 1000, text_print = "", cor_method = "pearson", cor_limit = 0.5, warn_print = FALSE))
