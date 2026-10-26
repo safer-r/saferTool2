@@ -99,3 +99,21 @@ test_that("codon2aa primary checking and other checkings", {
   # lib_path with an existing directory: .libPaths() branch
   expect_no_error(codon2aa(data = "atg", display = FALSE, lib_path = tempdir()))
 })
+
+test_that("codon2aa data argument values: success forms and edge values", {
+  # data as a 3-element character vector (equivalent to the single string form)
+  testthat::expect_identical(object = codon2aa(data = c("a", "t", "g"), display = FALSE), expected = "M")
+  testthat::expect_identical(object = codon2aa(data = c("T", "G", "A"), display = FALSE), expected = "stop") # uppercase also accepted (TGA -> stop codon)
+  testthat::expect_identical(object = codon2aa(data = c("A", "T", "C"), display = FALSE), expected = "I")
+  # mixed case also accepted (case-insensitive via toupper)
+  testthat::expect_identical(object = codon2aa(data = c("a", "T", "g"), display = FALSE), expected = "M")
+  # display = TRUE: the full standard genetic code table is returned (4x4x4 array with T/C/A/G dimnames)
+  sgc <- codon2aa(data = "ATC", display = TRUE)
+  testthat::expect_equal(object = base::dim(x = sgc), expected = base::c(4, 4, 4))
+  testthat::expect_identical(object = base::names(x = base::dimnames(x = sgc)), expected = base::c("first", "second", "third"))
+  testthat::expect_identical(object = base::unname(base::unlist(base::dimnames(x = sgc))), expected = base::rep(x = base::c("T", "C", "A", "G"), times = 3))
+  testthat::expect_identical(object = sgc[["T", "C", "A"]], expected = "S")
+  testthat::expect_identical(object = sgc[["A", "T", "G"]], expected = "M")
+  # data = "": passes every checking (single string, no bad letters since all(logical(0)) is TRUE) and returns NA_character_
+  testthat::expect_identical(object = codon2aa(data = "", display = FALSE), expected = NA_character_)
+})

@@ -176,7 +176,7 @@ slide <- function(
     ######## mandatory arg of safer-r functions
     mandat_args <- base::c("lib_path", "safer_check", "error_text")
     tempo_log <- ! mandat_args %in% arg_names
-    if(base::any(x = tempo_log, na.rm = TRUE)) {
+    if(base::any(tempo_log, na.rm = TRUE)) {
         # This check is here in case the developer has not correctly written the argument of its function
         tempo_cat <- base::paste0(
             error_text_start,
@@ -306,7 +306,7 @@ slide <- function(
                     }
                 ),
                 FUN = function(x){
-                    base::all(x = x, na.rm = TRUE) & base::length(x = x) > 0 # if x is empty, return FALSE, so OK
+                    base::all(x, na.rm = TRUE) & base::length(x = x) > 0 # if x is empty, return FALSE, so OK
                 },
                 simplify = TRUE,
                 USE.NAMES = TRUE
@@ -442,7 +442,7 @@ slide <- function(
     text_check <- NULL
     checked_arg_names <- NULL # for function debbuging: used by r_debugging_tools
     arg_check_error_text <- base::paste0("ERROR ", embed_error_text, "\n\n", collapse = NULL, recycle0 = FALSE) # must be used instead of error_text = embed_error_text when several arg_check are performed on the same argument (tempo1, tempo2, see below)
-    ee <- base::expression(argum_check <- base::c(argum_check, tempo$problem) , text_check <- base::c(text_check, tempo$text) , checked_arg_names <- base::c(checked_arg_names, tempo$object.name))
+    ee <- base::expression(argum_check <- base::c(argum_check, tempo$problem) , text_check <- base::c(text_check, tempo$text) , checked_arg_names <- base::c(checked_arg_names, tempo$object_name))
     tempo <- saferDev::arg_check(data = data, class = NULL, typeof = NULL, mode = "numeric", length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     tempo <- saferDev::arg_check(data = window_size, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
     tempo <- saferDev::arg_check(data = step, class = NULL, typeof = NULL, mode = "numeric", length = 1, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = FALSE, neg_values = FALSE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
@@ -463,7 +463,7 @@ slide <- function(
         )
         text_check <- base::c(text_check, tempo_cat)
         argum_check <- base::c(argum_check, TRUE)
-        checked_arg_names <- base::c(checked_arg_names, tempo1$object.name)
+        checked_arg_names <- base::c(checked_arg_names, tempo1$object_name)
     }
     if(base::is.null(x = args) == FALSE){
         tempo <- saferDev::arg_check(data = args, class = NULL, typeof = "character", mode = NULL, length = NULL, prop = FALSE, options = NULL, double_as_integer_allowed = FALSE, all_options_in_data = FALSE, na_contain = TRUE, neg_values = TRUE, inf_values = TRUE, print = FALSE, data_name = NULL, data_arg = TRUE, safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) ; base::eval(expr = ee, envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
@@ -664,9 +664,9 @@ slide <- function(
     # wind <- wind[ ! wind$center > max(data, na.rm = TRUE),]
     # }
     if(base::sum(base::get(right_last_wind)(wind$right, if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}), na.rm = TRUE) > 1){  # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
-        tempo.log <- base::get(right_last_wind)(wind$right, if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
-        tempo.log[base::min(base::which(tempo.log), na.rm = TRUE)] <- FALSE # convert the first left boundary that goes above base::max(data, na.rm = TRUE) to FALSE to keep it (the next ones will be removed)
-        wind <- wind[ ! tempo.log,]
+        tempo_log <- base::get(right_last_wind)(wind$right, if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
+        tempo_log[base::min(base::which(tempo_log), na.rm = TRUE)] <- FALSE # convert the first left boundary that goes above base::max(data, na.rm = TRUE) to FALSE to keep it (the next ones will be removed)
+        wind <- wind[ ! tempo_log,]
     }
 
     # test if lapply can be used

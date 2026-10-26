@@ -1,5 +1,5 @@
 
-# saferTool2 <a href="https://safer-r.github.io/saferTool2">[<img src="man/figures/new_saferTool2.png" align="right" height="140" />](https://safer-r.github.io/saferTool2/)</a>
+# saferTool2 <a href="https://safer-r.github.io/saferTool2">[<img src="man/figures/saferTool2.png" align="right" height="140" />](https://safer-r.github.io/saferTool2/)</a>
 
 <br />
 
@@ -10,7 +10,7 @@
 [![Downloads](https://cranlogs.r-pkg.org/badges/saferTool2)](https://r-pkg.org/pkg/saferTool2)<br />
 [![Rworkflows](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml/badge.svg)](https://github.com/safer-r/saferTool2/actions/workflows/rworkflows.yml)
 [![Codecov](https://codecov.io/github/safer-r/saferTool2/coverage.svg?branch=master)](https://app.codecov.io/github/safer-r/saferTool2?branch=master)
-[![safer-R Status](https://img.shields.io/badge/Safer--R%20status-backbone%20v20.0-brightgreen)](https://github.com/safer-r/.github/blob/main/profile/backbone.R)<br />
+[![safer-R Status](https://img.shields.io/badge/Safer--R%20status-backbone%20v21.1-brightgreen)](https://github.com/safer-r/.github/blob/main/profile/backbone.R)<br />
 [![](https://img.shields.io/badge/license-GPL3.0-lightgrey.svg)](https://opensource.org/license/gpl-3.0)
 <!-- badges: end -->
 

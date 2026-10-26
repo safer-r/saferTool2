@@ -176,3 +176,26 @@ test_that("slide() values of the returned data frame", {
   res_args <- slide(data = 1:10, window_size = 5, step = 2, FUN = mean, args = "trim = 0.2", verbose = FALSE, safer_check = FALSE)
   testthat::expect_equal(object = res_args$value, expected = base::c(3, 5, 7, 8.5))
 })
+
+test_that("slide() data given as a matrix (documented accepted type)", {
+  # matrix input: converted to vector internally (as.vector), documented accepted type not tested until now
+  res_mat <- slide(data = base::matrix(data = 1:12, nrow = 3), window_size = 3, step = 2, FUN = mean, verbose = FALSE, safer_check = FALSE)
+  testthat::expect_equal(object = base::names(x = res_mat), expected = base::c("left", "right", "center", "value"))
+  testthat::expect_equal(object = res_mat$left, expected = base::c(1, 3, 5, 7, 9, 11))
+  testthat::expect_equal(object = res_mat$right, expected = base::c(4, 6, 8, 10, 12, 14))
+  testthat::expect_equal(object = res_mat$center, expected = base::c(2.5, 4.5, 6.5, 8.5, 10.5, 12.5))
+  testthat::expect_equal(object = res_mat$value, expected = base::c(2, 4, 6, 8, 10, 11.5)) # 11.5 because 12 is duplicated as boundary padding in the last window
+})
+
+test_that("slide() non-safer errors of FUN and seq() values", {
+  # FUN given as a string that is not a function: non-safer match.fun() error
+  testthat::expect_error(object = slide(data = 1:10, window_size = 3, step = 2, FUN = "not_a_function", verbose = FALSE, safer_check = FALSE), regexp = "object 'not_a_function' of mode 'function' was not found", fixed = TRUE)
+  # FUN returning a vector of length 2 (e.g. range): internal consistency guard of the function
+  testthat::expect_error(object = slide(data = 1:10, window_size = 3, step = 2, FUN = range, verbose = FALSE, safer_check = FALSE), regexp = "CODE INCONSISTENCY 3", fixed = TRUE)
+  # step = 0: passes arg_check (0 is a non-negative number) but crashes in seq() (non-safer error)
+  testthat::expect_error(object = slide(data = 1:10, window_size = 3, step = 0, FUN = mean, verbose = FALSE, safer_check = FALSE), regexp = "invalid '(to - from)/by'", fixed = TRUE)
+  # from > to: passes arg_check but crashes in seq() (non-safer error)
+  testthat::expect_error(object = slide(data = 1:10, window_size = 3, step = 2, FUN = mean, from = 8, to = 2, verbose = FALSE, safer_check = FALSE), regexp = "wrong sign in 'by' argument", fixed = TRUE)
+  # to = Inf: passes arg_check (numeric) but crashes in seq() (non-safer error)
+  testthat::expect_error(object = slide(data = 1:10, window_size = 3, step = 2, FUN = mean, to = Inf, verbose = FALSE, safer_check = FALSE), regexp = "'to' must be a finite number", fixed = TRUE)
+})

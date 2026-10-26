@@ -48,6 +48,24 @@ test_that("codon_finder returns correct codons within specified range", {
   expect_no_error(codon_finder(pos = c(5, 6, 8, 10), begin = 5, end = 10, error_text = " IN TEST."))
 })
 
+test_that("codon_finder returns correct values in the output data frame", {
+  # full value assertion of the returned data frame (codon_nb, codon_pos, codon_begin, codon_end)
+  res <- codon_finder(pos = c(5, 6, 8, 10), begin = 5, end = 10)
+  testthat::expect_s3_class(object = res, class = "data.frame")
+  testthat::expect_equal(object = base::names(x = res), expected = base::c("pos", "codon_nb", "codon_pos", "codon_begin", "codon_end"))
+  testthat::expect_identical(object = res$pos, expected = base::c(5L, 6L, 8L, 10L))
+  testthat::expect_identical(object = res$codon_nb, expected = base::c(1L, 1L, 2L, 2L))
+  testthat::expect_identical(object = res$codon_pos, expected = base::c(1L, 2L, 1L, 3L))
+  testthat::expect_identical(object = res$codon_begin, expected = base::c(5L, 5L, 8L, 8L))
+  testthat::expect_identical(object = res$codon_end, expected = base::c(7L, 7L, 10L, 10L))
+  # single position inside a codon, with negative begin (position 0 allowed)
+  res2 <- codon_finder(pos = 0, begin = -2, end = 12)
+  testthat::expect_identical(object = res2$codon_nb, expected = 1L)
+  testthat::expect_identical(object = res2$codon_pos, expected = 3L)
+  testthat::expect_identical(object = res2$codon_begin, expected = -2L)
+  testthat::expect_identical(object = res2$codon_end, expected = 0L)
+})
+
 test_that("codon_finder primary checking and other checkings", {
   # function name block: pkg:: call and bare zero-arg call
   expect_no_error(saferTool2::codon_finder(pos = c(5, 6, 8, 10), begin = 5, end = 10)) # function_name[3] line of the pkg:: call
