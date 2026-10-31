@@ -138,10 +138,22 @@ test_that("slide() secondary checking blocks", {
 })
 
 test_that("slide() parallelization branches with verbose output", {
-  # parallel run with verbose = TRUE: PARALLELIZATION INITIATED / NUMBER OF THREADS / SPLIT OF TEST NUMBERS messages
-  res_par <- slide(data = 1:10, window_size = 5, step = 2, FUN = length, parall = TRUE, thread_nb = 2, print_count = 1, verbose = TRUE)
+  # parallel run with verbose = TRUE: PARALLELIZATION INITIATED / NUMBER OF THREADS / LOG FILE / SPLIT OF TEST NUMBERS messages
+  # res_path = NULL (default): log file written in the temporary directory, never in the working directory
+  log_default <- base::paste0(base::tempdir(check = FALSE), "/fun_slide_parall_log.txt")
+  base::unlink(x = log_default)
+  ini_wd_files <- base::list.files(path = base::getwd(), all.files = TRUE, recursive = FALSE)
+  testthat::expect_output(object = res_par <- slide(data = 1:10, window_size = 5, step = 2, FUN = length, parall = TRUE, thread_nb = 2, print_count = 1, verbose = TRUE), regexp = "LOG FILE OF THE PARALLELIZATION: ", fixed = TRUE)
+  testthat::expect_true(object = base::file.exists(log_default))
+  testthat::expect_equal(object = base::list.files(path = base::getwd(), all.files = TRUE, recursive = FALSE), expected = ini_wd_files)
   testthat::expect_equal(object = base::names(x = res_par), expected = base::c("left", "right", "center", "value"))
   testthat::expect_equal(object = res_par$value, expected = base::c(5, 5, 5, 4)) # same result as the non parallel run
+  # res_path set to another directory than the default one: the parallel log file is written there
+  res_dir_other <- base::file.path(base::tempdir(), "slide_res_path_test")
+  base::dir.create(path = res_dir_other, showWarnings = FALSE, recursive = FALSE, mode = "0777")
+  res_par_other <- slide(data = 1:10, window_size = 5, step = 2, FUN = length, parall = TRUE, thread_nb = 2, print_count = 1, res_path = res_dir_other, verbose = FALSE)
+  testthat::expect_true(object = base::file.exists(base::paste0(res_dir_other, "/fun_slide_parall_log.txt")))
+  base::unlink(x = res_dir_other, recursive = TRUE)
   # parallel run with res_path set: the parallel log file is written in res_path
   res_dir <- base::tempdir()
   res_par2 <- slide(data = 1:10, window_size = 5, step = 2, FUN = length, parall = TRUE, thread_nb = 2, print_count = 1, res_path = res_dir, verbose = FALSE)

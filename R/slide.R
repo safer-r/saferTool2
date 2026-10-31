@@ -12,7 +12,7 @@
 #' @param parall Single logical value. Force parallelization ?
 #' @param thread_nb Single numeric value indicating the number of threads to use if ever parallelization is required. If NULL, all the available threads will be used. Ignored if parall is FALSE.
 #' @param print_count Single numeric value (integers expected in practice). Print a working progress message every print_count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.
-#' @param res_path Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.
+#' @param res_path Character string indicating the absolute pathway of the directory where the parallelization log file (fun_slide_parall_log.txt) will be created if parallelization is used. If NULL (default), the log file is created in the temporary directory of the R session (see \code{tempdir()}), which is deleted at the end of the session. The path of the log file is displayed if verbose is TRUE.
 #' @param verbose Single logical value. Display messages?
 #' @param safer_check Single logical value. Perform the "safer" checks? If \code{TRUE}, checkings are performed before main code running (see the \href{https://github.com/safer-r}{safer-r project}): 1) required functions and related packages effectively present in local R libraries and 2) R classical operators (like \code{"<-"}) not overwritten by another package because of the R scope. Warning: must be set to \code{FALSE} if this function is used inside another "safer" function to avoid pointless multiple checkings.
 #' @param lib_path Vector of characters specifying the absolute pathways of the directories containing the required packages for the function, if not in the default directories. Useful when R packages are not installed in the default directories because of lack of admin rights. More precisely, \code{lib_path} is passed through the \code{new} argument of \code{.libPaths()} so that the new library paths are \code{unique(c(new, .Library.site, .Library))}. Warning: \code{.libPaths()} is restored to the initial paths, after function execution. Ignored if \code{NULL} (default): only the pathways specified by the current \code{.libPaths()} are used for package calling.
@@ -44,9 +44,10 @@
 #' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "right")
 #'
 #' \donttest{
-#' # effect of parall argument (2 threads, log file written in the temporary directory)
+#' # effect of parall argument (2 threads, log file written in the temporary directory of the
+#' # R session, default of the res_path argument)
 #' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length,
-#'     boundary = "left", parall = TRUE, thread_nb = 2, res_path = base::tempdir(check = FALSE))
+#'     boundary = "left", parall = TRUE, thread_nb = 2)
 #' }
 #' @importFrom saferDev arg_check
 #' @importFrom saferDev get_message
@@ -602,7 +603,7 @@ slide <- function(
             base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
         }
     }else{
-        res_path <- base::getwd() # working directory
+        res_path <- base::tempdir(check = FALSE) # temporary directory of the R session (never the working directory: CRAN policy, no file written outside the temporary directory by default)
     }
     ######## end other checkings
 
@@ -736,11 +737,14 @@ slide <- function(
         }else{
             thread_nb <- tempo_thread_nb
         }
+        log_file <- base::paste0(res_path, "/fun_slide_parall_log.txt", collapse = NULL, recycle0 = FALSE)
         if(verbose == TRUE){
             tempo_cat <- base::paste0("NUMBER OF THREADS USED: ", thread_nb, collapse = NULL, recycle0 = FALSE)
             base::cat(base::paste0("\n    ", tempo_cat, "\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
+            tempo_cat <- base::paste0("LOG FILE OF THE PARALLELIZATION: ", log_file, collapse = NULL, recycle0 = FALSE)
+            base::cat(base::paste0("\n    ", tempo_cat, "\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
         }
-        Clust <- parallel::makeCluster(spec = thread_nb, outfile = base::paste0(res_path, "/fun_slide_parall_log.txt", collapse = NULL, recycle0 = FALSE), type = "PSOCK") # type = "PSOCK": default value of parallel::makeCluster(), returned by the non exported parallel:::getClusterOption("type") (unless modified by parallel::setDefaultCluster()). outfile to print or cat during parallelization (only possible in a file, outfile = "" do not work on windows)
+        Clust <- parallel::makeCluster(spec = thread_nb, outfile = log_file, type = "PSOCK") # type = "PSOCK": default value of parallel::makeCluster(), returned by the non exported parallel:::getClusterOption("type") (unless modified by parallel::setDefaultCluster()). outfile to print or cat during parallelization (only possible in a file, outfile = "" do not work on windows)
         cluster_list <- parallel::clusterSplit(cl = Clust, seq = 1:base::nrow(x = wind)) # split according to the number of cluster
         if(verbose == TRUE){
             tempo_cat <- base::paste0("SPLIT OF TEST NUMBERS IN PARALLELISATION:", collapse = NULL, recycle0 = FALSE)

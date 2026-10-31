@@ -46,7 +46,7 @@ slide(
 
 \item{print_count}{Single numeric value (integers expected in practice). Print a working progress message every print_count during loops. BEWARE: can increase substantially the time to complete the process using a small value, like 10 for instance. Use Inf is no loop message desired.}
 
-\item{res_path}{Character string indicating the absolute pathway where the parallelization log file will be created if parallelization is used. If NULL, will be created in the R current directory.}
+\item{res_path}{Character string indicating the absolute pathway of the directory where the parallelization log file (fun_slide_parall_log.txt) will be created if parallelization is used. If NULL (default), the log file is created in the temporary directory of the R session (see \code{tempdir()}), which is deleted at the end of the session. The path of the log file is displayed if verbose is TRUE.}
 
 \item{verbose}{Single logical value. Display messages?}
 
@@ -84,9 +84,10 @@ slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, bou
 slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "right")
 
 \donttest{
-# effect of parall argument (2 threads, log file written in the temporary directory)
+# effect of parall argument (2 threads, log file written in the temporary directory of the
+# R session, default of the res_path argument)
 slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length,
-    boundary = "left", parall = TRUE, thread_nb = 2, res_path = base::tempdir(check = FALSE))
+    boundary = "left", parall = TRUE, thread_nb = 2)
 }
 }
 \seealso{
