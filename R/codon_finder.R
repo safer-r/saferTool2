@@ -450,8 +450,9 @@ codon_finder <- function(
     #### end second round of checking and data preparation
 
     #### main code
-    first <- base::seq.int(from = begin, to = end, by = 3)
-    last <- base::seq.int(from = begin + 2, to = end, by = 3)
+    # seq() instead of seq.int(), a primitive function that returns an error with empty length.out and along.with arguments (all the arguments of seq.int() cannot be written)
+    first <- base::seq(from = begin, to = end, by = 3)
+    last <- base::seq(from = begin + 2, to = end, by = 3)
     tempo <- base::lapply(X = pos, FUN = function(x){
         tempo_log <- x >= first & x <= last
         if(base::sum(tempo_log, na.rm = TRUE) != 1){ # check that 1 possible TRUE
@@ -468,21 +469,21 @@ codon_finder <- function(
             base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
             # nocov end
         }else{
-            codon_nb <- base::which(tempo_log)
-            codon_pos <- base::as.integer((x - (begin + (codon_nb - 1) * 3) + 1))
-            codon_begin <- base::as.integer(first[tempo_log])
-            codon_end <- base::as.integer(last[tempo_log])
+            codon_nb <- base::which(x = tempo_log, arr.ind = FALSE, useNames = TRUE)
+            codon_pos <- base::as.integer(x = (x - (begin + (codon_nb - 1) * 3) + 1))
+            codon_begin <- base::as.integer(x = first[tempo_log])
+            codon_end <- base::as.integer(x = last[tempo_log])
         }
-        base::return(base::data.frame(codon_nb = codon_nb, codon_pos = codon_pos, codon_begin = codon_begin, codon_end = codon_end, stringsAsFactors = FALSE))
+        base::return(base::data.frame(codon_nb = codon_nb, codon_pos = codon_pos, codon_begin = codon_begin, codon_end = codon_end, stringsAsFactors = FALSE, row.names = NULL, check.rows = FALSE, check.names = TRUE, fix.empty.names = TRUE))
     })
-    tempo <- base::do.call(what = "rbind", args = tempo)
-    # end main code
+    tempo <- base::do.call(what = "rbind", args = tempo, quote = FALSE, envir = )
+    #### end main code
 
     #### warning output
     #### end warning output
 
     #### output
-    output <- base::data.frame(pos = base::as.integer(pos), tempo, stringsAsFactors = FALSE)
+    output <- base::data.frame(pos = base::as.integer(x = pos), tempo, stringsAsFactors = FALSE, row.names = NULL, check.rows = FALSE, check.names = TRUE, fix.empty.names = TRUE)
     base::return(output)
     #### end output
 

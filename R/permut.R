@@ -495,7 +495,7 @@ permut <- function(
             " NOT CLASS \"character\":\n",
             base::paste0(tempo_arg[tempo_log], collapse = "\n", recycle0 = FALSE),
             "\nIf saferMake::saferMake() HAS BEEN USED TO MODIFY YOUR FUNCTION, PLEASE RESTART WITH YOUR MAIN CODE AND SELECT PROPER CLASS, TYPE AND/OR MODE FOR YOUR ARGUMENTS\n.HERE, ARGUMENTS ARE TYPE:\n",
-            base::paste0(base::sapply(X = tempo_arg, FUN = function(x){base::paste0(x, ': \"', base::typeof(x = base::get(x = x, pos = -1L, envir = base::parent.frame(n = 3), mode = "any", inherits = FALSE)), '"', collapse = NULL, recycle0 = FALSE)}), collapse = "\n", recycle0 = FALSE), # parent.frame(n = 3) because the get() is evaluated inside the FUN closure of sapply. But sapply(FUN) calls lapply(FUN) internally !! So parent.frame(n = 1) is the internal lapply() frame called by sapply, parent.frame(n = 2) is sapply's frame, parent.frame(n = 3) is permut's frame. NB: paste0() and typeof() are primitives and add no frame.
+            base::paste0(base::sapply(X = tempo_arg, FUN = function(x){base::paste0(x, ": \"", base::typeof(x = base::get(x = x, pos = -1L, envir = base::parent.frame(n = 3), mode = "any", inherits = FALSE)), "\"", collapse = NULL, recycle0 = FALSE)}, simplify = TRUE, USE.NAMES = TRUE), collapse = "\n", recycle0 = FALSE), # parent.frame(n = 3) because the get() is evaluated inside the FUN closure of sapply. But sapply(FUN) calls lapply(FUN) internally !! So parent.frame(n = 1) is the internal lapply() frame called by sapply, parent.frame(n = 2) is sapply's frame, parent.frame(n = 3) is permut's frame. NB: paste0() and typeof() are primitives and add no frame.
             intern_error_text_end,
             collapse = NULL,
             recycle0 = FALSE
@@ -594,58 +594,58 @@ permut <- function(
     #### main code
 
     ini_date <- base::Sys.time() # time of process begin, converted into seconds
-    ini_time <- base::as.numeric(ini_date) # time of process begin, converted into seconds
-    ini_pos <- 1:base::length(data1) # positions of data1 before permutation loops
+    ini_time <- base::as.numeric(x = ini_date) # time of process begin, converted into seconds
+    ini_pos <- 1:base::length(x = data1) # positions of data1 before permutation loops
     tempo_pos <- ini_pos # positions of data1 that will be modified during loops
     # pos_selec_seq <- ini_pos[-length(data1)] # selection of 1 position in initial position, without the last because always up permutation (pos -> pos+1 & pos+1 -> pos)
-    pos_selec_seq_max <- base::length(ini_pos) - 1 # max position (used by base::sample.int() function). See  below for - 1
+    pos_selec_seq_max <- base::length(x = ini_pos) - 1 # max position (used by base::sample.int() function). See  below for - 1
     count <- 0
     round <- 0
     BREAK <- FALSE
     tempo_cor <- 0
-    if(base::is.null(data2)){
-        if(base::length(base::table(data1)) == 1L){
+    if(base::is.null(x = data2)){
+        if(base::length(x = base::table(data1, exclude = , useNA = base::c("no", "ifany", "always"), dnn = , deparse.level = 1)) == 1L){
             warn_count <- warn_count + 1
-            tempo_warn <- base::paste0("(", warn_count,") NO PERMUTATION PERFORMED BECAUSE data1 ARGUMENT SEEMS TO BE MADE OF IDENTICAL ELEMENTS: ", base::names(base::table(data1)), collapse = NULL, recycle0 = FALSE)
+            tempo_warn <- base::paste0("(", warn_count,") NO PERMUTATION PERFORMED BECAUSE data1 ARGUMENT SEEMS TO BE MADE OF IDENTICAL ELEMENTS: ", base::names(x = base::table(data1, exclude = , useNA = base::c("no", "ifany", "always"), dnn = , deparse.level = 1)), collapse = NULL, recycle0 = FALSE)
             warn <- base::paste0(base::ifelse(test = base::is.null(x = warn), yes = tempo_warn, no = base::paste0(warn, "\n\n", tempo_warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE)
         }else{
             if(print_count > n){
                 print_count <- n
             }
-           base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FOR LOOP OF ", n, " LOOPS INITIATED | LOOP COUNT: ", base::format(count, big.mark=","), collapse = NULL, recycle0 = FALSE))
+           base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FOR LOOP OF ", n, " LOOPS INITIATED | LOOP COUNT: ", base::format(x = count, big.mark=","), collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
             print_count_loop <- base::logical(length = print_count)
-            print_count_loop[base::length(print_count_loop)] <- TRUE # not this to avoid long vector, but not forget to reset during printing: print_count_loop[(1: trunctrunc(n / print_count) * print_count)] <- TRUE # counter to speedup
+            print_count_loop[base::length(x = print_count_loop)] <- TRUE # not this to avoid long vector, but not forget to reset during printing: print_count_loop[(1: trunctrunc(n / print_count) * print_count)] <- TRUE # counter to speedup
             count_loop <- 0
-            pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE) # selection of random positions. BEWARE: n = pos_selec_seq_max because already - 1 (see above) but is connected to tempo_pos[c(pos2 + 1, pos2)] <- tempo_pos[c(pos2, pos2 + 1)]
+            pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE, prob = NULL, useHash = ) # selection of random positions. BEWARE: n = pos_selec_seq_max because already - 1 (see above) but is connected to tempo_pos[c(pos2 + 1, pos2)] <- tempo_pos[c(pos2, pos2 + 1)]
             tempo_date_loop <- base::Sys.time()
-            tempo_time_loop <- base::as.numeric(tempo_date_loop)
-            for(i3 in 1:n){
+            tempo_time_loop <- base::as.numeric(x = tempo_date_loop)
+            for(i3 in base::seq_len(length.out = n)){
                 count_loop <- count_loop + 1
                 pos2 <- pos[count_loop] # selection of 1 position
                 tempo_pos[base::c(pos2 + 1, pos2)] <- tempo_pos[base::c(pos2, pos2 + 1)]
                 if(print_count_loop[count_loop]){
                     count_loop <- 0
-                    pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE) # BEWARE: never forget to resample here
-                    tempo_time <- base::as.numeric(base::Sys.time())
-                    tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - tempo_time_loop)), safer_check = FALSE)
+                    pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE, prob = NULL, useHash = ) # BEWARE: never forget to resample here
+                    tempo_time <- base::as.numeric(x = base::Sys.time())
+                    tempo_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = tempo_time - tempo_time_loop)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
                     final_loop <- (tempo_time - tempo_time_loop) / i3 * n # expected duration in seconds
-                    final_exp <- base::as.POSIXct(final_loop, origin = tempo_date_loop)
-                    base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FOR LOOP ", i3, " / ", n, " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp, collapse = NULL, recycle0 = FALSE))
+                    final_exp <- base::as.POSIXct(x = final_loop, origin = tempo_date_loop, tz = "")
+                    base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FOR LOOP ", i3, " / ", n, " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp, collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                 }
             }
             count <- count + n # out of the loop to speedup
-            base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FOR LOOP ENDED | LOOP COUNT: ", base::format(count, big.mark=","), collapse = NULL, recycle0 = FALSE))
-            base::cat("\n\n")
+            base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FOR LOOP ENDED | LOOP COUNT: ", base::format(x = count, big.mark=","), collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
+            base::cat("\n\n", file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
         }
     }else{
-        if(base::length(base::table(data1)) == 1L){
+        if(base::length(x = base::table(data1, exclude = , useNA = base::c("no", "ifany", "always"), dnn = , deparse.level = 1)) == 1L){
             warn_count <- warn_count + 1
-            tempo_warn <- base::paste0("(", warn_count,") NO PERMUTATION PERFORMED BECAUSE data1 ARGUMENT SEEMS TO BE MADE OF IDENTICAL ELEMENTS: ", base::names(base::table(data1)), collapse = NULL, recycle0 = FALSE)
+            tempo_warn <- base::paste0("(", warn_count,") NO PERMUTATION PERFORMED BECAUSE data1 ARGUMENT SEEMS TO BE MADE OF IDENTICAL ELEMENTS: ", base::names(x = base::table(data1, exclude = , useNA = base::c("no", "ifany", "always"), dnn = , deparse.level = 1)), collapse = NULL, recycle0 = FALSE)
             warn <- base::paste0(base::ifelse(test = base::is.null(x = warn), yes = tempo_warn, no = base::paste0(warn, "\n\n", tempo_warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE)
             tempo_cor <- 1
-        }else if(base::length(base::table(data2)) == 1L){
+        }else if(base::length(x = base::table(data2, exclude = , useNA = base::c("no", "ifany", "always"), dnn = , deparse.level = 1)) == 1L){
             warn_count <- warn_count + 1
-            tempo_warn <- base::paste0("(", warn_count,") NO PERMUTATION PERFORMED BECAUSE data2 ARGUMENT SEEMS TO BE MADE OF IDENTICAL ELEMENTS: ", base::names(base::table(data2)), collapse = NULL, recycle0 = FALSE)
+            tempo_warn <- base::paste0("(", warn_count,") NO PERMUTATION PERFORMED BECAUSE data2 ARGUMENT SEEMS TO BE MADE OF IDENTICAL ELEMENTS: ", base::names(x = base::table(data2, exclude = , useNA = base::c("no", "ifany", "always"), dnn = , deparse.level = 1)), collapse = NULL, recycle0 = FALSE)
             warn <- base::paste0(base::ifelse(test = base::is.null(x = warn), yes = tempo_warn, no = base::paste0(warn, "\n\n", tempo_warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE)
             tempo_cor <- 1
         }else{
@@ -654,54 +654,54 @@ permut <- function(
             neg_cor <- FALSE
             if(tempo_cor < 0){
                 warn_count <- warn_count + 1
-                tempo_warn <- base::paste0("(", warn_count,") INITIAL ", base::toupper(cor_method), " CORRELATION BETWEEN data1 AND data2 HAS BEEN DETECTED AS NEGATIVE: ", tempo_cor, ". THE LOOP STEPS WILL BE PERFORMED USING POSITIVE CORRELATIONS BUT THE FINAL CORRELATION WILL BE NEGATIVE", collapse = NULL, recycle0 = FALSE)
+                tempo_warn <- base::paste0("(", warn_count,") INITIAL ", base::toupper(x = cor_method), " CORRELATION BETWEEN data1 AND data2 HAS BEEN DETECTED AS NEGATIVE: ", tempo_cor, ". THE LOOP STEPS WILL BE PERFORMED USING POSITIVE CORRELATIONS BUT THE FINAL CORRELATION WILL BE NEGATIVE", collapse = NULL, recycle0 = FALSE)
                 warn <- base::paste0(base::ifelse(test = base::is.null(x = warn), yes = tempo_warn, no = base::paste0(warn, "\n\n", tempo_warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE)
                 neg_cor <- TRUE
-                tempo_cor <- base::abs(tempo_cor)
-                cor_ini <- base::abs(cor_ini)
+                tempo_cor <- base::abs(x = tempo_cor)
+                cor_ini <- base::abs(x = cor_ini)
             }
             if(tempo_cor < cor_limit){ # randomize directly all the position to be close to correlation zero
                 warn_count <- warn_count + 1
-                tempo_warn <- base::paste0("(", warn_count,") INITIAL ABSOLUTE VALUE OF THE ", base::toupper(cor_method), " CORRELATION ", saferTool::round2(tempo_cor, safer_check = FALSE), " BETWEEN data1 AND data2 HAS BEEN DETECTED AS BELOW THE CORRELATION LIMIT PARAMETER ", cor_limit, "\nTHE data1 SEQUENCE HAS BEEN COMPLETELY RANDOMIZED TO CORRESPOND TO CORRELATION ZERO", collapse = NULL, recycle0 = FALSE)
+                tempo_warn <- base::paste0("(", warn_count,") INITIAL ABSOLUTE VALUE OF THE ", base::toupper(x = cor_method), " CORRELATION ", saferTool::round2(data = tempo_cor, safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " BETWEEN data1 AND data2 HAS BEEN DETECTED AS BELOW THE CORRELATION LIMIT PARAMETER ", cor_limit, "\nTHE data1 SEQUENCE HAS BEEN COMPLETELY RANDOMIZED TO CORRESPOND TO CORRELATION ZERO", collapse = NULL, recycle0 = FALSE)
                 warn <- base::paste0(base::ifelse(test = base::is.null(x = warn), yes = tempo_warn, no = base::paste0(warn, "\n\n", tempo_warn, collapse = NULL, recycle0 = FALSE)), collapse = NULL, recycle0 = FALSE)
                 for(i4 in 1:5){ # done 5 times to be sure of the complete randomness
-                    tempo_pos <- base::sample(x = tempo_pos, size = base::length(tempo_pos), replace = FALSE)
+                    tempo_pos <- base::sample(x = tempo_pos, size = base::length(x = tempo_pos), replace = FALSE, prob = NULL)
                 }
                 count <- count + 5 # out of the loop to speedup
             }else{
                 # smallest correlation decrease
                 count <- count + 1 # 1 and not 0 because already 1 performed just below
-                pos <- base::sample.int(n = pos_selec_seq_max , size = 1, replace = TRUE) # selection of 1 position # pos_selec_seq_max  because selection of 1 position in initial position, without the last because always up permutation (pos -> pos+1 & pos+1 -> pos)
+                pos <- base::sample.int(n = pos_selec_seq_max , size = 1, replace = TRUE, prob = NULL, useHash = ) # selection of 1 position # pos_selec_seq_max  because selection of 1 position in initial position, without the last because always up permutation (pos -> pos+1 & pos+1 -> pos)
                 tempo_pos[base::c(pos + 1, pos)] <- tempo_pos[base::c(pos, pos + 1)]
-                tempo_cor <- base::abs(stats::cor(x = data1[tempo_pos], y = data2, use = "pairwise.complete.obs", method = cor_method))
+                tempo_cor <- base::abs(x = stats::cor(x = data1[tempo_pos], y = data2, use = "pairwise.complete.obs", method = cor_method))
                 smallest_cor_dec <- cor_ini - tempo_cor
                 # end smallest correlation decrease
                 # going out of tempo_cor == cor_ini
-                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "CORRELATION DECREASE AFTER A SINGLE PERMUTATION: ", saferTool::round2(smallest_cor_dec, 4, safer_check = FALSE), collapse = NULL, recycle0 = FALSE))
-                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FIRST WHILE LOOP STEP -> GOING OUT FROM EQUALITY | LOOP COUNT: ", base::format(count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(cor_limit, 4, safer_check = FALSE), " | ABS TEMPO CORRELATION: ", saferTool::round2(tempo_cor, 4, safer_check = FALSE), collapse = NULL, recycle0 = FALSE))
+                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "CORRELATION DECREASE AFTER A SINGLE PERMUTATION: ", saferTool::round2(data = smallest_cor_dec, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
+                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FIRST WHILE LOOP STEP -> GOING OUT FROM EQUALITY | LOOP COUNT: ", base::format(x = count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(data = cor_limit, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | ABS TEMPO CORRELATION: ", saferTool::round2(data = tempo_cor, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                 print_count_loop <- base::logical(length = print_count)
-                print_count_loop[base::length(print_count_loop)] <- TRUE # counter to speedup
+                print_count_loop[base::length(x = print_count_loop)] <- TRUE # counter to speedup
                 count_loop <- 0 #
-                pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE) # selection of random positions. BEWARE: n = pos_selec_seq_max because already - 1 (see above) but is connected to tempo_pos[c(pos2 + 1, pos2)] <- tempo_pos[c(pos2, pos2 + 1)]
+                pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE, prob = NULL, useHash = ) # selection of random positions. BEWARE: n = pos_selec_seq_max because already - 1 (see above) but is connected to tempo_pos[c(pos2 + 1, pos2)] <- tempo_pos[c(pos2, pos2 + 1)]
                 tempo_date_loop <- base::Sys.time()
-                tempo_time_loop <- base::as.numeric(tempo_date_loop)
+                tempo_time_loop <- base::as.numeric(x = tempo_date_loop)
                 while(tempo_cor == cor_ini){ # to be out of equality between tempo_cor and cor_ini at the beginning (only valid for very long vector)
                     count <- count + 1
                     count_loop <- count_loop + 1
                     pos2 <- pos[count_loop]
                     tempo_pos[base::c(pos2 + 1, pos2)] <- tempo_pos[base::c(pos2, pos2 + 1)]
-                    tempo_cor <- base::abs(stats::cor(x = data1[tempo_pos], y = data2, use = "pairwise.complete.obs", method = cor_method))
+                    tempo_cor <- base::abs(x = stats::cor(x = data1[tempo_pos], y = data2, use = "pairwise.complete.obs", method = cor_method))
                     if(print_count_loop[count_loop]){
                         count_loop <- 0
-                        pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE) # BEWARE: never forget to resample here
-                        tempo_time <- base::as.numeric(base::Sys.time())
-                        tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - tempo_time_loop)), safer_check = FALSE)
-                        base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FIRST WHILE LOOP STEP", base::format(count_loop, big.mark=","), " / ? | COUNT: ", base::format(count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(cor_limit, 4, safer_check = FALSE), " | ABS TEMPO CORRELATION: ", saferTool::round2(tempo_cor, 4, safer_check = FALSE), " | TIME SPENT: ", tempo_lapse, collapse = NULL, recycle0 = FALSE))
+                        pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE, prob = NULL, useHash = ) # BEWARE: never forget to resample here
+                        tempo_time <- base::as.numeric(x = base::Sys.time())
+                        tempo_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = tempo_time - tempo_time_loop)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
+                        base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FIRST WHILE LOOP STEP", base::format(x = count_loop, big.mark=","), " / ? | COUNT: ", base::format(x = count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(data = cor_limit, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | ABS TEMPO CORRELATION: ", saferTool::round2(data = tempo_cor, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | TIME SPENT: ", tempo_lapse, collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                     }
                 }
-                tempo_time <- base::as.numeric(base::Sys.time())
-                tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE)
-                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FIRST WHILE LOOP STEP END | LOOP COUNT: ", base::format(count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(cor_limit, 4, safer_check = FALSE), " | ABS TEMPO CORRELATION: ", saferTool::round2(tempo_cor, 4, safer_check = FALSE), " | TOTAL SPENT TIME: ", tempo_lapse, collapse = NULL, recycle0 = FALSE))
+                tempo_time <- base::as.numeric(x = base::Sys.time())
+                tempo_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
+                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FIRST WHILE LOOP STEP END | LOOP COUNT: ", base::format(x = count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(data = cor_limit, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | ABS TEMPO CORRELATION: ", saferTool::round2(data = tempo_cor, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | TOTAL SPENT TIME: ", tempo_lapse, collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                 if(tempo_cor < cor_limit){
                     warn_count <- warn_count + 1
                     tempo_warn <- base::paste0("(", warn_count,") THE FIRST FOR & WHILE LOOP STEPS HAVE BEEN TOO FAR AND SUBSEQUENT LOOP STEPS WILL NOT RUN", collapse = NULL, recycle0 = FALSE)
@@ -709,7 +709,7 @@ permut <- function(
                 }
                 # end going out of tempo_cor == cor_ini
                 # estimation of the average correlation decrease per loop on x loops and for loop execution
-                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "WHILE/FOR LOOPS INITIATION | LOOP COUNT: ", base::format(count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(cor_limit, 4, safer_check = FALSE), " | ABS TEMPO CORRELATION: ", saferTool::round2(tempo_cor, 4, safer_check = FALSE), collapse = NULL, recycle0 = FALSE))
+                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "WHILE/FOR LOOPS INITIATION | LOOP COUNT: ", base::format(x = count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(data = cor_limit, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | ABS TEMPO CORRELATION: ", saferTool::round2(data = tempo_cor, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                 count_est <- 1e5
                 first_round <- TRUE
                 GOBACK <- FALSE
@@ -724,15 +724,15 @@ permut <- function(
                         cor_est <- base::numeric(length = 5)
                         for(i6 in 1:5){ # connected to cor_dec_per_loop
                             tempo_pos_est <- tempo_pos
-                            pos <- base::sample.int(n = pos_selec_seq_max , size = count_est, replace = TRUE) # selection of n position
-                            for(i7 in 1:count_est){
+                            pos <- base::sample.int(n = pos_selec_seq_max , size = count_est, replace = TRUE, prob = NULL, useHash = ) # selection of n position
+                            for(i7 in base::seq_len(length.out = count_est)){
                                 pos2 <- pos[i7] # selection of 1 position
                                 tempo_pos_est[base::c(pos2 + 1, pos2)] <- tempo_pos_est[base::c(pos2, pos2 + 1)]
                             }
-                            tempo_cor_est <- base::abs(stats::cor(x = data1[tempo_pos_est], y = data2, use = "pairwise.complete.obs", method = cor_method))
+                            tempo_cor_est <- base::abs(x = stats::cor(x = data1[tempo_pos_est], y = data2, use = "pairwise.complete.obs", method = cor_method))
                             cor_est[i6] <- tempo_cor_est
                             tempo_cor_dec_per_loop <- (cor_est_ini - tempo_cor_est) / count_est # correlation decrease per loop
-                            if(base::is.na(tempo_cor_dec_per_loop) | ! base::is.finite(tempo_cor_dec_per_loop)){
+                            if(base::is.na(x = tempo_cor_dec_per_loop) | ! base::is.finite(x = tempo_cor_dec_per_loop)){
                                 # nocov start
                                 # codecov inactivated because it is an internal error, impossible to cover with argument values.
                                 tempo_cat <- base::paste0(
@@ -751,20 +751,20 @@ permut <- function(
                             }
                             cor_dec_per_loop[i6] <- tempo_cor_dec_per_loop
                         }
-                        cor_est <- cor_est[base::which.max(cor_dec_per_loop)] # max to avoid to go to far with for loop (tempo_cor below tempo.limit)
+                        cor_est <- cor_est[base::which.max(x = cor_dec_per_loop)] # max to avoid to go to far with for loop (tempo_cor below tempo.limit)
                         cor_dec_per_loop <- base::max(cor_dec_per_loop, na.rm = TRUE) # max to avoid to go to far with for loop (tempo_cor below tempo.limit)
-                        loop_nb_est <- saferTool::round2((tempo_cor - cor_limit) / cor_dec_per_loop, safer_check = FALSE)
+                        loop_nb_est <- saferTool::round2(data = (tempo_cor - cor_limit) / cor_dec_per_loop, safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
                     }else{
                         if(GOBACK == TRUE){
-                            loop_nb_est <- saferTool::round2(loop_nb_est / 2, safer_check = FALSE)
+                            loop_nb_est <- saferTool::round2(data = loop_nb_est / 2, safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
                         }else{
                             cor_dec_per_loop <- (cor_ini - tempo_cor) / count
-                            loop_nb_est <- saferTool::round2((tempo_cor - cor_limit) / cor_dec_per_loop, safer_check = FALSE)
+                            loop_nb_est <- saferTool::round2(data = (tempo_cor - cor_limit) / cor_dec_per_loop, safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
                         }
                     }
                     # end estimation step
                     # loop step
-                    if(base::is.na(loop_nb_est) | ! base::is.finite(loop_nb_est)){
+                    if(base::is.na(x = loop_nb_est) | ! base::is.finite(x = loop_nb_est)){
                         # nocov start
                         # codecov inactivated because it is an internal error, impossible to cover with argument values.
                         tempo_cat <- base::paste0(
@@ -790,30 +790,30 @@ permut <- function(
                         tempo_pos_secu <- tempo_pos
                         count_secu <- count
                         tempo_cor_secu <- tempo_cor
-                        base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "INITIAL SETTINGS BEFORE ROUND: ", round, " | LOOP COUNT: ", base::format(count, big.mark=","), " | GO BACK: ", GOBACK, " | LOOP NUMBER ESTIMATION: ", base::format(loop_nb_est, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(cor_limit, 4, safer_check = FALSE), " | ABS TEMPO CORRELATION: ", saferTool::round2(tempo_cor, 4, safer_check = FALSE), collapse = NULL, recycle0 = FALSE))
+                        base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "INITIAL SETTINGS BEFORE ROUND: ", round, " | LOOP COUNT: ", base::format(x = count, big.mark=","), " | GO BACK: ", GOBACK, " | LOOP NUMBER ESTIMATION: ", base::format(x = loop_nb_est, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(data = cor_limit, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | ABS TEMPO CORRELATION: ", saferTool::round2(data = tempo_cor, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                         print_count_loop <- base::logical(length = print_count)
-                        print_count_loop[base::length(print_count_loop)] <- TRUE # not this to avoid long vector, but not forget to reset during printing: print_count_loop[(1:base::trunc(n / print_count) * print_count)] <- TRUE # counter to speedup
+                        print_count_loop[base::length(x = print_count_loop)] <- TRUE # not this to avoid long vector, but not forget to reset during printing: print_count_loop[(1:base::trunc(n / print_count) * print_count)] <- TRUE # counter to speedup
                         count_loop <- 0
-                        pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE) # selection of random positions. BEWARE: n = pos_selec_seq_max because already - 1 (see above) but is connected to tempo_pos[c(pos2 + 1, pos2)] <- tempo_pos[c(pos2, pos2 + 1)]
+                        pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE, prob = NULL, useHash = ) # selection of random positions. BEWARE: n = pos_selec_seq_max because already - 1 (see above) but is connected to tempo_pos[c(pos2 + 1, pos2)] <- tempo_pos[c(pos2, pos2 + 1)]
                         tempo_date_loop <- base::Sys.time()
-                        tempo_time_loop <- base::as.numeric(tempo_date_loop)
-                        for(i6 in 1:loop_nb_est){
+                        tempo_time_loop <- base::as.numeric(x = tempo_date_loop)
+                        for(i6 in base::seq_len(length.out = loop_nb_est)){
                             count_loop <- count_loop + 1
                             pos2 <- pos[count_loop] # selection of 1 position
                             tempo_pos[base::c(pos2 + 1, pos2)] <- tempo_pos[base::c(pos2, pos2 + 1)]
                             if(print_count_loop[count_loop]){
                                 count_loop <- 0
-                                pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE) # BEWARE: never forget to resample here
-                                tempo_time <- base::as.numeric(base::Sys.time())
-                                tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - tempo_time_loop)), safer_check = FALSE)
+                                pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE, prob = NULL, useHash = ) # BEWARE: never forget to resample here
+                                tempo_time <- base::as.numeric(x = base::Sys.time())
+                                tempo_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = tempo_time - tempo_time_loop)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
                                 final_loop <- (tempo_time - tempo_time_loop) / i6 * loop_nb_est # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
-                                final_exp <- base::as.POSIXct(final_loop, origin = tempo_date_loop)
-                                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FOR LOOP | ROUND ", round, " | LOOP: ", base::format(i6, big.mark=","), " / ", base::format(loop_nb_est, big.mark=","), " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp, collapse = NULL, recycle0 = FALSE))
+                                final_exp <- base::as.POSIXct(x = final_loop, origin = tempo_date_loop, tz = "")
+                                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FOR LOOP | ROUND ", round, " | LOOP: ", base::format(x = i6, big.mark=","), " / ", base::format(x = loop_nb_est, big.mark=","), " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp, collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                             }
                         }
                         count <- count + loop_nb_est # out of the loop to speedup
-                        tempo_cor <- base::abs(stats::cor(x = data1[tempo_pos], y = data2, use = "pairwise.complete.obs", method = cor_method))
-                        if(tempo_cor > tempo_cor_secu | ((tempo_cor - cor_limit) < 0 & base::abs(tempo_cor - cor_limit) > smallest_cor_dec * saferTool::round2(base::log10(base::max(ini_pos, na.rm = TRUE)), safer_check = FALSE))){
+                        tempo_cor <- base::abs(x = stats::cor(x = data1[tempo_pos], y = data2, use = "pairwise.complete.obs", method = cor_method))
+                        if(tempo_cor > tempo_cor_secu | ((tempo_cor - cor_limit) < 0 & base::abs(x = tempo_cor - cor_limit) > smallest_cor_dec * saferTool::round2(data = base::log10(x = base::max(ini_pos, na.rm = TRUE)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = ""))){
                             GOBACK <- TRUE
                             tempo_pos <- tempo_pos_secu
                             count <- count_secu
@@ -822,40 +822,40 @@ permut <- function(
                             GOBACK <- FALSE
                         }
                     }else{
-                        base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FINAL WHILE LOOP | LOOP COUNT: ", base::format(count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(cor_limit, 4, safer_check = FALSE), " | ABS TEMPO CORRELATION: ", saferTool::round2(tempo_cor, 4, safer_check = FALSE), collapse = NULL, recycle0 = FALSE))
+                        base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "FINAL WHILE LOOP | LOOP COUNT: ", base::format(x = count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(data = cor_limit, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | ABS TEMPO CORRELATION: ", saferTool::round2(data = tempo_cor, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                         print_count_loop <- base::logical(length = print_count)
-                        print_count_loop[base::length(print_count_loop)] <- TRUE # counter to speedup
+                        print_count_loop[base::length(x = print_count_loop)] <- TRUE # counter to speedup
                         count_loop <- 0 #
-                        pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE) # selection of random positions. BEWARE: n = pos_selec_seq_max because already - 1 (see above) but is connected to tempo_pos[c(pos2 + 1, pos2)] <- tempo_pos[c(pos2, pos2 + 1)]
+                        pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE, prob = NULL, useHash = ) # selection of random positions. BEWARE: n = pos_selec_seq_max because already - 1 (see above) but is connected to tempo_pos[c(pos2 + 1, pos2)] <- tempo_pos[c(pos2, pos2 + 1)]
                         tempo_cor_loop <- tempo_cor
                         tempo_date_loop <- base::Sys.time()
-                        tempo_time_loop <- base::as.numeric(tempo_date_loop)
+                        tempo_time_loop <- base::as.numeric(x = tempo_date_loop)
                         while(tempo_cor > cor_limit){
                             count <- count + 1
                             count_loop <- count_loop + 1
                             pos2 <- pos[count_loop]
                             tempo_pos[base::c(pos2 + 1, pos2)] <- tempo_pos[base::c(pos2, pos2 + 1)]
-                            tempo_cor <- base::abs(stats::cor(x = data1[tempo_pos], y = data2, use = "pairwise.complete.obs", method = cor_method))
+                            tempo_cor <- base::abs(x = stats::cor(x = data1[tempo_pos], y = data2, use = "pairwise.complete.obs", method = cor_method))
                             if(print_count_loop[count_loop]){
                                 count_loop <- 0
-                                pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE) # BEWARE: never forget to resample here
-                                tempo_time <- base::as.numeric(base::Sys.time())
-                                tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - tempo_time_loop)), safer_check = FALSE)
+                                pos <- base::sample.int(n = pos_selec_seq_max , size = print_count, replace = TRUE, prob = NULL, useHash = ) # BEWARE: never forget to resample here
+                                tempo_time <- base::as.numeric(x = base::Sys.time())
+                                tempo_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = tempo_time - tempo_time_loop)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
                                 final_loop <- (tempo_time - tempo_time_loop) / (tempo_cor_loop - tempo_cor) * (tempo_cor - cor_limit) # expected duration in seconds # tempo_cor_loop - tempo_cor always positive and tempo_cor decreases progressively starting from tempo_cor_loop
-                                final_exp <- base::as.POSIXct(final_loop, origin = tempo_date_loop)
-                                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "WHILE LOOP | LOOP NB: ", base::format(count_loop, big.mark=","), " | COUNT: ", base::format(count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(cor_limit, 4, safer_check = FALSE), " | ABS TEMPO CORRELATION: ", saferTool::round2(tempo_cor, 4, safer_check = FALSE), " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp, collapse = NULL, recycle0 = FALSE))
+                                final_exp <- base::as.POSIXct(x = final_loop, origin = tempo_date_loop, tz = "")
+                                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "WHILE LOOP | LOOP NB: ", base::format(x = count_loop, big.mark=","), " | COUNT: ", base::format(x = count, big.mark=","), " | CORRELATION LIMIT: ", saferTool::round2(data = cor_limit, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | ABS TEMPO CORRELATION: ", saferTool::round2(data = tempo_cor, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp, collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                             }
                         }
                     }
                 }
-                tempo_time <- base::as.numeric(base::Sys.time())
-                tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE)
-                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "WHILE/FOR LOOPS END | LOOP COUNT: ", base::format(count, big.mark=","), " | NB OF ROUNDS: ", round, " | CORRELATION LIMIT: ", saferTool::round2(cor_limit, 4, safer_check = FALSE), " | ABS TEMPO CORRELATION: ", saferTool::round2(tempo_cor, 4, safer_check = FALSE), " | TOTAL SPENT TIME: ", tempo_lapse, collapse = NULL, recycle0 = FALSE))
+                tempo_time <- base::as.numeric(x = base::Sys.time())
+                tempo_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
+                base::cat(base::paste0("\n", base::ifelse(test = text_print == "", yes = "", no = base::paste0(text_print, " | ", collapse = NULL, recycle0 = FALSE)), "WHILE/FOR LOOPS END | LOOP COUNT: ", base::format(x = count, big.mark=","), " | NB OF ROUNDS: ", round, " | CORRELATION LIMIT: ", saferTool::round2(data = cor_limit, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | ABS TEMPO CORRELATION: ", saferTool::round2(data = tempo_cor, dec_nb = 4, safer_check = FALSE, after_lead_zero = TRUE, lib_path = NULL, error_text = ""), " | TOTAL SPENT TIME: ", tempo_lapse, collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
             }
             tempo_cor <- base::ifelse(test = neg_cor == TRUE, yes = -tempo_cor, no = tempo_cor)
         }
     }
-    base::cat("\n\n")
+    base::cat("\n\n", file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
 
     #### end main code
 
@@ -877,7 +877,7 @@ permut <- function(
     #### end warning output
 
     #### output
-    output <- base::list(data = data1[tempo_pos], warn = warn, cor = if(base::is.null(data2)){stats::cor(ini_pos, tempo_pos, method = "spearman")}else{tempo_cor}, count = count)
+    output <- base::list(data = data1[tempo_pos], warn = warn, cor = if(base::is.null(x = data2)){stats::cor(x = ini_pos, y = tempo_pos, method = "spearman", use = "everything")}else{tempo_cor}, count = count)
     base::return(output)
     #### end output
 

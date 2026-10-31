@@ -403,9 +403,9 @@ codon2aa <- function(
         base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
     }
     if(base::length(x = data) == 1L){
-        data <- base::unlist(base::strsplit(data, split = ""))
+        data <- base::unlist(x = base::strsplit(x = data, split = "", fixed = FALSE, perl = FALSE, useBytes = FALSE), recursive = TRUE, use.names = TRUE)
     }
-    if( ! base::all(base::toupper(data) %in% base::c("A", "C", "G", "T"))){
+    if( ! base::all(base::toupper(x = data) %in% base::c("A", "C", "G", "T"), na.rm = FALSE)){
         tempo_cat <- base::paste0(
             error_text_start,
             "data ARGUMENT MUST BE A STRING OF THREE CHARACTERS OR A VECTOR OF THREE CHARACTERS, MADE OF \"A\", \"C\", \"G\", \"T\" ONLY",
@@ -421,7 +421,7 @@ codon2aa <- function(
     #### main code
     # standard genetic code
     sgc <- base::array(
-        base::c(
+        data = base::c(
             "F", "L", "I", "V",
             "S", "P", "T", "A",
             "Y", "H", "N", "D",
@@ -453,8 +453,8 @@ codon2aa <- function(
     if(display == TRUE){
         output <- sgc
     }else{
-        data <- base::toupper(data)
-        output <- base::eval(base::parse(text = base::paste0("sgc['", base::paste0(data, collapse = "','"), "']")))
+        data <- base::toupper(x = data)
+        output <- base::eval(expr = base::parse(text = base::paste0("sgc['", base::paste0(data, collapse = "','"), "']", collapse = NULL, recycle0 = FALSE), file = "", n = NULL, prompt = "?", keep.source = base::getOption(x = "keep.source", default = NULL), srcfile = NULL, encoding = "unknown"), envir = , enclos = )
     }
     #### end main code
 

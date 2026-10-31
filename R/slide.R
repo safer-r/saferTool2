@@ -400,11 +400,6 @@ slide <- function(
                 "saferDev::arg_check", # write each function preceeded by their package name
                 "saferDev::get_message",
                 "saferTool::round2",
-                "parallel::detectCores",
-                "parallel::makeCluster",
-                "parallel::clusterSplit",
-                "parallel::clusterApply",
-                "parallel::stopCluster",
                 "lubridate::seconds_to_period"
                 # end functions required in this code
                 # internal functions required in this code
@@ -514,7 +509,7 @@ slide <- function(
             " NOT CLASS \"character\":\n",
             base::paste0(tempo_arg[tempo_log], collapse = "\n", recycle0 = FALSE),
             "\nIf saferMake::saferMake() HAS BEEN USED TO MODIFY YOUR FUNCTION, PLEASE RESTART WITH YOUR MAIN CODE AND SELECT PROPER CLASS, TYPE AND/OR MODE FOR YOUR ARGUMENTS\n.HERE, ARGUMENTS ARE TYPE:\n",
-            base::paste0(base::sapply(X = tempo_arg, FUN = function(x){base::paste0(x, ': \"', base::typeof(x = base::get(x = x, pos = -1L, envir = base::parent.frame(n = 3), mode = "any", inherits = FALSE)), '"', collapse = NULL, recycle0 = FALSE)}), collapse = "\n", recycle0 = FALSE), # parent.frame(n = 3) because the get() is evaluated inside the FUN closure of sapply. But sapply(FUN) calls lapply(FUN) internally !! So parent.frame(n = 1) is the internal lapply() frame called by sapply, parent.frame(n = 2) is sapply's frame, parent.frame(n = 3) is slide's frame. NB: paste0() and typeof() are primitives and add no frame.
+            base::paste0(base::sapply(X = tempo_arg, FUN = function(x){base::paste0(x, ": \"", base::typeof(x = base::get(x = x, pos = -1L, envir = base::parent.frame(n = 3), mode = "any", inherits = FALSE)), "\"", collapse = NULL, recycle0 = FALSE)}, simplify = TRUE, USE.NAMES = TRUE), collapse = "\n", recycle0 = FALSE), # parent.frame(n = 3) because the get() is evaluated inside the FUN closure of sapply. But sapply(FUN) calls lapply(FUN) internally !! So parent.frame(n = 1) is the internal lapply() frame called by sapply, parent.frame(n = 2) is sapply's frame, parent.frame(n = 3) is slide's frame. NB: paste0() and typeof() are primitives and add no frame.
             intern_error_text_end,
             collapse = NULL,
             recycle0 = FALSE
@@ -566,7 +561,7 @@ slide <- function(
         base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL)
         # nocov end
     }
-    if(base::any( ! base::is.finite(data), na.rm = TRUE)){
+    if(base::any( ! base::is.finite(x = data), na.rm = TRUE)){
         tempo_cat <- base::paste0(
             error_text_start,
             "data ARGUMENT CANNOT CONTAIN Inf VALUES",
@@ -579,9 +574,9 @@ slide <- function(
         tempo_cat <- base::paste0(
             error_text_start,
             "step ARGUMENT MUST BE LOWER THAN window_size ARGUMENT\nstep: ",
-            base::paste(step, collapse = " ", recycle0 = FALSE),
+            base::paste(step, collapse = " ", recycle0 = FALSE, sep = " "),
             "\nwindow_size: ",
-            base::paste(window_size, collapse = " ", recycle0 = FALSE),
+            base::paste(window_size, collapse = " ", recycle0 = FALSE, sep = " "),
             collapse = NULL,
             recycle0 = FALSE
         )
@@ -614,11 +609,11 @@ slide <- function(
 
     #### main code
     if(verbose == TRUE){
-        base::cat("\nslide JOB IGNITION\n")
+        base::cat("\nslide JOB IGNITION\n", file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
     }
     ini_date <- base::Sys.time()
-    ini_time <- base::as.numeric(ini_date) # time of process begin, converted into seconds
-    FUN <- base::match.fun(FUN) # make FUN <- base::get(FUN) if FUN is a function name written as character string of length 1
+    ini_time <- base::as.numeric(x = ini_date) # time of process begin, converted into seconds
+    FUN <- base::match.fun(FUN = FUN, descend = TRUE) # make FUN <- base::get(FUN) if FUN is a function name written as character string of length 1
     if(boundary == "left"){
         left <- ">="
         right <- "<"
@@ -641,12 +636,12 @@ slide <- function(
         base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
         # nocov end
     }
-    data <- base::as.vector(data)
-    data <- base::sort(data, na.last = NA) # NA removed
-    wind <- base::data.frame(left = base::seq(from = if(base::is.null(from)){base::min(data, na.rm = TRUE)}else{from}, to = if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}, by = step), stringsAsFactors = FALSE)
-    wind <- base::data.frame(wind, right = wind$left + window_size, stringsAsFactors = FALSE)
-    wind <- base::data.frame(wind, center = (wind$left + wind$right) / 2, stringsAsFactors = FALSE)
-    if(base::all(wind$right < if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to})){
+    data <- base::as.vector(x = data, mode = "any")
+    data <- base::sort(x = data, na.last = NA, decreasing = FALSE) # NA removed
+    wind <- base::data.frame(left = base::seq(from = if(base::is.null(x = from)){base::min(data, na.rm = TRUE)}else{from}, to = if(base::is.null(x = to)){base::max(data, na.rm = TRUE)}else{to}, by = step), stringsAsFactors = FALSE, row.names = NULL, check.rows = FALSE, check.names = TRUE, fix.empty.names = TRUE)
+    wind <- base::data.frame(wind, right = wind$left + window_size, stringsAsFactors = FALSE, row.names = NULL, check.rows = FALSE, check.names = TRUE, fix.empty.names = TRUE)
+    wind <- base::data.frame(wind, center = (wind$left + wind$right) / 2, stringsAsFactors = FALSE, row.names = NULL, check.rows = FALSE, check.names = TRUE, fix.empty.names = TRUE)
+    if(base::all(wind$right < if(base::is.null(x = to)){base::max(data, na.rm = TRUE)}else{to}, na.rm = FALSE)){
         # nocov start
         # codecov inactivated because it is an internal error, impossible to cover with argument values.
         tempo_cat <- base::paste0(
@@ -664,16 +659,16 @@ slide <- function(
     # if(any(wind$center > max(data, na.rm = TRUE))){
     # wind <- wind[ ! wind$center > max(data, na.rm = TRUE),]
     # }
-    if(base::sum(base::get(right_last_wind)(wind$right, if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}), na.rm = TRUE) > 1){  # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
-        tempo_log <- base::get(right_last_wind)(wind$right, if(base::is.null(to)){base::max(data, na.rm = TRUE)}else{to}) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
-        tempo_log[base::min(base::which(tempo_log), na.rm = TRUE)] <- FALSE # convert the first left boundary that goes above base::max(data, na.rm = TRUE) to FALSE to keep it (the next ones will be removed)
+    if(base::sum(base::get(x = right_last_wind, pos = -1L, envir = , mode = "any", inherits = TRUE)(wind$right, if(base::is.null(x = to)){base::max(data, na.rm = TRUE)}else{to}), na.rm = TRUE) > 1){  # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
+        tempo_log <- base::get(x = right_last_wind, pos = -1L, envir = , mode = "any", inherits = TRUE)(wind$right, if(base::is.null(x = to)){base::max(data, na.rm = TRUE)}else{to}) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
+        tempo_log[base::min(base::which(x = tempo_log, arr.ind = FALSE, useNames = TRUE), na.rm = TRUE)] <- FALSE # convert the first left boundary that goes above base::max(data, na.rm = TRUE) to FALSE to keep it (the next ones will be removed)
         wind <- wind[ ! tempo_log,]
     }
 
     # test if lapply can be used
     if(parall == FALSE){
-        env_name <- base::paste0("env", base::as.numeric(base::Sys.time())) # new environment for the get_message() test
-        if(base::exists(x = env_name, where = -1)){ # verify if still ok when info() is inside a function
+        env_name <- base::paste0("env", base::as.numeric(x = base::Sys.time()), collapse = NULL, recycle0 = FALSE) # new environment for the get_message() test
+        if(base::exists(x = env_name, where = -1, envir = , frame = , mode = "any", inherits = TRUE)){ # verify if still ok when info() is inside a function
             # nocov start
             # codecov inactivated because env_name is randomly generated, so it cannot already exist (internal error, impossible to cover with argument values).
             tempo_cat <- base::paste0(
@@ -685,29 +680,29 @@ slide <- function(
             base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }else{
-            base::assign(x = env_name, value = base::new.env())
+            base::assign(x = env_name, value = base::new.env(hash = TRUE, parent = , size = 29L), pos = -1, envir = , inherits = FALSE, immediate = TRUE)
         }
         # end new environment
-        base::assign("wind", wind, envir = base::get(env_name, envir = base::sys.nframe(), inherits = FALSE)) # wind assigned in a new envir for test
-        base::assign("data", data, envir = base::get(env_name, envir = base::sys.nframe(), inherits = FALSE)) # data assigned in a new envir for test
-        tempo_message <- saferDev::get_message(data="base::lapply(X = wind$left, Y = data, FUN = function(X, Y){res <- base::get(left)(Y, X) ; base::return(res)})", kind = "error", header = FALSE, print_no = FALSE, text = NULL, env = base::get(env_name, envir = base::sys.nframe(), inherits = FALSE), safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) # no env = base::sys.nframe(), inherit = FALSE in base::get(left) because look for function in the classical scope
+        base::assign(x = "wind", value = wind, envir = base::get(x = env_name, envir = base::sys.nframe(), inherits = FALSE, pos = -1L, mode = "any"), pos = -1, inherits = FALSE, immediate = TRUE) # wind assigned in a new envir for test
+        base::assign(x = "data", value = data, envir = base::get(x = env_name, envir = base::sys.nframe(), inherits = FALSE, pos = -1L, mode = "any"), pos = -1, inherits = FALSE, immediate = TRUE) # data assigned in a new envir for test
+        tempo_message <- saferDev::get_message(data="base::lapply(X = wind$left, Y = data, FUN = function(X, Y){res <- base::get(left)(Y, X) ; base::return(res)})", kind = "error", header = FALSE, print_no = FALSE, text = NULL, env = base::get(x = env_name, envir = base::sys.nframe(), inherits = FALSE, pos = -1L, mode = "any"), safer_check = FALSE, lib_path = lib_path, error_text = embed_error_text) # no env = base::sys.nframe(), inherit = FALSE in base::get(left) because look for function in the classical scope
         # rm(env_name) # optional, because should disappear at the end of the function execution
     }else{
         tempo_message <- "ERROR" # with this, force the parallelization by default
     }
     # end test if lapply can be used
-    if( ! base::any(base::grepl(x = tempo_message, pattern = "ERROR.*"), na.rm = TRUE)){
+    if( ! base::any(base::grepl(x = tempo_message, pattern = "ERROR.*", ignore.case = FALSE, perl = FALSE, fixed = FALSE, useBytes = FALSE), na.rm = TRUE)){
         left_log <- base::lapply(X = wind$left, Y = data, FUN = function(X, Y){
-            res <- base::get(left)(Y, X) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
+            res <- base::get(x = left, pos = -1L, envir = , mode = "any", inherits = TRUE)(Y, X) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
             base::return(res)
         })
         right_log <- base::lapply(X = wind$right, Y = data, FUN = function(X, Y){
-            res <- base::get(right)(Y, X) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
+            res <- base::get(x = right, pos = -1L, envir = , mode = "any", inherits = TRUE)(Y, X) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
             base::return(res)
         })
-        log <-base::mapply(FUN = "&", left_log, right_log, SIMPLIFY = FALSE)
-        output <- base::eval(base::parse(text = base::paste0("base::sapply(base::lapply(log, FUN = function(X){(data[X])}), FUN = FUN", if( ! base::is.null(args)){base::paste0(", ", args)}, ")")))
-        if(base::length(output) != base::nrow(wind)){
+        log <-base::mapply(FUN = "&", left_log, right_log, SIMPLIFY = FALSE, MoreArgs = NULL, USE.NAMES = TRUE)
+        output <- base::eval(expr = base::parse(text = base::paste0("base::sapply(base::lapply(log, FUN = function(X){(data[X])}), FUN = FUN", if( ! base::is.null(x = args)){base::paste0(", ", args, collapse = NULL, recycle0 = FALSE)}, ")", collapse = NULL, recycle0 = FALSE), file = "", n = NULL, prompt = "?", keep.source = base::getOption(x = "keep.source", default = NULL), srcfile = NULL, encoding = "unknown"), envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL))
+        if(base::length(x = output) != base::nrow(x = wind)){
             # nocov start
             # codecov inactivated because it is an internal error, impossible to cover with argument values.
             tempo_cat <- base::paste0(
@@ -721,36 +716,36 @@ slide <- function(
             base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }else{
-            output <- base::data.frame(wind, value = output, stringsAsFactors = FALSE)
+            output <- base::data.frame(wind, value = output, stringsAsFactors = FALSE, row.names = NULL, check.rows = FALSE, check.names = TRUE, fix.empty.names = TRUE)
         }
     }else{
         if(verbose == TRUE){
-            tempo_cat <- base::paste0("PARALLELIZATION INITIATED AT: ", ini_date)
-            base::cat(base::paste0("\n", tempo_cat, "\n"))
+            tempo_cat <- base::paste0("PARALLELIZATION INITIATED AT: ", ini_date, collapse = NULL, recycle0 = FALSE)
+            base::cat(base::paste0("\n", tempo_cat, "\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
         }
         tempo_thread_nb = parallel::detectCores(all.tests = FALSE, logical = TRUE) # detect the number of threads
-        if( ! base::is.null(thread_nb)){
+        if( ! base::is.null(x = thread_nb)){
             if(tempo_thread_nb < thread_nb){
                 thread_nb <- tempo_thread_nb
                 if(verbose == TRUE){
-                    tempo_cat <- base::paste0("ONLY: ", tempo_thread_nb, " THREADS AVAILABLE")
-                    base::cat(base::paste0("\n", tempo_cat, "\n"))
+                    tempo_cat <- base::paste0("ONLY: ", tempo_thread_nb, " THREADS AVAILABLE", collapse = NULL, recycle0 = FALSE)
+                    base::cat(base::paste0("\n", tempo_cat, "\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                 }
             }
         }else{
             thread_nb <- tempo_thread_nb
         }
         if(verbose == TRUE){
-            tempo_cat <- base::paste0("NUMBER OF THREADS USED: ", thread_nb)
-            base::cat(base::paste0("\n    ", tempo_cat, "\n"))
+            tempo_cat <- base::paste0("NUMBER OF THREADS USED: ", thread_nb, collapse = NULL, recycle0 = FALSE)
+            base::cat(base::paste0("\n    ", tempo_cat, "\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
         }
-        Clust <- parallel::makeCluster(spec = thread_nb, outfile = base::paste0(res_path, "/fun_slide_parall_log.txt")) # outfile to print or cat during parallelization (only possible in a file, outfile = "" do not work on windows)
-        cluster_list <- parallel::clusterSplit(cl = Clust, seq = 1:base::nrow(wind)) # split according to the number of cluster
+        Clust <- parallel::makeCluster(spec = thread_nb, outfile = base::paste0(res_path, "/fun_slide_parall_log.txt", collapse = NULL, recycle0 = FALSE), type = "PSOCK") # type = "PSOCK": default value of parallel::makeCluster(), returned by the non exported parallel:::getClusterOption("type") (unless modified by parallel::setDefaultCluster()). outfile to print or cat during parallelization (only possible in a file, outfile = "" do not work on windows)
+        cluster_list <- parallel::clusterSplit(cl = Clust, seq = 1:base::nrow(x = wind)) # split according to the number of cluster
         if(verbose == TRUE){
-            tempo_cat <- base::paste0("SPLIT OF TEST NUMBERS IN PARALLELISATION:")
-            base::cat(base::paste0("\n    ", tempo_cat, "\n"))
-            utils::str(cluster_list) # using base::print(utils::str()) add a NULL below the result
-            base::cat("\n")
+            tempo_cat <- base::paste0("SPLIT OF TEST NUMBERS IN PARALLELISATION:", collapse = NULL, recycle0 = FALSE)
+            base::cat(base::paste0("\n    ", tempo_cat, "\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
+            utils::str(object = cluster_list) # using base::print(utils::str()) add a NULL below the result
+            base::cat("\n", file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
         }
         paral_output_list <- parallel::clusterApply( #
             cl = Clust,
@@ -782,32 +777,32 @@ slide <- function(
             ){
                 # check again: very important because another R
                 process_id <- base::Sys.getpid()
-                base::cat(base::paste0("\nPROCESS ID ", process_id, " -> TESTS ", x[1], " TO ", x[base::length(x)], "\n"))
+                base::cat(base::paste0("\nPROCESS ID ", process_id, " -> TESTS ", x[1], " TO ", x[base::length(x = x)], "\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                 # fun_pack(req.package = "lubridate", lib.path = lib.path, load = TRUE) # load = TRUE to be sure that functions are present in the environment. And this prevent to use R.lib.path argument of python_pack()
                 # end check again: very important because another R
                 # nocov start
                 # codecov inactivated because this function is executed in child processes launched by parallel::clusterApply(), which are not tracked by covr.
                 ini_date <- base::Sys.time()
-                ini_time <- base::as.numeric(ini_date) # time of process begin, converted into
+                ini_time <- base::as.numeric(x = ini_date) # time of process begin, converted into
                 output <- NULL
                 print_count_loop <- 0
-                for(i4 in 1:base::length(x)){
+                for(i4 in base::seq_along(along.with = x)){
                     print_count_loop <- print_count_loop + 1
-                    log <- base::get(left)(data, wind$left[x[i4]]) & base::get(right)(data, wind$right[x[i4]]) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
-                    output <- base::c(output, base::eval(base::parse(text = base::paste0("FUN(data[log]", if( ! base::is.null(args)){base::paste0(", ", args)}, ")"))))
+                    log <- base::get(x = left, pos = -1L, envir = , mode = "any", inherits = TRUE)(data, wind$left[x[i4]]) & base::get(x = right, pos = -1L, envir = , mode = "any", inherits = TRUE)(data, wind$right[x[i4]]) # no env = base::sys.nframe(), inherit = FALSE in base::get() because look for function in the classical scope
+                    output <- base::c(output, base::eval(expr = base::parse(text = base::paste0("FUN(data[log]", if( ! base::is.null(x = args)){base::paste0(", ", args, collapse = NULL, recycle0 = FALSE)}, ")", collapse = NULL, recycle0 = FALSE), file = "", n = NULL, prompt = "?", keep.source = base::getOption(x = "keep.source", default = NULL), srcfile = NULL, encoding = "unknown"), envir = base::environment(fun = NULL), enclos = base::environment(fun = NULL)))
                     if(verbose == TRUE){
                         if(print_count_loop == print_count){
                             print_count_loop <- 0
-                            tempo_time <- base::as.numeric(base::Sys.time())
-                            tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE)
-                            final_loop <- (tempo_time - ini_time) / i4 * base::length(x) # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
-                            final_exp <- base::as.POSIXct(final_loop, origin = ini_date)
-                            base::cat(base::paste0("\nIN PROCESS ", process_id, " | LOOP ", base::format(i4, big.mark=","), " / ", base::format(base::length(x), big.mark=","), " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp))
+                            tempo_time <- base::as.numeric(x = base::Sys.time())
+                            tempo_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
+                            final_loop <- (tempo_time - ini_time) / i4 * base::length(x = x) # expected duration in seconds # intra nb.compar loop lapse: time lapse / cycles done * cycles remaining
+                            final_exp <- base::as.POSIXct(x = final_loop, origin = ini_date, tz = "")
+                            base::cat(base::paste0("\nIN PROCESS ", process_id, " | LOOP ", base::format(x = i4, big.mark=","), " / ", base::format(x = base::length(x = x), big.mark=","), " | TIME SPENT: ", tempo_lapse, " | EXPECTED END: ", final_exp, collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                         }
-                        if(i4 == base::length(x)){
-                            tempo_time <- base::as.numeric(base::Sys.time())
-                            tempo_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE)
-                            base::cat(base::paste0("\nPROCESS ", process_id, " ENDED | LOOP ", base::format(i4, big.mark=","), " / ", base::format(base::length(x), big.mark=","), " | TIME SPENT: ", tempo_lapse, "\n\n"))
+                        if(i4 == base::length(x = x)){
+                            tempo_time <- base::as.numeric(x = base::Sys.time())
+                            tempo_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = tempo_time - ini_time)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
+                            base::cat(base::paste0("\nPROCESS ", process_id, " ENDED | LOOP ", base::format(x = i4, big.mark=","), " / ", base::format(x = base::length(x = x), big.mark=","), " | TIME SPENT: ", tempo_lapse, "\n\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
                         }
                     }
                 }
@@ -815,11 +810,11 @@ slide <- function(
                 wind <- wind[x, ]
                 # nocov start
                 # codecov inactivated because this is executed in child processes launched by parallel::clusterApply(), which are not tracked by covr (internal error, impossible to cover with argument values).
-                if(base::length(output) != base::nrow(wind)){
-                    tempo_cat <- base::paste0("INTERNAL CODE ERROR IN ", function_name, "\nCODE INCONSISTENCY 4")
+                if(base::length(x = output) != base::nrow(x = wind)){
+                    tempo_cat <- base::paste0("INTERNAL CODE ERROR IN ", function_name, "\nCODE INCONSISTENCY 4", collapse = NULL, recycle0 = FALSE)
                     base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
                 }else{
-                    output <- base::data.frame(wind, value = output, stringsAsFactors = FALSE)
+                    output <- base::data.frame(wind, value = output, stringsAsFactors = FALSE, row.names = NULL, check.rows = FALSE, check.names = TRUE, fix.empty.names = TRUE)
                     base::return(output)
                 }
                 # nocov end
@@ -827,21 +822,21 @@ slide <- function(
         )
         parallel::stopCluster(cl = Clust)
         # result assembly
-        output <- base::data.frame()
-        for(i2 in 1:base::length(paral_output_list)){ # compartment relatives to each parallelization
-            output <- base::rbind(output, paral_output_list[[i2]], stringsAsFactors = FALSE)
+        output <- base::data.frame(row.names = NULL, check.rows = FALSE, check.names = TRUE, fix.empty.names = TRUE, stringsAsFactors = FALSE)
+        for(i2 in base::seq_along(along.with = paral_output_list)){ # compartment relatives to each parallelization
+            output <- base::rbind(output, paral_output_list[[i2]], stringsAsFactors = FALSE, deparse.level = 1)
         }
         # end result assembly
-        if(base::nrow(output) != base::nrow(wind)){
+        if(base::nrow(x = output) != base::nrow(x = wind)){
             # nocov start
             # codecov inactivated because it is an internal error, impossible to cover with argument values.
             tempo_cat <- base::paste0(
                 "INTERNAL ERROR IN THE MAIN CODE OF ",
                 intern_error_text_start,
                 "CODE INCONSISTENCY 5\nbase::length(output): ",
-                base::length(output),
+                base::length(x = output),
                 "\nbase::nrow(wind): ",
-                base::nrow(wind),
+                base::nrow(x = wind),
                 intern_error_text_end,
                 collapse = NULL,
                 recycle0 = FALSE
@@ -849,14 +844,14 @@ slide <- function(
             base::stop(base::paste0("\n\n================\n\n", tempo_cat, "\n\n================\n\n", collapse = NULL, recycle0 = FALSE), call. = FALSE, domain = NULL) # == in base::stop() to be able to add several messages between ==
             # nocov end
         }else{
-            output <- output[base::order(output$left), ]
+            output <- output[base::order(output$left, na.last = TRUE, decreasing = FALSE, method = base::c("auto", "shell", "radix")), ]
         }
     }
     if(verbose == TRUE){
         end_date <- base::Sys.time()
-        end_time <- base::as.numeric(end_date)
-        total_lapse <- saferTool::round2(base::as.numeric(lubridate::seconds_to_period(x = end_time - ini_time)), safer_check = FALSE)
-        base::cat(base::paste0("\nslide JOB END\n\nTIME: ", end_date, "\n\nTOTAL TIME LAPSE: ", total_lapse, "\n\n\n"))
+        end_time <- base::as.numeric(x = end_date)
+        total_lapse <- saferTool::round2(data = base::as.numeric(x = lubridate::seconds_to_period(x = end_time - ini_time)), safer_check = FALSE, dec_nb = 2, after_lead_zero = TRUE, lib_path = NULL, error_text = "")
+        base::cat(base::paste0("\nslide JOB END\n\nTIME: ", end_date, "\n\nTOTAL TIME LAPSE: ", total_lapse, "\n\n\n", collapse = NULL, recycle0 = FALSE), file = "", sep = " ", fill = FALSE, labels = NULL, append = FALSE)
     }
 
     #### end main code

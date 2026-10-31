@@ -23,7 +23,7 @@ trim(
   std_x_range = TRUE,
   std_y_range = TRUE,
   cex_pt = 0.2,
-  col_box = grDevices::hsv(0.55, 0.8, 0.8),
+  col_box = grDevices::hsv(h = 0.55, s = 0.8, v = 0.8, alpha = ),
   x_nb_inter_tick = 4,
   y_nb_inter_tick = 0,
   tick_length = 1,

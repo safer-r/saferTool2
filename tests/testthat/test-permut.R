@@ -170,10 +170,10 @@ test_that("permut identical data warnings and special branches", {
 
 test_that("permut non-safer errors of loop counter values and data2 factor case", {
     data1 <- 1:5
-    # n = 0: passes arg_check (0 is a non-negative number) but crashes in the loop code (sample.int(size = 0) -> empty pos)
-    testthat::expect_error(object = permut(data1 = data1, data2 = NULL, n = 0, seed = 1, print_count = 1, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE), regexp = "NAs are not allowed in subscripted assignments", fixed = TRUE)
-    # n = 0.5: same crash (1:0.5 is an empty sequence), non-safer error documented here
-    testthat::expect_error(object = permut(data1 = data1, data2 = NULL, n = 0.5, seed = 1, print_count = 1, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE), regexp = "NAs are not allowed in subscripted assignments", fixed = TRUE)
+    # n = 0: passes arg_check (0 is a non-negative number). The permutation loop is written for(i3 in base::seq_len(length.out = n)) (formerly 1:n, that ran the loop for i3 = 1 and 0 and crashed): no permutation, data1 returned unchanged
+    testthat::expect_equal(object = permut(data1 = data1, data2 = NULL, n = 0, seed = 1, print_count = 1, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE)$data, expected = data1)
+    # n = 0.5: base::seq_len(length.out = 0.5) is an empty sequence: no permutation either
+    testthat::expect_equal(object = permut(data1 = data1, data2 = NULL, n = 0.5, seed = 1, print_count = 1, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE)$data, expected = data1)
     # print_count = 0: same crash mechanism (loop of 0 iterations)
     testthat::expect_error(object = permut(data1 = data1, data2 = NULL, n = 5, seed = 1, print_count = 0, text_print = "", cor_method = "pearson", cor_limit = 0.9, warn_print = FALSE), regexp = "NAs are not allowed in subscripted assignments", fixed = TRUE)
     # data2 given as a factor: passes the mode = "numeric" arg_check but crashes in stats::cor (non-safer error path)
