@@ -1,6 +1,6 @@
 Package: saferTool2
 Type: Package
-Title: R Functions
+Title: Tools for Codons, Permutations, Sliding Windows and Trimming
 Version: 1.0.0
 Date: 2026-10-15
 Authors@R: c(
@@ -9,7 +9,7 @@ Authors@R: c(
   )
 Encoding: UTF-8
 Maintainer: Gael Millot <gael.millot@pasteur.fr>
-Description: R function and pipeline development.
+Description: Set of functions written according to the safer-r project recommendations (see <https://github.com/safer-r>): translation of DNA codons into amino acids with the standard genetic code, codon number and position in the codon of nucleotide positions in a coding sequence, permutation of a vector by flipping consecutive positions, either a given number of times or until its correlation with a second vector drops below a limit, computation of a function on a vector in sliding windows (with optional parallelization), and trimming of numeric values with four distribution plots (strip charts, histogram and normal quantile-quantile plot) showing trimming intervals based on the mean and standard deviation or on quantiles. This includes strict checking of argument values, explicit package namespace qualification of all the called functions and explicit writing of all their arguments, among other things.
 URL: https://github.com/safer-r/saferTool2, https://safer-r.github.io/saferTool2/
 BugReports: https://github.com/safer-r/saferTool2/issues
 License: GPL-3

@@ -33,7 +33,7 @@ Convert codon to amino acid using standard genetic code indicated in https://en.
 codon2aa(data = "ATC", display = TRUE)
 }
 \seealso{
-\code{\link[Biostrings]{translate}}
+\code{Biostrings::translate()} (Bioconductor package)
 }
 \author{
 Gael Millot <gael.millot@pasteur.fr>

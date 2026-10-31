@@ -102,8 +102,7 @@ trim(
 \item{error_text}{Single character string used to add information in error messages returned by the function, notably if the function is inside other functions, which is practical for debugging. Example: \code{error_text = " INSIDE <PACKAGE_1>::<FUNCTION_1> INSIDE <PACKAGE_2>::<FUNCTION_2>."}. If \code{NULL}, converted into \code{""}.}
 }
 \value{
-An error message if at least one of the checked packages is missing in lib_path, or if at least one of the checked functions is missing in the required package,
-A list containing:
+Draws the four graphs and, if trim_return is TRUE, returns a list containing:
 
 - $trim_method: correspond to the trim_method argument.
 

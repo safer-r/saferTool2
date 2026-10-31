@@ -32,7 +32,7 @@
 
 ## Description
 
-Set of R functions for the development of R functions, written according to the [safer-R project](https://github.com/safer-r) specifications.
+Set of R functions for codons, permutations, sliding windows and trimming, written according to the [safer-R project](https://github.com/safer-r) specifications.
 
 <br />
 
@@ -61,11 +61,11 @@ The different *saferTool2* releases are tagged [here](https://github.com/safer-r
 
 ## Installation
 
-*saferTool2* can be currently be installed from GitHub:
+*saferTool2* can currently be installed from GitHub, together with its *saferTool* dependency, which is not on CRAN yet:
 
 ```r
 install.packages("remotes")
-remotes::install_github("https://github.com/safer-r/saferTool2") # or open R as admin and remotes::install_github("https://github.com/safer-r/saferTool2", lib = "C:/Program Files/R/R-4.6.0/library")
+remotes::install_github(c("https://github.com/safer-r/saferTool", "https://github.com/safer-r/saferTool2")) # or open R as admin and add lib = "C:/Program Files/R/R-4.6.0/library"
 ```
 
 Older versions can be installed like this:
@@ -80,7 +80,7 @@ remotes::install_github(paste0("https://github.com/safer-r/saferTool2/tree/", v)
 ## Licence
 
 This package can be redistributed and/or modified under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-Distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchandability or fitness for a particular purpose.
+Distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability or fitness for a particular purpose.
 See the GNU General Public License for more details at https://www.gnu.org/licenses or in the Licence.txt attached file.
 
 <br />

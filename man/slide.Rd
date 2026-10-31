@@ -76,8 +76,6 @@ WARNINGS
 The function uses two strategies, depending on the amout of memory required which depends on the data, window_size and step arguments. The first one uses lapply(), is generally fast but requires lots of memory. The second one uses a parallelized loop. The choice between the two strategies is automatic if parall argument is FALSE, and is forced toward parallelization if parall argument is TRUE.
 
 The parall argument forces the parallelization, which is convenient when the data argument is big, because the lapply() function is sometimes slower than the parallelization.
-
-Always use the env argument when slide() is used inside functions.
 }
 \examples{
 slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "left")
@@ -85,14 +83,14 @@ slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, bou
 # effect of boundary argument
 slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "right")
 
-\dontrun{
-# effect of parall argument
+\donttest{
+# effect of parall argument (2 threads, log file written in the temporary directory)
 slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length,
-    boundary = "left", parall = TRUE, thread_nb = 2)
+    boundary = "left", parall = TRUE, thread_nb = 2, res_path = base::tempdir(check = FALSE))
 }
 }
 \seealso{
-\code{\link[slider]{slide}}
+\code{slider::slide()}
 }
 \author{
 Gael Millot <gael.millot@pasteur.fr>
