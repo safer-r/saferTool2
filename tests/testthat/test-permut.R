@@ -117,6 +117,8 @@ test_that("permut primary checking and other checkings", {
     # lib_path checking
     expect_error(permut(data1 = data1, print_count = 10, cor_method = "spearman", cor_limit = 0.5, warn_print = FALSE, lib_path = 123)) # not a character vector
     expect_error(permut(data1 = data1, print_count = 10, cor_method = "spearman", cor_limit = 0.5, warn_print = FALSE, lib_path = "path/that/does/not/exist")) # not an existing directory
+    # lib_path is checked even when safer_check is FALSE (backbone v21.2: lib_path used outside if(safer_check == TRUE){}, so the lib_path check is always executed)
+    expect_error(permut(data1 = data1, print_count = 10, cor_method = "spearman", cor_limit = 0.5, warn_print = FALSE, lib_path = "path/that/does/not/exist", safer_check = FALSE)) # not an existing directory
     # arg_check combinations
     expect_error(permut(data1 = data1, data2 = "not_a_vector", n = 10, print_count = 10, cor_method = "spearman", cor_limit = 0.5, warn_print = FALSE)) # data2 not numeric
     expect_error(permut(data1 = data1, data2 = c("a", "b"), n = 10, print_count = 10, cor_method = "spearman", cor_limit = 0.5, warn_print = FALSE)) # data2 not numeric

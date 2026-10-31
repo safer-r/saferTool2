@@ -110,6 +110,8 @@ test_that("slide() secondary checking blocks", {
   # lib_path checking
   expect_error(slide(data = 1:10, window_size = 5, step = 2, FUN = length, lib_path = 123))
   expect_error(slide(data = 1:10, window_size = 5, step = 2, FUN = length, lib_path = "path/that/does/not/exist"))
+  # lib_path is checked even when safer_check is FALSE (backbone v21.2: lib_path used outside if(safer_check == TRUE){}, so the lib_path check is always executed)
+  expect_error(slide(data = 1:10, window_size = 5, step = 2, FUN = length, lib_path = "path/that/does/not/exist", safer_check = FALSE))
   # data checks of the second round of checking
   expect_error(slide(data = c(1, Inf), window_size = 5, step = 2, FUN = length)) # Inf values
   expect_error(slide(data = c(1, NA), window_size = 5, step = 2, FUN = length)) # NA not allowed either (is.finite() guard)
