@@ -1,16 +1,17 @@
 Package: saferTool2
 Type: Package
-Title: R functions
+Title: R Functions
 Version: 1.0.0
 Date: 2026-10-15
 Authors@R: c(
-    person(given = "Haiding", family = "Wang", email = "wanghaiding442@gmail.com", role = c("aut", "ctb"), comment = c(ORCID = "0009-0008-4831-2022")),
+    person(given = "Haiding", family = "Wang", email = "wanghaiding442@gmail.com", role = c("aut", "ctb")),
     person(given = "Gael", family = "Millot",  email = "gael.millot@pasteur.fr", role = c("cre", "aut", "ctb"), comment = c(ORCID = "0000-0002-0591-3509"))
   )
-Author: Haiding Wang [aut, ctb], Yushi Han [aut, ctb], Gael Millot [cre, aut, ctb]
 Encoding: UTF-8
 Maintainer: Gael Millot <gael.millot@pasteur.fr>
 Description: R function and pipeline development.
+URL: https://github.com/safer-r/saferTool2, https://safer-r.github.io/saferTool2/
+BugReports: https://github.com/safer-r/saferTool2/issues
 License: GPL-3
 Depends: 
     R (>= 4.5.0)

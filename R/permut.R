@@ -43,7 +43,8 @@
 #' @author Yushi Han <yushi.han2000@gmail.com>
 #' @author Haiding Wang <wanghaiding442@gmail.com>
 #' @examples
-#' permut(data1 = 1:10, data2 = 10:1, seed = 1, print_count = 1e4, text_print = "", cor_method = "spearman", cor_limit = 0.7)
+#' permut(data1 = 1:10, data2 = 10:1, seed = 1, print_count = 1e4, text_print = "",
+#'     cor_method = "spearman", cor_limit = 0.7)
 #'
 #' permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print_count = 1e4, cor_limit = 0.5)
 #' @importFrom saferDev arg_check

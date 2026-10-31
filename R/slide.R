@@ -42,10 +42,13 @@
 #' @examples
 #' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "left")
 #'
-#' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "right") # effect of boundary argument
+#' # effect of boundary argument
+#' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "right")
 #'
 #' \dontrun{
-#' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length, boundary = "left", parall = TRUE, thread_nb = 2) # effect of parall argument
+#' # effect of parall argument
+#' slide(data = c(1:10, 100:110, 500), window_size = 5, step = 2, FUN = length,
+#'     boundary = "left", parall = TRUE, thread_nb = 2)
 #' }
 #' @importFrom saferDev arg_check
 #' @importFrom saferDev get_message
