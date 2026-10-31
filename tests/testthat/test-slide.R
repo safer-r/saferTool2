@@ -147,6 +147,10 @@ test_that("slide() parallelization branches with verbose output", {
   res_par2 <- slide(data = 1:10, window_size = 5, step = 2, FUN = length, parall = TRUE, thread_nb = 2, print_count = 1, res_path = res_dir, verbose = FALSE)
   testthat::expect_equal(object = res_par2$value, expected = base::c(5, 5, 5, 4))
   testthat::expect_true(object = base::file.exists(base::paste0(res_dir, "/fun_slide_parall_log.txt")))
+})
+
+test_that("slide() parallelization with more threads than the CRAN limit", {
+  testthat::skip_on_cran() # thread_nb above 2 (10000 capped at detectCores(), or NULL = all the threads) is forbidden by R CMD check --as-cran (_R_CHECK_LIMIT_CORES_)
   # thread_nb above the number of available threads: capped at detectCores() with the ONLY: message (verbose = TRUE)
   # data long enough (996 windows) so that clusterSplit() gives no empty chunk to any worker (an empty chunk triggers the pre-existing 1:length(x) loop bug of the worker on empty input, see CODE INCONSISTENCY 4)
   res_par3 <- slide(data = 1:1000, window_size = 5, step = 1, FUN = length, parall = TRUE, thread_nb = 10000, print_count = 1, verbose = TRUE)
