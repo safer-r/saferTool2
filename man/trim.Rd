@@ -127,7 +127,14 @@ The trimming interval chosen is displayed on top of graphs.
 Both trimmed and not trimmed values are returned in a list.
 }
 \examples{
-trim(data = c(1:100, 1:10), displayed_nb = NULL, single_value_display = FALSE, trim_method = "mean.sd", trim_cutoffs = c(0.05, 0.975), interval_scale_disp = TRUE, down_space = 0.75, left_space = 0.75, up_space = 0.3, right_space = 0.25, orient = 1, dist_legend = 0.37, box_type = "l", amplif_label = 1.25, amplif_axis = 1.25, std_x_range = TRUE, std_y_range = TRUE, cex_pt = 0.2, col_box = grDevices::hsv(0.55, 0.8, 0.8), x_nb_inter_tick = 4, y_nb_inter_tick = 0, tick_length = 0.5, sec_tick_length = 0.3, corner_text = "", amplif_legend = 1, corner_text_size = 0.75, trim_return = TRUE)
+trim(data = c(1:100, 1:10), displayed_nb = NULL, single_value_display = FALSE,
+    trim_method = "mean.sd", trim_cutoffs = c(0.05, 0.975), interval_scale_disp = TRUE,
+    down_space = 0.75, left_space = 0.75, up_space = 0.3, right_space = 0.25, orient = 1,
+    dist_legend = 0.37, box_type = "l", amplif_label = 1.25, amplif_axis = 1.25,
+    std_x_range = TRUE, std_y_range = TRUE, cex_pt = 0.2,
+    col_box = grDevices::hsv(0.55, 0.8, 0.8), x_nb_inter_tick = 4, y_nb_inter_tick = 0,
+    tick_length = 0.5, sec_tick_length = 0.3, corner_text = "", amplif_legend = 1,
+    corner_text_size = 0.75, trim_return = TRUE)
 }
 \seealso{
 \code{\link{head}}, \code{\link{tail}}

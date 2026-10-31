@@ -4,3 +4,8 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^Licence\.txt$
+^Rplots\.pdf$
+^README\.md$
+^cran-comments\.md$
+^CRAN-SUBMISSION$

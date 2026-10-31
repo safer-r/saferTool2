@@ -76,7 +76,8 @@ The random switch of non consecutive positions (ABCD -> DBCA for instance) does 
 Ths code would be: pos <- ini_pos[1:2] ; pos <- sample.int(n = n , size = 2, replace = FALSE) ; tempo_pos[pos] <- tempo_pos[rev(pos)]
 }
 \examples{
-permut(data1 = 1:10, data2 = 10:1, seed = 1, print_count = 1e4, text_print = "", cor_method = "spearman", cor_limit = 0.7)
+permut(data1 = 1:10, data2 = 10:1, seed = 1, print_count = 1e4, text_print = "",
+    cor_method = "spearman", cor_limit = 0.7)
 
 permut(data1 = c(0,0,0,0,0), n = 5, data2 = NULL, seed = 1, print_count = 1e4, cor_limit = 0.5)
 }
